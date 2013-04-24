@@ -61,9 +61,9 @@ def bus_route_update(csv_name, csv_type, bus_service_ids):
 
 
 def select_new_bus_stops(bus_stops):
-    new_bus_stops = set()
 
     try:
+        new_bus_stops = set()
         connection = MySQLdb.connect(config.DB_INFO['HOST'], config.DB_INFO['USER'], config.DB_INFO['PASSWORD'], config.DB_INFO['NAME'], config.DB_INFO['PORT'])
         cursor = connection.cursor()
         for stop in bus_stops:
