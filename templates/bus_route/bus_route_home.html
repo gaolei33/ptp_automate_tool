@@ -1,0 +1,32 @@
+<html>
+    <head>
+        <title>Bus Route - PTP Automate Tool</title>
+    </head>
+    <body>
+        {% include 'common/header.html' %}
+        <div>
+            <form action="/webapp/upload_csv/" enctype="multipart/form-data" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="original_url" value="{{ request.get_full_path }}" />
+                <input type="file" name="csv_file" />
+                <input type="text" name="sr_number" />
+                <input type="submit" value="Upload" />
+            </form>
+        </div>
+        <div>
+            <form action="/webapp/bus_route/generate_sql/" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="original_url" value="{{ request.get_full_path }}" />
+                <div>
+                    <select name="csv_name">
+                    {% for csv_name in csv_list %}
+                        <option value="{{ csv_name }}">{{ csv_name }}</option>
+                    {% endfor %}
+                    </select>
+                    <input type="text" name="bus_service_ids" />
+                    <input type="submit" value="Generate" />
+                </div>
+            </form>
+        </div>
+    </body>
+</html>

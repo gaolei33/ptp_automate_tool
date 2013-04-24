@@ -1,0 +1,13 @@
+<html>
+    <head>
+        <title>Result - PTP Automate Tool</title>
+    </head>
+    <body>
+        {% include 'common/messages.html' %}
+        <div>
+            {% if request.POST.original_url %}
+                <a href="{{ request.POST.original_url }}">Go Back</a>
+            {% endif %}
+        </div>
+    </body>
+</html>
