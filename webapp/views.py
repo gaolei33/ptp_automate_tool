@@ -1,21 +1,30 @@
 # Create your views here.
+import json
 import logging
 from django.contrib import messages
 from django.http.response import HttpResponse, Http404
 from django.shortcuts import render
+from django.shortcuts import render_to_response
 from webapp import config
 from webapp.bus_route import bus_route_manager
+from webapp.bus_stop import bus_stop_manager
 from webapp.common.io import csv_manager, sql_manager
 from webapp.db import db_manager
 
 _logger = logging.getLogger('default')
 
+def csv_home(request):
+
+    return render(request, 'csv/csv_home.html')
+
+
 def upload_csv(request):
 
     try:
         csv_file = request.FILES['csv_file']
+        csv_type = request.POST['csv_type']
         sr_number = request.POST['sr_number'] or 'Unknown'
-        csv_manager.save_csv(csv_file, config.BUS_ROUTE_NCS, sr_number)
+        csv_manager.save_csv(csv_file, csv_type, sr_number)
         messages.info(request, 'CSV uploaded successfully.')
     except KeyError, ex:
         messages.error(request, ex)
@@ -83,23 +92,92 @@ def db_restore(request):
 
 def bus_route_home(request):
 
-    csv_list = csv_manager.get_csv_list(config.BUS_ROUTE_NCS)
-
     return render(request, 'bus_route/bus_route_home.html', {
-        'csv_list': csv_list,
+        'csv_types': (
+            'BUS_ROUTE_NCS',
+            'BUS_ROUTE_LTA',
+        )
     })
 
 
-def generate_sql(request):
+def generate_bus_route_sql(request):
 
     try:
         csv_name = request.POST['csv_name']
+        csv_type = request.POST['csv_type']
         bus_service_ids_string = request.POST['bus_service_ids']
         bus_service_ids = { elem.strip() for elem in bus_service_ids_string.split(',') if elem.strip() }
 
-        bus_route_manager.bus_route_update(csv_name, config.BUS_ROUTE_NCS, bus_service_ids)
+        bus_route_manager.bus_route_update(csv_name, csv_type, bus_service_ids)
 
         messages.info(request, 'SQL generated and executed on development database successfully.')
+    except KeyError, ex:
+        messages.error(request, ex)
+    except ValueError, ex:
+        messages.error(request, ex)
+
+    return render(request, 'common/result.html')
+
+
+def get_csv_list(request):
+
+    try:
+        csv_type = request.GET['csv_type']
+        csv_list = csv_manager.get_csv_list(csv_type)
+        csv_list_json = json.dumps(csv_list)
+    except:
+        raise Http404
+
+    return HttpResponse(csv_list_json, content_type='application/json;charset=utf-8')
+
+
+def bus_stop_home(request):
+
+    return render(request, 'bus_stop/bus_stop_home.html', {
+        'csv_types': (
+            'BUS_STOP',
+        )
+    })
+
+
+def bus_stop_detail(request):
+
+    try:
+        csv_name = request.POST['csv_name']
+        bus_stop_ids_string = request.POST['bus_stop_ids']
+        bus_stop_ids = { elem.strip() for elem in bus_stop_ids_string.split(',') if elem.strip() }
+
+        total_bus_stop_info = bus_stop_manager.get_bus_stop_info(csv_name, bus_stop_ids)
+
+    except KeyError, ex:
+        messages.error(request, ex)
+        return render(request, 'common/result.html')
+    except ValueError, ex:
+        messages.error(request, ex)
+        return render(request, 'common/result.html')
+
+    return render(request, 'bus_stop/bus_stop_detail.html', {
+        'total_bus_stop_info': total_bus_stop_info,
+    })
+
+
+def generate_bus_stop_sql(request):
+
+    try:
+
+        total_bus_stop_info = list()
+
+        bus_stop_count = int(request.POST['bus_stop_count'])
+        for i in range(bus_stop_count):
+            bus_stop_id = request.POST['bus_stop_id_%d' % i]
+            street_id = request.POST['street_id_%d' % i]
+            short_name = request.POST['short_name_%d' % i]
+            bus_stop_info = [bus_stop_id, street_id, short_name]
+            total_bus_stop_info.append(bus_stop_info)
+
+        print(total_bus_stop_info)
+
+        messages.info(request, total_bus_stop_info)
     except KeyError, ex:
         messages.error(request, ex)
     except ValueError, ex:

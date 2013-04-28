@@ -20,10 +20,10 @@ ROOT = '/home/jonathan/Desktop/ptp_automate_tool'
 # The path of the CSV folder
 CSV_ROOT = os.path.join(ROOT, 'csv')
 CSV_FOLDERS = {
-    BUS_STOP: os.path.join(CSV_ROOT, BUS_STOP),
-    BUS_SERVICE: os.path.join(CSV_ROOT, BUS_SERVICE),
-    BUS_ROUTE_NCS: os.path.join(CSV_ROOT, BUS_ROUTE_NCS),
-    BUS_ROUTE_LTA: os.path.join(CSV_ROOT, BUS_ROUTE_LTA),
+    'BUS_STOP': os.path.join(CSV_ROOT, 'BUS_STOP'),
+    'BUS_SERVICE': os.path.join(CSV_ROOT, 'BUS_SERVICE'),
+    'BUS_ROUTE_NCS': os.path.join(CSV_ROOT, 'BUS_ROUTE_NCS'),
+    'BUS_ROUTE_LTA': os.path.join(CSV_ROOT, 'BUS_ROUTE_LTA'),
 }
 
 BACKUP_FOLDER = os.path.join(ROOT, '/home/jonathan/Desktop/ptp_automate_tool/backup')

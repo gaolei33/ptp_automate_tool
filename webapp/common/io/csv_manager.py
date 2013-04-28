@@ -61,8 +61,8 @@ def retrieve_data_from_csv(csv_name, csv_type, filter_id):
         with open(csv_path, 'r') as reader:
             for line in reader:
                 row = [item.strip() for item in line.strip().split(',')]
-                #bus service id & bus stop code process
-                row[0] = _bus_stop_code_rule(row[0]) if csv_type == config.BUS_STOP else _bus_service_id_rule(row[0])
+                # bus service id & bus stop code process
+                row[0] = _bus_stop_code_rule(row[0]) if csv_type == 'BUS_STOP' else _bus_service_id_rule(row[0])
                 if row[0] == filter_id:
                     info['DATA'].append(row)
         _logger.info('Data retrieved from CSV successfully: %s' % csv_path)

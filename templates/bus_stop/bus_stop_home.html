@@ -1,17 +1,17 @@
 <html>
     <head>
-        <title>Bus Route - PTP Automate Tool</title>
+        <title>Bus Stop - PTP Automate Tool</title>
     </head>
     <body>
         {% include 'common/header.html' %}
         <div>
-            <form action="/webapp/bus_route/generate_sql/" method="post">
+            <form action="/webapp/bus_stop/bus_stop_detail/" method="post">
                 {% csrf_token %}
                 <input type="hidden" name="original_url" value="{{ request.get_full_path }}" />
                 <div>
                     {% include 'common/csv_list.html' %}
-                    <input type="text" name="bus_service_ids" />
-                    <input type="submit" value="Generate" />
+                    <input type="text" name="bus_stop_ids" />
+                    <input type="submit" value="Detail" />
                 </div>
             </form>
         </div>
