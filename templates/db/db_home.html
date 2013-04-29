@@ -1,34 +1,29 @@
-<html>
-    <head>
-        <title>Dev DB Backup & Restore - PTP Automate Tool</title>
-    </head>
-    <body>
-        {% include 'common/header.html' %}
+{% extends 'base.html' %}
+{% block title %}Dev DB Backup & Restore{% endblock %}
+{% block content %}
+<div>
+    <form action="/webapp/db/backup/" method="post">
+        {% csrf_token %}
         <div>
-            <form action="/webapp/db/backup/" method="post">
-                {% csrf_token %}
-                <input type="hidden" name="original_url" value="{{ request.get_full_path }}" />
-                <div>
-                    <input type="text" name="sr_number" />
-                    <input type="submit" value="Backup" />
-                </div>
-            </form>
+            <input type="text" name="sr_number" />
+            <input type="submit" value="Backup" />
+        </div>
+    </form>
+</div>
+<div>
+    <form action="/webapp/db/restore/" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="original_url" value="{{ request.get_full_path }}" />
+        <div>
+            <select name="backup_name">
+            {% for backup_name in backup_list %}
+                <option value="{{ backup_name }}">{{ backup_name }}</option>
+            {% endfor %}
+            </select>
         </div>
         <div>
-            <form action="/webapp/db/restore/" method="post">
-                {% csrf_token %}
-                <input type="hidden" name="original_url" value="{{ request.get_full_path }}" />
-                <div>
-                    <select name="backup_name">
-                    {% for backup_name in backup_list %}
-                        <option value="{{ backup_name }}">{{ backup_name }}</option>
-                    {% endfor %}
-                    </select>
-                </div>
-                <div>
-                    <input type="submit" value="Restore" />
-                </div>
-            </form>
+            <input type="submit" value="Restore" />
         </div>
-    </body>
-</html>
+    </form>
+</div>
+{% endblock %}

@@ -1,44 +1,39 @@
-<html>
-    <head>
-        <title>Upload CSV - PTP Automate Tool</title>
-    </head>
-    <body>
-        {% include 'common/header.html' %}
-        <div>
-            <form action="/webapp/csv/upload_csv/" enctype="multipart/form-data" method="post">
-                {% csrf_token %}
-                <input type="hidden" name="original_url" value="{{ request.get_full_path }}" />
-                <table>
-                    <tr>
-                        <td>CSV Type</td>
-                        <td>
-                            <select name="csv_type">
-                                <option value="BUS_STOP">BUS_STOP</option>
-                                <option value="BUS_SERVICE">BUS_SERVICE</option>
-                                <option value="BUS_ROUTE_NCS">BUS_ROUTE_NCS</option>
-                                <option value="BUS_ROUTE_LTA">BUS_ROUTE_LTA</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>CSV File</td>
-                        <td>
-                            <input type="file" name="csv_file" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>SR Number</td>
-                        <td>
-                            <input type="text" name="sr_number" />
-                        </td>
-                    </tr>
-                     <tr>
-                        <td colspan="2">
-                            <input type="submit" value="Upload" />
-                        </td>
-                    </tr>
-                </table>
-            </form>
-        </div>
-    </body>
-</html>
+{% extends 'base.html' %}
+{% block title %}Upload CSV{% endblock %}
+{% block content %}
+<div>
+    <form action="/webapp/csv/upload_csv/" enctype="multipart/form-data" method="post">
+        {% csrf_token %}
+        <table>
+            <tr>
+                <td>CSV Type</td>
+                <td>
+                    <select name="csv_type">
+                        <option value="BUS_STOP">BUS_STOP</option>
+                        <option value="BUS_SERVICE">BUS_SERVICE</option>
+                        <option value="BUS_ROUTE_NCS">BUS_ROUTE_NCS</option>
+                        <option value="BUS_ROUTE_LTA">BUS_ROUTE_LTA</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>CSV File</td>
+                <td>
+                    <input type="file" name="csv_file" />
+                </td>
+            </tr>
+            <tr>
+                <td>SR Number</td>
+                <td>
+                    <input type="text" name="sr_number" />
+                </td>
+            </tr>
+             <tr>
+                <td colspan="2">
+                    <input type="submit" value="Upload" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+{% endblock %}

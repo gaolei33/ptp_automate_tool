@@ -1,0 +1,47 @@
+/* Street Search */
+#street_search {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 330px;
+}
+
+#street_search_switcher {
+    position: absolute;
+    left: 120px;
+    bottom: -25px;
+    cursor: pointer;
+    background: skyblue;
+    border: 2px solid black;
+    padding: 0 5px;
+}
+
+#street_search_switcher:hover {
+    border-color: blue;
+}
+
+#street_search_switcher:active {
+    border-color: red;
+}
+
+#street_search_container {
+    display: none;
+}
+
+#street_search_input {
+    padding: 10px 0;
+}
+
+#street_search_result {
+    height: 200px;
+    overflow: scroll;
+}
+
+#street_search_result .street {
+    width: 100%;
+    border: 1px solid;
+}
+
+#street_search_result .street td {
+    border: 1px solid;
+}

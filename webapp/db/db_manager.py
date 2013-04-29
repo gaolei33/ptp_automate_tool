@@ -2,7 +2,7 @@ import logging
 import os
 import time
 from webapp import config
-from webapp.common.io import io_utils
+from webapp.common import io_utils
 
 __author__ = 'jonathan'
 

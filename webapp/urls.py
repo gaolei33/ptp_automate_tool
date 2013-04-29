@@ -24,4 +24,6 @@ urlpatterns = patterns('webapp.views',
     url(r'^bus_stop/$', 'bus_stop_home'),
     url(r'^bus_stop/bus_stop_detail/$', 'bus_stop_detail'),
     url(r'^bus_stop/generate_bus_stop_sql/$', 'generate_bus_stop_sql'),
+
+    url(r'^street_search/', 'street_search'),
 )

@@ -1,39 +1,63 @@
-<html>
-    <head>
-        <title>Bus Stop Detail - PTP Automate Tool</title>
-    </head>
-    <body>
-        {% include 'common/header.html' %}
-        <div>
-            <form action="/webapp/bus_stop/generate_bus_stop_sql/" method="post">
-                {% csrf_token %}
-                <input type="hidden" name="original_url" value="{{ request.get_full_path }}" />
-                <input type="hidden" name="bus_stop_count" value="{{ total_bus_stop_info | length }}" />
-                {% for bus_stop_info in total_bus_stop_info %}
-                <table>
-                    <tr>
-                        <td>ID</td>
-                        <td>
-                            {{ bus_stop_info.DATA.0.0 }}
-                            <input type="hidden" name="bus_stop_id_{{ forloop.counter0 }}" value="{{ bus_stop_info.DATA.0.0 }}" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Street ID</td>
-                        <td>
-                            <input type="text" name="street_id_{{ forloop.counter0 }}" value="{{ bus_stop_info.DATA.0.1 }}" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Short Name</td>
-                        <td>
-                            <input type="text" name="short_name_{{ forloop.counter0 }}" value="{{ bus_stop_info.DATA.0.2 }}" />
-                        </td>
-                    </tr>
-                </table>
-                {% endfor %}
-                <input type="submit" value="Generate" />
-            </form>
-        </div>
-    </body>
-</html>
+{% extends 'base.html' %}
+{% block title %}Bus Stop Detail{% endblock %}
+{% block content %}
+<div>
+    <form action="/webapp/bus_stop/generate_bus_stop_sql/" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="csv_name" value="{{ csv_name }}" />
+        <input type="hidden" name="bus_stop_ids_string" value="{{ bus_stop_ids_string }}" />
+        <input type="hidden" name="bus_stop_count" value="{{ total_bus_stop_info | length }}" />
+        <table>
+            {% for bus_stop_info in total_bus_stop_info %}
+            <tr>
+                <td>ID</td>
+                <td>
+                    {{ bus_stop_info.0 }}
+                    <input type="hidden" name="bus_stop_id_{{ forloop.counter0 }}" value="{{ bus_stop_info.0 }}" />
+                </td>
+            </tr>
+            <tr>
+                <td>Street ID</td>
+                <td>
+                    <input type="text" name="street_id_{{ forloop.counter0 }}" value="{{ bus_stop_info.1 }}" />
+                </td>
+            </tr>
+            <tr>
+                <td>Short Name</td>
+                <td>
+                    <input type="text" name="short_name_{{ forloop.counter0 }}" value="{{ bus_stop_info.2 }}" />
+                </td>
+            </tr>
+            <tr>
+                <td>Long Name</td>
+                <td>
+                    <input type="text" name="long_name_{{ forloop.counter0 }}" value="{{ bus_stop_info.2 }}" />
+                </td>
+            </tr>
+            <tr>
+                <td>Location Code</td>
+                <td>
+                    <input type="text" name="location_code_{{ forloop.counter0 }}" value="" />
+                </td>
+            </tr>
+            <tr>
+                <td>WAB Accessible</td>
+                <td>
+                    <input type="text" name="wab_accessible_{{ forloop.counter0 }}" value="{{ bus_stop_info.3 }}" />
+                </td>
+            </tr>
+            <tr>
+                <td>Express</td>
+                <td>
+                    <input type="text" name="express_{{ forloop.counter0 }}" value="{{ bus_stop_info.4 }}" />
+                </td>
+            </tr>
+            {% if forloop.counter0 < total_bus_stop_info|length|add:-1 %}
+            <tr><td colspan="2">&nbsp;</td></tr>
+            {% endif %}
+            {% endfor %}
+        </table>
+        <input type="submit" value="Generate" />
+    </form>
+</div>
+{% endblock %}

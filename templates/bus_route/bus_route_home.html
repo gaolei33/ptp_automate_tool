@@ -1,19 +1,14 @@
-<html>
-    <head>
-        <title>Bus Route - PTP Automate Tool</title>
-    </head>
-    <body>
-        {% include 'common/header.html' %}
+{% extends 'base.html' %}
+{% block title %}Bus Route{% endblock %}
+{% block content %}
+<div>
+    <form action="/webapp/bus_route/generate_bus_route_sql/" method="post">
+        {% csrf_token %}
         <div>
-            <form action="/webapp/bus_route/generate_sql/" method="post">
-                {% csrf_token %}
-                <input type="hidden" name="original_url" value="{{ request.get_full_path }}" />
-                <div>
-                    {% include 'common/csv_list.html' %}
-                    <input type="text" name="bus_service_ids" />
-                    <input type="submit" value="Generate" />
-                </div>
-            </form>
+            {% include 'common/csv_list.html' %}
+            <input type="text" name="bus_service_ids" />
+            <input type="submit" value="Generate" />
         </div>
-    </body>
-</html>
+    </form>
+</div>
+{% endblock %}
