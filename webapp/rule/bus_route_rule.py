@@ -39,7 +39,7 @@ class BusRouteNCSRule(BusRouteRule):
         else:
             target_express_code = self._normal_rule(origin_express_code)
             target_distance = 'NULL'
-        return (target_express_code, target_distance)
+        return target_express_code, target_distance
 
     def _trip_rule(self, origin_trip):
         if _is_empty(origin_trip):
@@ -106,7 +106,7 @@ class BusRouteLTARule(BusRouteRule):
             target_express_code = self._normal_rule(origin_express_code)
             target_distance = 'NULL'
             target_fare_marker = 'NULL'
-        return (target_express_code, target_distance, target_fare_marker)
+        return target_express_code, target_distance, target_fare_marker
 
     def _fare_marker_rule(self, origin_fare_marker):
         if origin_fare_marker in ('', '0'):

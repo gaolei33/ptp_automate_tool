@@ -1,7 +1,7 @@
 import logging
 import os
 from webapp import config
-from webapp.util import io_utils
+from webapp.util import io_util
 
 __author__ = 'Gao Lei'
 
@@ -13,7 +13,7 @@ def save_sql(sql_name, sql):
         sql_folder = config.SQL_FOLDER
         sql_path = os.path.join(sql_folder, sql_name)
 
-        io_utils.write_to_file(sql_path, sql)
+        io_util.write_to_file(sql_path, sql)
 
         _logger.info('SQL file saved successfully: %s' % sql_path)
     except Exception, ex:

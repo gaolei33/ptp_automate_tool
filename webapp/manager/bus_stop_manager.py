@@ -2,7 +2,7 @@ import logging
 import re
 import time
 from webapp.rule.bus_stop_rule import BusStopRule
-from webapp.util import db_utils
+from webapp.util import db_util
 from webapp.manager import csv_manager, sql_manager
 
 __author__ = 'Gao Lei'
@@ -48,7 +48,7 @@ def bus_stop_update(total_bus_stop_info, csv_name, bus_stop_ids_string):
     sql = generate_sql(total_bus_stop_info_wrap_quotes)
 
     # execute the generated SQL on development database
-    error = db_utils.exec_sql(sql)
+    error = db_util.exec_sql(sql)
     if error:
         err_msg = 'An error occurred while executing the SQL: %s, you\'d better restore development database before next steps.' % error
         _logger.error(err_msg)
@@ -75,12 +75,12 @@ def street_search(keyword, keyword_type):
         sql = "select id, short_name, long_name from streets where short_name like '%{0}%' or long_name like '%{0}%' limit 100".format(keyword)
 
     try:
-        connection = db_utils.get_connection()
+        connection = db_util.get_connection()
         cursor = connection.cursor()
         cursor.execute(sql)
         result = cursor.fetchall()
         cursor.close()
-        db_utils.close_connection(connection)
+        db_util.close_connection(connection)
     except Exception, ex:
         err_msg = 'An error occurred while searching street: %s' % ex
         _logger.error(err_msg)
@@ -101,6 +101,7 @@ def wrap_quotes(origin_total_bus_stop_info):
             target_bus_stop_info.append(target_col)
         target_total_bus_stop_info.append(target_bus_stop_info)
     return target_total_bus_stop_info
+
 
 def generate_sql(total_bus_stop_info):
     sql = ''

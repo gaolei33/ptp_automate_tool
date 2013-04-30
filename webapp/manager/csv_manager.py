@@ -2,7 +2,7 @@ import logging
 import os
 import re
 from webapp import config
-from webapp.util import io_utils
+from webapp.util import io_util
 
 __author__ = 'Gao Lei'
 
@@ -25,7 +25,7 @@ def _bus_stop_code_rule(origin_bus_stop_code):
 
 def get_csv_list(csv_type):
     csv_folder = config.CSV_FOLDERS[csv_type]
-    io_utils.create_folder_if_not_exists(csv_folder)
+    io_util.create_folder_if_not_exists(csv_folder)
     csv_list = [f for f in os.listdir(csv_folder) if os.path.isfile(os.path.join(csv_folder, f)) and f.lower().endswith('.csv')]
     return csv_list
 
@@ -34,7 +34,7 @@ def save_csv(csv_file, csv_type, sr_number):
     csv_folder = config.CSV_FOLDERS[csv_type]
     csv_name = 'SR_%s_%s' % (sr_number, csv_file.name)
     csv_path = os.path.join(csv_folder, csv_name)
-    io_utils.write_to_file(csv_path, csv_file)
+    io_util.write_to_file(csv_path, csv_file)
     _logger.info('CSV file saved: %s' % csv_path)
 
 
@@ -59,3 +59,12 @@ def retrieve_data_from_csv(csv_name, csv_type, filter_id):
         _logger.error(err_msg)
         raise ValueError(err_msg)
     return info
+
+
+def get_sr_number_from_csv_name(csv_name):
+    m = re.search(r'^SR_(\d+)_', csv_name)
+    if m:
+        sr_number = m.group(1)
+    else:
+        sr_number = 'Unknown'
+    return sr_number

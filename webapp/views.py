@@ -16,8 +16,8 @@ def csv_home(request):
 def upload_csv(request):
     try:
         csv_file = request.FILES['csv_file']
-        csv_type = request.POST['csv_type']
-        sr_number = request.POST['sr_number'] or 'Unknown'
+        csv_type = request.POST['csv_type'].strip()
+        sr_number = request.POST['sr_number'].strip() or 'Unknown'
         csv_manager.save_csv(csv_file, csv_type, sr_number)
         messages.info(request, 'CSV uploaded successfully.')
     except KeyError, ex:
@@ -27,7 +27,7 @@ def upload_csv(request):
 
 def download_sql(request):
     try:
-        sql_name = request.GET['sql_name']
+        sql_name = request.GET['sql_name'].strip()
         sql_file = sql_manager.get_sql(sql_name)
         response = HttpResponse(sql_file, content_type='text/plain')
         response['Content-Disposition'] = 'attachment; filename="%s"' % sql_name
@@ -51,7 +51,7 @@ def db_home(request):
 
 def db_backup(request):
     try:
-        sr_number = request.POST['sr_number'] or 'Unknown'
+        sr_number = request.POST['sr_number'].strip() or 'Unknown'
         db_manager.backup(sr_number)
         messages.info(request, 'Development Database backed up successfully.')
     except KeyError, ex:
@@ -63,7 +63,7 @@ def db_backup(request):
 
 def db_restore(request):
     try:
-        backup_name = request.POST['backup_name']
+        backup_name = request.POST['backup_name'].strip()
         db_manager.restore(backup_name)
 
         messages.info(request, 'Development database restored successfully.')
@@ -85,10 +85,10 @@ def bus_route_home(request):
 
 def generate_bus_route_sql(request):
     try:
-        csv_name = request.POST['csv_name']
-        csv_type = request.POST['csv_type']
-        bus_service_ids_string = request.POST['bus_service_ids']
-        bus_service_ids = { elem.strip() for elem in bus_service_ids_string.split(',') if elem.strip() }
+        csv_name = request.POST['csv_name'].strip()
+        csv_type = request.POST['csv_type'].strip()
+        bus_service_ids_string = request.POST['bus_service_ids'].strip()
+        bus_service_ids = {elem.strip() for elem in bus_service_ids_string.split(',') if elem.strip()}
 
         bus_route_manager.bus_route_update(csv_name, csv_type, bus_service_ids)
 
@@ -102,7 +102,7 @@ def generate_bus_route_sql(request):
 
 def get_csv_list(request):
     try:
-        csv_type = request.GET['csv_type']
+        csv_type = request.GET['csv_type'].strip()
         csv_list = csv_manager.get_csv_list(csv_type)
         csv_list_json = json.dumps(csv_list)
     except:
@@ -120,9 +120,9 @@ def bus_stop_home(request):
 
 def bus_stop_detail(request):
     try:
-        csv_name = request.POST['csv_name']
-        bus_stop_ids_string = request.POST['bus_stop_ids']
-        bus_stop_ids = { elem.strip() for elem in bus_stop_ids_string.split(',') if elem.strip() }
+        csv_name = request.POST['csv_name'].strip()
+        bus_stop_ids_string = request.POST['bus_stop_ids'].strip()
+        bus_stop_ids = {elem.strip() for elem in bus_stop_ids_string.split(',') if elem.strip()}
 
         total_bus_stop_info = bus_stop_manager.get_bus_stop_info(csv_name, bus_stop_ids)
     except KeyError, ex:
@@ -142,10 +142,10 @@ def generate_bus_stop_sql(request):
     try:
         total_bus_stop_info = list()
 
-        csv_name = request.POST['csv_name']
-        bus_stop_ids_string = request.POST['bus_stop_ids_string']
+        csv_name = request.POST['csv_name'].strip()
+        bus_stop_ids_string = request.POST['bus_stop_ids_string'].strip()
 
-        bus_stop_count = int(request.POST['bus_stop_count'])
+        bus_stop_count = int(request.POST['bus_stop_count'].strip())
         for i in range(bus_stop_count):
             bus_stop_id = request.POST['bus_stop_id_%d' % i].strip()
             street_id = request.POST['street_id_%d' % i].strip()
@@ -171,8 +171,8 @@ def generate_bus_stop_sql(request):
 
 def street_search(request):
     try:
-        keyword = request.GET['keyword']
-        keyword_type = request.GET['keyword_type']
+        keyword = request.GET['keyword'].strip()
+        keyword_type = request.GET['keyword_type'].strip()
         street_list = bus_stop_manager.street_search(keyword, keyword_type)
         street_list_json = json.dumps(street_list)
     except:

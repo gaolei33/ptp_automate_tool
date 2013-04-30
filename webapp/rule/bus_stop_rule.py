@@ -5,6 +5,7 @@ __author__ = 'Gao Lei'
 
 _logger = logging.getLogger('default')
 
+
 class BusStopRule(BaseRule):
 
     def __init__(self, origin_total_bus_stop_info):
@@ -50,4 +51,3 @@ class BusStopRule(BaseRule):
             self.target_total_bus_stop_info.append(target_bus_stop_info)
 
         return self.target_total_bus_stop_info
-
