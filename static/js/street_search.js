@@ -7,15 +7,21 @@
 $(function() {
 
     $('#street_search_switcher').click(function() {
-        $('#street_search_container').slideToggle();
+
+        $('#street_search_container').slideToggle(function() {
+            $('#keyword').focus();
+        });
+
     });
 
     $('#street_search_btn').click(function() {
-        var keyword = $('#keyword').val();
+        var $keyword = $('#keyword');
+        var keyword = $keyword.val();
         var keyword_type = $('#keyword_type').val();
 
         if (keyword == '') {
             alert('Please input keyword for street searching.');
+            $keyword.focus();
             return;
         }
 

@@ -6,8 +6,8 @@ __author__ = 'Gao Lei'
 
 _logger = logging.getLogger('default')
 
-def create_folder_if_not_exists(folder):
 
+def create_folder_if_not_exists(folder):
     if not os.path.exists(folder):
         try:
             os.makedirs(folder)
@@ -19,7 +19,6 @@ def create_folder_if_not_exists(folder):
 
 
 def write_to_file(file_path, obj):
-
     try:
         file_dir = os.path.dirname(file_path)
         create_folder_if_not_exists(file_dir)
@@ -39,8 +38,6 @@ def write_to_file(file_path, obj):
 
 
 def exec_cmd(cmd):
-
     process = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     result = process.stdout.read()
-
     return result

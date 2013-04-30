@@ -1,12 +1,14 @@
 import logging
 import re
 import time
-from webapp.bus_route.bus_route_rule import BusRouteNCSRule, BusRouteLTARule
-from webapp.common import db_utils, csv_manager, sql_manager
+from webapp.manager import csv_manager, sql_manager
+from webapp.rule.bus_route_rule import BusRouteNCSRule, BusRouteLTARule
+from webapp.util import db_utils
 
 __author__ = 'Gao Lei'
 
 _logger = logging.getLogger('default')
+
 
 def bus_route_update(csv_name, csv_type, bus_service_ids):
 
@@ -21,7 +23,6 @@ def bus_route_update(csv_name, csv_type, bus_service_ids):
             missing_bus_service_ids.add(bus_routes['ID'])
         else:
             total_bus_routes.append(bus_routes)
-
 
     # incorrect bus service check
     if missing_bus_service_ids:
@@ -85,62 +86,43 @@ def select_new_bus_stops(bus_stops):
 
 
 def generate_sql(total_bus_routes, csv_type):
-
     sql = ''
-
     for bus_routes in total_bus_routes:
-
         if csv_type == 'BUS_ROUTE_NCS':
             sql += "DELETE FROM bus_routes WHERE bus_service_id = '%s' AND provider = 'NCS';\n" % bus_routes['ID']
             for bus_route in bus_routes['DATA']:
                 sql += "INSERT INTO bus_routes (bus_service_id, direction, sequence, bus_stop_id, provider, express_code, distance, distance_fares_marker, weekday_first_trip, weekday_last_trip, saturday_first_trip, saturday_last_trip, sunday_first_trip, sunday_last_trip, note, shows_arrival_table, shows_fare_table, in_operation) VALUES(%s, %s, %s, %s, 'NCS', %s, %s, NULL, %s, %s, %s, %s, %s, %s, NULL, '0', '0', '1');\n" % (bus_route[0], bus_route[1], bus_route[2], bus_route[3], bus_route[4], bus_route[5], bus_route[6], bus_route[7], bus_route[8], bus_route[9], bus_route[10], bus_route[11])
-
         elif csv_type == 'BUS_ROUTE_LTA':
             sql += "DELETE FROM bus_routes WHERE bus_service_id = '%s' AND provider = 'LTA';\n" % bus_routes['ID']
             for bus_route in bus_routes['DATA']:
                 sql += "INSERT INTO bus_routes (bus_service_id, direction, sequence, bus_stop_id, provider, express_code, distance, distance_fares_marker, weekday_first_trip, weekday_last_trip, saturday_first_trip, saturday_last_trip, sunday_first_trip, sunday_last_trip, note, shows_arrival_table, shows_fare_table, in_operation) VALUES(%s, %s, %s, %s, 'LTA', %s, %s, %s, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', '0', '1');\n" % (bus_route[0], bus_route[1], bus_route[2], bus_route[3], bus_route[4], bus_route[5], bus_route[6])
-
     return sql
 
 
 def get_sr_number(csv_name):
-
     m = re.search(r'^SR_(\d+)_', csv_name)
-
     if m:
         sr_number = m.group(1)
     else:
         sr_number = 'Unknown'
-
     return sr_number
 
 
 def wrap_quotes(origin_total_bus_routes):
-
     target_total_bus_routes = []
-
     for origin_bus_routes in origin_total_bus_routes:
-
         target_bus_routes = {
             'ID': origin_bus_routes['ID'],
             'DATA': [],
         }
-
         for origin_bus_route in origin_bus_routes['DATA']:
-
             target_bus_route = []
-
             for origin_col in origin_bus_route:
-
                 if origin_col == 'NULL':
                     target_col = origin_col
                 else:
                     target_col = "'%s'" % origin_col
-
                 target_bus_route.append(target_col)
-
             target_bus_routes['DATA'].append(target_bus_route)
-
         target_total_bus_routes.append(target_bus_routes)
-
     return target_total_bus_routes

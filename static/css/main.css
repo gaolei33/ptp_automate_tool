@@ -2,7 +2,7 @@
 #street_search {
     position: fixed;
     top: 0;
-    right: 0;
+    right: 5px;
     width: 330px;
 }
 
@@ -10,10 +10,11 @@
     position: absolute;
     left: 120px;
     bottom: -25px;
-    cursor: pointer;
+    padding: 0 5px;
     background: skyblue;
     border: 2px solid black;
-    padding: 0 5px;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
 #street_search_switcher:hover {
@@ -34,7 +35,7 @@
 
 #street_search_result {
     height: 200px;
-    overflow: scroll;
+    overflow: auto;
 }
 
 #street_search_result .street {

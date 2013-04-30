@@ -1,36 +1,25 @@
 import logging
-import re
+from webapp.rule.rule import BaseRule
 
 __author__ = 'Gao Lei'
 
 _logger = logging.getLogger('default')
 
-def _is_empty(origin_str):
-    return origin_str in ('', '-')
-
-class BusStopRule():
+class BusStopRule(BaseRule):
 
     def __init__(self, origin_total_bus_stop_info):
         self.origin_row_len = 3
         self.origin_total_bus_stop_info = origin_total_bus_stop_info
         self.target_total_bus_stop_info = []
 
-
-    def _normal_rule(self, origin_str):
-        target_str = origin_str
-        return target_str
-
     def _express_and_wab_rule(self, origin_bus_stop_id):
-
         if origin_bus_stop_id.lower().startswith('e'):
             target_wab_accessible = '0'
             target_express = '1'
         else:
             target_wab_accessible = '1'
             target_express = '0'
-
         return target_wab_accessible, target_express
-
 
     def execute_rules(self):
 

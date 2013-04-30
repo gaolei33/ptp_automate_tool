@@ -2,17 +2,16 @@ import logging
 import os
 import time
 from webapp import config
-from webapp.common import io_utils
+from webapp.util import io_utils
 
 __author__ = 'jonathan'
 
 _logger = logging.getLogger('default')
 
-def get_backup_list():
 
+def get_backup_list():
     backup_folder = config.BACKUP_FOLDER
     io_utils.create_folder_if_not_exists(backup_folder)
-
     return [f for f in os.listdir(backup_folder) if os.path.isfile(os.path.join(backup_folder, f)) and f.lower().endswith('.sql.gz')]
 
 
