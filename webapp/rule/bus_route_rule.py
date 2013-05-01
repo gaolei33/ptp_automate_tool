@@ -53,12 +53,9 @@ class BusRouteNCSRule(BusRouteRule):
     def execute_rules(self):
         for origin_bus_routes in self.origin_total_bus_routes:
 
-            target_bus_routes = {
-                'ID': origin_bus_routes['ID'],
-                'DATA': [],
-            }
+            target_bus_routes = []
 
-            for origin_row in origin_bus_routes['DATA']:
+            for origin_row in origin_bus_routes:
 
                 if len(origin_row) < self.origin_row_len:
                     err_msg = 'CSV columns must be more than %d!' % self.origin_row_len
@@ -85,7 +82,7 @@ class BusRouteNCSRule(BusRouteRule):
                         target_str = self._normal_rule(origin_row[i])
                         target_row.append(target_str)
 
-                target_bus_routes['DATA'].append(target_row)
+                target_bus_routes.append(target_row)
 
             self.target_total_bus_routes.append(target_bus_routes)
 
@@ -119,12 +116,9 @@ class BusRouteLTARule(BusRouteRule):
 
         for origin_bus_routes in self.origin_total_bus_routes:
 
-            target_bus_routes = {
-                'ID': origin_bus_routes['ID'],
-                'DATA': [],
-            }
+            target_bus_routes = []
 
-            for origin_row in origin_bus_routes['DATA']:
+            for origin_row in origin_bus_routes:
 
                 if len(origin_row) < self.origin_row_len:
                     err_msg = 'CSV columns must be more than %d!' % self.origin_row_len
@@ -150,7 +144,7 @@ class BusRouteLTARule(BusRouteRule):
                         target_str = self._normal_rule(origin_row[i])
                         target_row.append(target_str)
 
-                target_bus_routes['DATA'].append(target_row)
+                target_bus_routes.append(target_row)
 
             self.target_total_bus_routes.append(target_bus_routes)
 

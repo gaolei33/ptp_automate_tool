@@ -1,6 +1,4 @@
-import json
 from django.contrib import messages
-from django.http.response import Http404, HttpResponse
 from django.shortcuts import render
 from webapp.manager import bus_stop_manager, csv_manager
 
@@ -75,14 +73,3 @@ def generate_bus_stop_sql(request):
     except ValueError, ex:
         messages.error(request, ex)
     return render(request, 'common/result.html')
-
-
-def street_search(request):
-    try:
-        keyword = request.GET['keyword'].strip()
-        keyword_type = request.GET['keyword_type'].strip()
-        street_list = bus_stop_manager.street_search(keyword, keyword_type)
-        street_list_json = json.dumps(street_list)
-    except:
-        raise Http404
-    return HttpResponse(street_list_json, content_type='application/json;charset=utf-8')

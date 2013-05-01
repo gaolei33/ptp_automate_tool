@@ -1,4 +1,5 @@
 import logging
+from webapp.manager import street_manager
 from webapp.rule.rule import BaseRule
 
 __author__ = 'Gao Lei'
@@ -13,6 +14,10 @@ class BusStopRule(BaseRule):
         self.origin_total_bus_stop_info = origin_total_bus_stop_info
         self.target_total_bus_stop_info = []
 
+    def _street_id_rule(self, origin_street_name):
+        target_street_id = street_manager.get_first_matched_street_id_from_name(origin_street_name)
+        return target_street_id
+
     def _non_bus_stop_and_wab_rule(self, origin_bus_stop_id):
         if origin_bus_stop_id.lower().startswith('e'):
             target_wab_accessible = '0'
@@ -26,7 +31,7 @@ class BusStopRule(BaseRule):
 
         for origin_bus_stop_info in self.origin_total_bus_stop_info:
 
-            origin_row = origin_bus_stop_info['DATA'][0]
+            origin_row = origin_bus_stop_info[0]
 
             if len(origin_row) < self.origin_row_len:
                 err_msg = 'CSV columns must be more than %d!' % self.origin_row_len
@@ -38,7 +43,7 @@ class BusStopRule(BaseRule):
             target_bus_stop_id = self._normal_rule(origin_row[0])
             target_bus_stop_info.append(target_bus_stop_id)
 
-            target_street_id = self._normal_rule(origin_row[1])
+            target_street_id = self._street_id_rule(origin_row[1])
             target_bus_stop_info.append(target_street_id)
 
             target_short_name = self._normal_rule(origin_row[2])

@@ -10,27 +10,11 @@ _logger = logging.getLogger('default')
 
 
 def get_bus_stop_info_from_csv(csv_name, bus_stop_ids):
-
-    total_bus_stop_info = list()
-
-    missing_bus_stop_ids = set()
-
     # retrieve data from CSV
-    for bus_stop_id in bus_stop_ids:
-        bus_stop_info = csv_manager.retrieve_data_from_csv(csv_name, 'BUS_STOP', bus_stop_id)
-
-        if not bus_stop_info['DATA']:
-            missing_bus_stop_ids.add(bus_stop_info['ID'])
-        else:
-            street_id = get_first_matched_street_id_from_name(bus_stop_info['DATA'][0][1])
-            bus_stop_info['DATA'][0][1] = street_id
-
-            total_bus_stop_info.append(bus_stop_info)
-
+    total_bus_stop_info, missing_bus_stop_ids = csv_manager.retrieve_multiple_data_from_csv(csv_name, 'BUS_STOP', bus_stop_ids)
     # incorrect bus stop check
     if missing_bus_stop_ids:
-        missing_bus_stop_idss_string = ','.join(missing_bus_stop_ids)
-        err_msg = '%d bus stops cannot be found in %s : %s' % (len(missing_bus_stop_ids), csv_name, missing_bus_stop_idss_string)
+        err_msg = '%d bus stops cannot be found in %s : %s' % (len(missing_bus_stop_ids), csv_name, ','.join(missing_bus_stop_ids))
         _logger.error(err_msg)
         raise ValueError(err_msg)
 
@@ -41,12 +25,12 @@ def get_bus_stop_info_from_csv(csv_name, bus_stop_ids):
 
 
 def get_bus_stop_info_from_db(bus_stop_ids):
-
-    total_bus_stop_info, new_bus_stop_ids = select_bus_stops(bus_stop_ids)
+    # retrieve data from DB
+    total_bus_stop_info, bus_stop_ids_missing = select_bus_stops(bus_stop_ids)
     # incorrect bus stop check
-    if new_bus_stop_ids:
-        new_bus_stop_ids_string = ','.join(new_bus_stop_ids)
-        err_msg = '%d bus stops cannot be found in DB : %s' % (len(new_bus_stop_ids), new_bus_stop_ids_string)
+    if bus_stop_ids_missing:
+        bus_stop_ids_missing_string = ','.join(bus_stop_ids_missing)
+        err_msg = '%d bus stops cannot be found in DB : %s' % (len(bus_stop_ids_missing), bus_stop_ids_missing_string)
         _logger.error(err_msg)
         raise ValueError(err_msg)
 
@@ -70,34 +54,6 @@ def bus_stop_update(total_bus_stop_info, sr_number, bus_stop_ids_string):
     current_time = time.strftime('%Y%m%d%H%M%S')
     sql_name = 'SR_%s_BUS_STOP_%s_%s.sql' % (sr_number, bus_stop_ids_string, current_time)
     sql_manager.save_sql(sql_name, sql)
-
-
-def get_first_matched_street_id_from_name(name):
-    street_ids = street_search(name, 'NAME')
-    street_id = street_ids[0][0] if street_ids else ''
-    return street_id
-
-
-def street_search(keyword, keyword_type):
-
-    if keyword_type == 'ID':
-        sql = "select id, short_name, long_name from streets where id like '%{0}%' limit 100".format(keyword)
-    else:
-        sql = "select id, short_name, long_name from streets where short_name like '%{0}%' or long_name like '%{0}%' limit 100".format(keyword)
-
-    try:
-        connection = db_util.get_connection()
-        cursor = connection.cursor()
-        cursor.execute(sql)
-        result = cursor.fetchall()
-        cursor.close()
-        db_util.close_connection(connection)
-    except Exception, ex:
-        err_msg = 'An error occurred while searching street: %s' % ex
-        _logger.error(err_msg)
-        raise ValueError(err_msg)
-
-    return result
 
 
 def wrap_quotes(origin_total_bus_stop_info):
@@ -132,8 +88,8 @@ def select_bus_stops(bus_stop_ids):
         cursor.execute("SELECT id, street_id, long_name, short_name, IF(location_code IS NULL, '', location_code), is_wab_accessible, is_non_bus_stop, is_interchange FROM bus_stops WHERE id IN (%s);" % bus_stop_ids_string_wrap_quotes)
         result = cursor.fetchall()
 
-        existing_bus_stop_ids = {bus_stop_info[0] for bus_stop_info in result}
-        new_bus_stop_ids = bus_stop_ids - existing_bus_stop_ids
+        bus_stop_ids_found = {bus_stop_info[0] for bus_stop_info in result}
+        bus_stop_ids_missing = bus_stop_ids - bus_stop_ids_found
 
         cursor.close()
         db_util.close_connection(connection)
@@ -142,4 +98,4 @@ def select_bus_stops(bus_stop_ids):
         _logger.error(err_msg)
         raise ValueError(err_msg)
 
-    return result, new_bus_stop_ids
+    return result, bus_stop_ids_missing

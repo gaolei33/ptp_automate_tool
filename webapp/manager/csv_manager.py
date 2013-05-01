@@ -27,6 +27,8 @@ def get_csv_list(csv_type):
     csv_folder = config.CSV_FOLDERS[csv_type]
     io_util.create_folder_if_not_exists(csv_folder)
     csv_list = [f for f in os.listdir(csv_folder) if os.path.isfile(os.path.join(csv_folder, f)) and f.lower().endswith('.csv')]
+    # sort by date reversed
+    csv_list.sort(key=lambda x: os.path.getmtime(os.path.join(csv_folder, x)), reverse=True)
     return csv_list
 
 
@@ -38,27 +40,35 @@ def save_csv(csv_file, csv_type, sr_number):
     _logger.info('CSV file saved: %s' % csv_path)
 
 
+def retrieve_multiple_data_from_csv(csv_name, csv_type, filter_ids):
+    multiple_data = []
+    for filter_id in filter_ids:
+        data = retrieve_data_from_csv(csv_name, csv_type, filter_id)
+        if data:
+            multiple_data.append(data)
+    filter_ids_found = {data[0][0] for data in multiple_data}
+    missing_filter_ids = filter_ids - filter_ids_found
+    return multiple_data, missing_filter_ids
+
+
 def retrieve_data_from_csv(csv_name, csv_type, filter_id):
     csv_folder = config.CSV_FOLDERS[csv_type]
     csv_path = os.path.join(csv_folder, csv_name)
-    info = {
-        'ID': filter_id,
-        'DATA': [],
-    }
+    data = []
     try:
         with open(csv_path, 'r') as reader:
             for line in reader:
-                row = [item.strip() for item in line.strip().split(',')]
+                row = [item.strip() for item in line.split(',')]
                 # bus service id & bus stop code process
                 row[0] = _bus_stop_code_rule(row[0]) if csv_type == 'BUS_STOP' else _bus_service_id_rule(row[0])
                 if row[0] == filter_id:
-                    info['DATA'].append(row)
+                    data.append(row)
         _logger.info('Data retrieved from CSV successfully: %s' % csv_path)
     except Exception, ex:
         err_msg = 'An error occurred while retrieving data from CSV %s: %s' % (csv_path, ex)
         _logger.error(err_msg)
         raise ValueError(err_msg)
-    return info
+    return data
 
 
 def get_sr_number_from_csv_name(csv_name):

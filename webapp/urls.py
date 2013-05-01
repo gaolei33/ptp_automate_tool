@@ -26,7 +26,6 @@ urlpatterns += patterns('webapp.view.bus_stop_view',
     url(r'^bus_stop/from_db/$', 'bus_stop_home', {'data_source_type': 'DB'}),
     url(r'^bus_stop/bus_stop_detail/$', 'bus_stop_detail'),
     url(r'^bus_stop/generate_bus_stop_sql/$', 'generate_bus_stop_sql'),
-    url(r'^bus_stop/street_search/$', 'street_search'),
 )
 
 urlpatterns += patterns('webapp.view.bus_route_view',
@@ -38,4 +37,8 @@ urlpatterns += patterns('webapp.view.bus_route_view',
 
 urlpatterns += patterns('webapp.view.sql_view',
     url(r'^sql/download_sql/$', 'download_sql'),
+)
+
+urlpatterns += patterns('webapp.view.street_view',
+    url(r'^street/street_search/$', 'street_search'),
 )
