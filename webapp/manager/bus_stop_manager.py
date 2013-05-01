@@ -1,5 +1,4 @@
 import logging
-import re
 import time
 from webapp.rule.bus_stop_rule import BusStopRule
 from webapp.util import db_util
@@ -10,7 +9,7 @@ __author__ = 'Gao Lei'
 _logger = logging.getLogger('default')
 
 
-def get_bus_stop_info(csv_name, bus_stop_ids):
+def get_bus_stop_info_from_csv(csv_name, bus_stop_ids):
 
     total_bus_stop_info = list()
 
@@ -31,7 +30,7 @@ def get_bus_stop_info(csv_name, bus_stop_ids):
     # incorrect bus stop check
     if missing_bus_stop_ids:
         missing_bus_stop_idss_string = ','.join(missing_bus_stop_ids)
-        err_msg = 'Bus stops (%s) cannot be found in %s' % (missing_bus_stop_idss_string, csv_name)
+        err_msg = '%d bus stops cannot be found in %s : %s' % (len(missing_bus_stop_ids), csv_name, missing_bus_stop_idss_string)
         _logger.error(err_msg)
         raise ValueError(err_msg)
 
@@ -41,7 +40,20 @@ def get_bus_stop_info(csv_name, bus_stop_ids):
     return total_bus_stop_info_after_rules
 
 
-def bus_stop_update(total_bus_stop_info, csv_name, bus_stop_ids_string):
+def get_bus_stop_info_from_db(bus_stop_ids):
+
+    total_bus_stop_info, new_bus_stop_ids = select_bus_stops(bus_stop_ids)
+    # incorrect bus stop check
+    if new_bus_stop_ids:
+        new_bus_stop_ids_string = ','.join(new_bus_stop_ids)
+        err_msg = '%d bus stops cannot be found in DB : %s' % (len(new_bus_stop_ids), new_bus_stop_ids_string)
+        _logger.error(err_msg)
+        raise ValueError(err_msg)
+
+    return total_bus_stop_info
+
+
+def bus_stop_update(total_bus_stop_info, sr_number, bus_stop_ids_string):
 
     total_bus_stop_info_wrap_quotes = wrap_quotes(total_bus_stop_info)
 
@@ -56,7 +68,6 @@ def bus_stop_update(total_bus_stop_info, csv_name, bus_stop_ids_string):
 
     # save SQL string to file
     current_time = time.strftime('%Y%m%d%H%M%S')
-    sr_number = get_sr_number(csv_name)
     sql_name = 'SR_%s_BUS_STOP_%s_%s.sql' % (sr_number, bus_stop_ids_string, current_time)
     sql_manager.save_sql(sql_name, sql)
 
@@ -107,14 +118,28 @@ def generate_sql(total_bus_stop_info):
     sql = ''
     for bus_stop_info in total_bus_stop_info:
         sql += "DELETE FROM bus_stops WHERE id = %s;\n" % bus_stop_info[0]
-        sql += "INSERT INTO bus_stops (id, linked_bus_stop_id, street_id, nearby_station_id, long_name, short_name, location_code, is_wab_accessible, is_non_bus_stop, is_interchange, is_pickup_point, has_arrival_info, has_arrival_panel, allows_boarding, allows_alighting, longitude, latitude) VALUES(%s, NULL, %s, NULL, %s, %s, %s, %s, %s, '0', '0', '0', '0', '1', '1', '', '');\n" % (bus_stop_info[0], bus_stop_info[1], bus_stop_info[2], bus_stop_info[3], bus_stop_info[4], bus_stop_info[5], bus_stop_info[6])
+        sql += "INSERT INTO bus_stops (id, linked_bus_stop_id, street_id, nearby_station_id, long_name, short_name, location_code, is_wab_accessible, is_non_bus_stop, is_interchange, is_pickup_point, has_arrival_info, has_arrival_panel, allows_boarding, allows_alighting, longitude, latitude) VALUES (%s, NULL, %s, NULL, %s, %s, %s, %s, %s, %s, '0', '0', '0', '1', '1', '', '');\n" % (bus_stop_info[0], bus_stop_info[1], bus_stop_info[2], bus_stop_info[3], bus_stop_info[4], bus_stop_info[5], bus_stop_info[6], bus_stop_info[7])
     return sql
 
 
-def get_sr_number(csv_name):
-    m = re.search(r'^SR_(\d+)_', csv_name)
-    if m:
-        sr_number = m.group(1)
-    else:
-        sr_number = 'Unknown'
-    return sr_number
+def select_bus_stops(bus_stop_ids):
+
+    try:
+        bus_stop_ids_string_wrap_quotes = ', '.join({"'%s'" % bus_stop_id for bus_stop_id in bus_stop_ids})
+
+        connection = db_util.get_connection()
+        cursor = connection.cursor()
+        cursor.execute("SELECT id, street_id, long_name, short_name, IF(location_code IS NULL, '', location_code), is_wab_accessible, is_non_bus_stop, is_interchange FROM bus_stops WHERE id IN (%s);" % bus_stop_ids_string_wrap_quotes)
+        result = cursor.fetchall()
+
+        existing_bus_stop_ids = {bus_stop_info[0] for bus_stop_info in result}
+        new_bus_stop_ids = bus_stop_ids - existing_bus_stop_ids
+
+        cursor.close()
+        db_util.close_connection(connection)
+    except Exception, ex:
+        err_msg = 'An error occurred while select bus stops from DB: %s' % ex
+        _logger.error(err_msg)
+        raise ValueError(err_msg)
+
+    return result, new_bus_stop_ids

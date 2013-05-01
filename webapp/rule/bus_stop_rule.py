@@ -13,14 +13,14 @@ class BusStopRule(BaseRule):
         self.origin_total_bus_stop_info = origin_total_bus_stop_info
         self.target_total_bus_stop_info = []
 
-    def _express_and_wab_rule(self, origin_bus_stop_id):
+    def _non_bus_stop_and_wab_rule(self, origin_bus_stop_id):
         if origin_bus_stop_id.lower().startswith('e'):
             target_wab_accessible = '0'
-            target_express = '1'
+            target_non_bus_stop = '1'
         else:
             target_wab_accessible = '1'
-            target_express = '0'
-        return target_wab_accessible, target_express
+            target_non_bus_stop = '0'
+        return target_wab_accessible, target_non_bus_stop
 
     def execute_rules(self):
 
@@ -44,9 +44,18 @@ class BusStopRule(BaseRule):
             target_short_name = self._normal_rule(origin_row[2])
             target_bus_stop_info.append(target_short_name)
 
-            target_wab_accessible, target_express = self._express_and_wab_rule(target_bus_stop_id)
+            target_long_name = target_short_name
+            target_bus_stop_info.append(target_long_name)
+
+            target_location_code = ''
+            target_bus_stop_info.append(target_location_code)
+
+            target_wab_accessible, target_non_bus_stop = self._non_bus_stop_and_wab_rule(target_bus_stop_id)
             target_bus_stop_info.append(target_wab_accessible)
-            target_bus_stop_info.append(target_express)
+            target_bus_stop_info.append(target_non_bus_stop)
+
+            target_interchange = '0'
+            target_bus_stop_info.append(target_interchange)
 
             self.target_total_bus_stop_info.append(target_bus_stop_info)
 

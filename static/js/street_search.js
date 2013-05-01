@@ -25,7 +25,7 @@ $(function() {
             return;
         }
 
-        var url = '/webapp/street_search/?keyword=' + encodeURI(keyword) + '&keyword_type=' + encodeURI(keyword_type);
+        var url = '/webapp/bus_stop/street_search/?keyword=' + encodeURI(keyword) + '&keyword_type=' + encodeURI(keyword_type);
         $.getJSON(url, function(data) {
 
             var $street_search_result_container = $('#street_search_result');

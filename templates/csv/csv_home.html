@@ -6,6 +6,12 @@
         {% csrf_token %}
         <table>
             <tr>
+                <td>SR Number</td>
+                <td>
+                    <input type="text" name="sr_number" />
+                </td>
+            </tr>
+            <tr>
                 <td>CSV Type</td>
                 <td>
                     <select name="csv_type">
@@ -20,12 +26,6 @@
                 <td>CSV File</td>
                 <td>
                     <input type="file" name="csv_file" />
-                </td>
-            </tr>
-            <tr>
-                <td>SR Number</td>
-                <td>
-                    <input type="text" name="sr_number" />
                 </td>
             </tr>
              <tr>

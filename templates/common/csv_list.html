@@ -1,8 +1,7 @@
-<script type="text/javascript" src="/static/js/csv_list.js"></script>
-
-<select name="csv_name" id="csv_name"></select>
-<select name="csv_type" id="csv_type">
-{% for csv_type in csv_types %}
-    <option value="{{ csv_type }}">{{ csv_type }}</option>
-{% endfor %}
+<select name="csv_name">
+    {% for csv_name in csv_list %}
+    <option value="{{ csv_name }}">{{ csv_name }}</option>
+    {% empty %}
+    <option value="">-------N/A-------</option>
+    {% endfor %}
 </select>

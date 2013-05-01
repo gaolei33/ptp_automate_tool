@@ -1,14 +1,33 @@
 {% extends 'base.html' %}
-{% block title %}Bus Route{% endblock %}
+{% block title %}{{ csv_type }} - Bus Route{% endblock %}
 {% block content %}
 <div>
     <form action="/webapp/bus_route/generate_bus_route_sql/" method="post">
         {% csrf_token %}
-        <div>
-            {% include 'common/csv_list.html' %}
-            <input type="text" name="bus_service_ids" />
-            <input type="submit" value="Generate" />
-        </div>
+        <input type="hidden" name="csv_type" value="{{ csv_type }}" />
+        <table>
+            <tr>
+                <td>SR Number</td>
+                <td>
+                    <input type="text" name="sr_number" />
+                </td>
+            </tr>
+            <tr>
+                <td>CSV Name</td>
+                <td>
+                    {% include 'common/csv_list.html' %}
+                </td>
+            </tr>
+            <tr>
+                <td>Bus Service IDs</td>
+                <td>
+                    <input type="text" name="bus_service_ids" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="submit" value="Generate" /></td>
+            </tr>
+        </table>
     </form>
 </div>
 {% endblock %}

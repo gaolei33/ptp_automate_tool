@@ -18,10 +18,10 @@
             <select name="backup_name">
             {% for backup_name in backup_list %}
                 <option value="{{ backup_name }}">{{ backup_name }}</option>
+            {% empty %}
+                <option value="">-------N/A-------</option>
             {% endfor %}
             </select>
-        </div>
-        <div>
             <input type="submit" value="Restore" />
         </div>
     </form>

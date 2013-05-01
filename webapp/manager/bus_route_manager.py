@@ -1,6 +1,6 @@
 import logging
 import time
-from webapp.manager import csv_manager, sql_manager
+from webapp.manager import csv_manager, sql_manager, bus_stop_manager
 from webapp.rule.bus_route_rule import BusRouteNCSRule, BusRouteLTARule
 from webapp.util import db_util
 
@@ -9,7 +9,7 @@ __author__ = 'Gao Lei'
 _logger = logging.getLogger('default')
 
 
-def bus_route_update(csv_name, csv_type, bus_service_ids):
+def bus_route_update(csv_name, csv_type, bus_service_ids, sr_number):
 
     total_bus_routes = list()
 
@@ -26,7 +26,7 @@ def bus_route_update(csv_name, csv_type, bus_service_ids):
     # incorrect bus service check
     if missing_bus_service_ids:
         missing_bus_service_ids_string = ','.join(missing_bus_service_ids)
-        err_msg = 'Bus routes of bus services (%s) cannot be found in %s' % (missing_bus_service_ids_string, csv_name)
+        err_msg = 'Bus routes of %d bus services cannot be found in %s : %s' % (len(missing_bus_service_ids), csv_name, missing_bus_service_ids_string)
         _logger.error(err_msg)
         raise ValueError(err_msg)
 
@@ -35,11 +35,11 @@ def bus_route_update(csv_name, csv_type, bus_service_ids):
     total_bus_routes_after_rules = rule.execute_rules()
 
     # new bus stops check
-    bus_stops = {bus_route[3] for bus_routes in total_bus_routes_after_rules for bus_route in bus_routes['DATA']}
-    new_bus_stops = select_new_bus_stops(bus_stops)
-    if new_bus_stops:
-        new_bus_stops_string = ','.join(new_bus_stops)
-        err_msg = 'New bus stops need to be created: %s' % new_bus_stops_string
+    bus_stop_ids = {bus_route[3] for bus_routes in total_bus_routes_after_rules for bus_route in bus_routes['DATA']}
+    new_bus_stop_ids = bus_stop_manager.select_bus_stops(bus_stop_ids)[1]
+    if new_bus_stop_ids:
+        new_bus_stops_string = ','.join(new_bus_stop_ids)
+        err_msg = '%s new bus stops need to be created: %s' % (len(new_bus_stop_ids), new_bus_stops_string)
         _logger.error(err_msg)
         raise ValueError(err_msg)
 
@@ -58,30 +58,8 @@ def bus_route_update(csv_name, csv_type, bus_service_ids):
 
     # save SQL string to file
     current_time = time.strftime('%Y%m%d%H%M%S')
-    sr_number = csv_manager.get_sr_number_from_csv_name(csv_name)
     sql_name = 'SR_%s_%s_%s_%s.sql' % (sr_number, csv_type, '_'.join(bus_service_ids), current_time)
     sql_manager.save_sql(sql_name, sql)
-
-
-def select_new_bus_stops(bus_stops):
-
-    try:
-        new_bus_stops = set()
-        connection = db_util.get_connection()
-        cursor = connection.cursor()
-        for stop in bus_stops:
-            cursor.execute("select * from bus_stops where id = '%s'" % stop)
-            result = cursor.fetchone()
-            if not result:
-                new_bus_stops.add(stop)
-        cursor.close()
-        db_util.close_connection(connection)
-    except Exception, ex:
-        err_msg = 'An error occurred while checking new bus stops: %s' % ex
-        _logger.error(err_msg)
-        raise ValueError(err_msg)
-
-    return new_bus_stops
 
 
 def generate_sql(total_bus_routes, csv_type):
@@ -90,11 +68,11 @@ def generate_sql(total_bus_routes, csv_type):
         if csv_type == 'BUS_ROUTE_NCS':
             sql += "DELETE FROM bus_routes WHERE bus_service_id = '%s' AND provider = 'NCS';\n" % bus_routes['ID']
             for bus_route in bus_routes['DATA']:
-                sql += "INSERT INTO bus_routes (bus_service_id, direction, sequence, bus_stop_id, provider, express_code, distance, distance_fares_marker, weekday_first_trip, weekday_last_trip, saturday_first_trip, saturday_last_trip, sunday_first_trip, sunday_last_trip, note, shows_arrival_table, shows_fare_table, in_operation) VALUES(%s, %s, %s, %s, 'NCS', %s, %s, NULL, %s, %s, %s, %s, %s, %s, NULL, '0', '0', '1');\n" % (bus_route[0], bus_route[1], bus_route[2], bus_route[3], bus_route[4], bus_route[5], bus_route[6], bus_route[7], bus_route[8], bus_route[9], bus_route[10], bus_route[11])
+                sql += "INSERT INTO bus_routes (bus_service_id, direction, sequence, bus_stop_id, provider, express_code, distance, distance_fares_marker, weekday_first_trip, weekday_last_trip, saturday_first_trip, saturday_last_trip, sunday_first_trip, sunday_last_trip, note, shows_arrival_table, shows_fare_table, in_operation) VALUES (%s, %s, %s, %s, 'NCS', %s, %s, NULL, %s, %s, %s, %s, %s, %s, NULL, '0', '0', '1');\n" % (bus_route[0], bus_route[1], bus_route[2], bus_route[3], bus_route[4], bus_route[5], bus_route[6], bus_route[7], bus_route[8], bus_route[9], bus_route[10], bus_route[11])
         elif csv_type == 'BUS_ROUTE_LTA':
             sql += "DELETE FROM bus_routes WHERE bus_service_id = '%s' AND provider = 'LTA';\n" % bus_routes['ID']
             for bus_route in bus_routes['DATA']:
-                sql += "INSERT INTO bus_routes (bus_service_id, direction, sequence, bus_stop_id, provider, express_code, distance, distance_fares_marker, weekday_first_trip, weekday_last_trip, saturday_first_trip, saturday_last_trip, sunday_first_trip, sunday_last_trip, note, shows_arrival_table, shows_fare_table, in_operation) VALUES(%s, %s, %s, %s, 'LTA', %s, %s, %s, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', '0', '1');\n" % (bus_route[0], bus_route[1], bus_route[2], bus_route[3], bus_route[4], bus_route[5], bus_route[6])
+                sql += "INSERT INTO bus_routes (bus_service_id, direction, sequence, bus_stop_id, provider, express_code, distance, distance_fares_marker, weekday_first_trip, weekday_last_trip, saturday_first_trip, saturday_last_trip, sunday_first_trip, sunday_last_trip, note, shows_arrival_table, shows_fare_table, in_operation) VALUES (%s, %s, %s, %s, 'LTA', %s, %s, %s, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', '0', '1');\n" % (bus_route[0], bus_route[1], bus_route[2], bus_route[3], bus_route[4], bus_route[5], bus_route[6])
     return sql
 
 

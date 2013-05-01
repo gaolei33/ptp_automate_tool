@@ -1,14 +1,29 @@
 {% extends 'base.html' %}
-{% block title %}Bus Stop{% endblock %}
+{% block title %}{{ data_source_type }} - Bus Stop{% endblock %}
 {% block content %}
 <div>
     <form action="/webapp/bus_stop/bus_stop_detail/" method="post">
         {% csrf_token %}
-        <div>
-            {% include 'common/csv_list.html' %}
-            <input type="text" name="bus_stop_ids" />
-            <input type="submit" value="Detail" />
-        </div>
+        <input type="hidden" name="data_source_type" value="{{ data_source_type }}" />
+        <table>
+            {% if data_source_type == 'CSV' %}
+                <tr>
+                    <td>CSV Name</td>
+                    <td>
+                        {% include 'common/csv_list.html' %}
+                    </td>
+                </tr>
+            {% endif %}
+            <tr>
+                <td>Bus Stop IDs</td>
+                <td>
+                    <input type="text" name="bus_stop_ids" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="submit" value="Detail" /></td>
+            </tr>
+        </table>
     </form>
 </div>
 {% endblock %}

@@ -4,10 +4,14 @@
 <div>
     <form action="/webapp/bus_stop/generate_bus_stop_sql/" method="post">
         {% csrf_token %}
-        <input type="hidden" name="csv_name" value="{{ csv_name }}" />
         <input type="hidden" name="bus_stop_ids_string" value="{{ bus_stop_ids_string }}" />
         <input type="hidden" name="bus_stop_count" value="{{ total_bus_stop_info | length }}" />
         <table>
+            <tr>
+                <td>SR Number</td>
+                <td><input type="text" name="sr_number" /></td>
+            </tr>
+            <tr><td colspan="2">&nbsp;</td></tr>
             {% for bus_stop_info in total_bus_stop_info %}
             <tr>
                 <td>ID</td>
@@ -31,25 +35,31 @@
             <tr>
                 <td>Long Name</td>
                 <td>
-                    <input type="text" name="long_name_{{ forloop.counter0 }}" value="{{ bus_stop_info.2 }}" />
+                    <input type="text" name="long_name_{{ forloop.counter0 }}" value="{{ bus_stop_info.3 }}" />
                 </td>
             </tr>
             <tr>
                 <td>Location Code</td>
                 <td>
-                    <input type="text" name="location_code_{{ forloop.counter0 }}" value="" />
+                    <input type="text" name="location_code_{{ forloop.counter0 }}" value="{{ bus_stop_info.4 }}" />
                 </td>
             </tr>
             <tr>
                 <td>WAB Accessible</td>
                 <td>
-                    <input type="text" name="wab_accessible_{{ forloop.counter0 }}" value="{{ bus_stop_info.3 }}" />
+                    <input type="text" name="wab_accessible_{{ forloop.counter0 }}" value="{{ bus_stop_info.5 }}" />
                 </td>
             </tr>
             <tr>
-                <td>Express</td>
+                <td>Non Bus Stop (Express)</td>
                 <td>
-                    <input type="text" name="express_{{ forloop.counter0 }}" value="{{ bus_stop_info.4 }}" />
+                    <input type="text" name="non_bus_stop_{{ forloop.counter0 }}" value="{{ bus_stop_info.6 }}" />
+                </td>
+            </tr>
+            <tr>
+                <td>Interchange</td>
+                <td>
+                    <input type="text" name="interchange_{{ forloop.counter0 }}" value="{{ bus_stop_info.7 }}" />
                 </td>
             </tr>
             {% if forloop.counter0 < total_bus_stop_info|length|add:-1 %}
