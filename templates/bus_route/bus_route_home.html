@@ -2,7 +2,7 @@
 {% block title %}{{ csv_type }} - Bus Route{% endblock %}
 {% block content %}
 <div>
-    <form action="/webapp/bus_route/generate_bus_route_sql/" method="post">
+    <form action="/webapp/bus_route/bus_route_handler/" method="post">
         {% csrf_token %}
         <input type="hidden" name="csv_type" value="{{ csv_type }}" />
         <table>
@@ -25,7 +25,7 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="2"><input type="submit" value="Generate" /></td>
+                <td colspan="2"><input type="submit" value="Proceed" /></td>
             </tr>
         </table>
     </form>

@@ -21,18 +21,25 @@ urlpatterns += patterns('webapp.view.db_view',
 )
 
 urlpatterns += patterns('webapp.view.bus_stop_view',
-    url(r'^bus_stop/$', RedirectView.as_view(url='/webapp/bus_stop/from_csv/')),
-    url(r'^bus_stop/from_csv/$', 'bus_stop_home', {'data_source_type': 'CSV'}),
-    url(r'^bus_stop/from_db/$', 'bus_stop_home', {'data_source_type': 'DB'}),
+    url(r'^bus_stop/$', RedirectView.as_view(url='/webapp/bus_stop/bus_stop_add/')),
+    url(r'^bus_stop/bus_stop_add/$', 'bus_stop_home', {'method': 'BUS_STOP_ADD'}),
+    url(r'^bus_stop/bus_stop_update/$', 'bus_stop_home', {'method': 'BUS_STOP_UPDATE'}),
     url(r'^bus_stop/bus_stop_detail/$', 'bus_stop_detail'),
-    url(r'^bus_stop/generate_bus_stop_sql/$', 'generate_bus_stop_sql'),
+    url(r'^bus_stop/bus_stop_handler/$', 'bus_stop_handler'),
+)
+
+urlpatterns += patterns('webapp.view.bus_service_view',
+    url(r'^bus_service/$', RedirectView.as_view(url='/webapp/bus_service/bus_service_add_or_update/')),
+    url(r'^bus_service/bus_service_add_or_update/$', 'bus_service_home', {'method': 'BUS_SERVICE_ADD_OR_UPDATE'}),
+    url(r'^bus_service/bus_service_enable_or_disable/$', 'bus_service_home', {'method': 'BUS_SERVICE_ENABLE_OR_DISABLE'}),
+    url(r'^bus_service/bus_service_handler/$', 'bus_service_handler'),
 )
 
 urlpatterns += patterns('webapp.view.bus_route_view',
     url(r'^bus_route/$', RedirectView.as_view(url='/webapp/bus_route/bus_route_ncs/')),
     url(r'^bus_route/bus_route_ncs/$', 'bus_route_home', {'csv_type': 'BUS_ROUTE_NCS'}),
     url(r'^bus_route/bus_route_lta/$', 'bus_route_home', {'csv_type': 'BUS_ROUTE_LTA'}),
-    url(r'^bus_route/generate_bus_route_sql/$', 'generate_bus_route_sql'),
+    url(r'^bus_route/bus_route_handler/$', 'bus_route_handler'),
 )
 
 urlpatterns += patterns('webapp.view.sql_view',

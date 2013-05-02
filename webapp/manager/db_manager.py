@@ -12,7 +12,10 @@ _logger = logging.getLogger('default')
 def get_backup_list():
     backup_folder = config.BACKUP_FOLDER
     io_util.create_folder_if_not_exists(backup_folder)
-    return [f for f in os.listdir(backup_folder) if os.path.isfile(os.path.join(backup_folder, f)) and f.lower().endswith('.sql.gz')]
+    backup_list = [f for f in os.listdir(backup_folder) if os.path.isfile(os.path.join(backup_folder, f)) and f.lower().endswith('.sql.gz')]
+    # sort by date reversed
+    backup_list.sort(key=lambda x: os.path.getmtime(os.path.join(backup_folder, x)), reverse=True)
+    return backup_list
 
 
 def backup(sr_number):

@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
-{% block title %}{{ method }} - Bus Stop{% endblock %}
+{% block title %}{{ method }} - Bus Service{% endblock %}
 {% block content %}
 <div>
-    <form action="/webapp/bus_stop/bus_stop_detail/" method="post">
+    <form action="/webapp/bus_service/bus_service_handler/" method="post">
         {% csrf_token %}
         <input type="hidden" name="method" value="{{ method }}" />
         <table>
@@ -10,18 +10,28 @@
                 <td>SR Number</td>
                 <td><input type="text" name="sr_number" /></td>
             </tr>
-            {% if method == 'BUS_STOP_ADD' %}
+            {% if method == 'BUS_SERVICE_ADD_OR_UPDATE' %}
                 <tr>
                     <td>CSV Name</td>
                     <td>
                         {% include 'common/csv_list.html' %}
                     </td>
                 </tr>
+            {% else %}
+                <tr>
+                    <td>Enable or Disable</td>
+                    <td>
+                        <select name="enable_or_disable">
+                            <option value="BUS_SERVICE_DISABLE">Disable</option>
+                            <option value="BUS_SERVICE_ENABLE">Enable</option>
+                        </select>
+                    </td>
+                </tr>
             {% endif %}
             <tr>
-                <td>Bus Stop IDs</td>
+                <td>Bus Service IDs</td>
                 <td>
-                    <input type="text" name="bus_stop_ids" />
+                    <input type="text" name="bus_service_ids" />
                 </td>
             </tr>
             <tr>
@@ -31,4 +41,3 @@
     </form>
 </div>
 {% endblock %}
-

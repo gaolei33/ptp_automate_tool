@@ -42,13 +42,14 @@ def save_csv(csv_file, csv_type, sr_number):
 
 def retrieve_multiple_data_from_csv(csv_name, csv_type, filter_ids):
     multiple_data = []
+    filter_ids_missing = set()
     for filter_id in filter_ids:
         data = retrieve_data_from_csv(csv_name, csv_type, filter_id)
         if data:
             multiple_data.append(data)
-    filter_ids_found = {data[0][0] for data in multiple_data}
-    missing_filter_ids = filter_ids - filter_ids_found
-    return multiple_data, missing_filter_ids
+        else:
+            filter_ids_missing.add(filter_id)
+    return multiple_data, filter_ids_missing
 
 
 def retrieve_data_from_csv(csv_name, csv_type, filter_id):
@@ -59,10 +60,18 @@ def retrieve_data_from_csv(csv_name, csv_type, filter_id):
         with open(csv_path, 'r') as reader:
             for line in reader:
                 row = [item.strip() for item in line.split(',')]
-                # bus service id & bus stop code process
-                row[0] = _bus_stop_code_rule(row[0]) if csv_type == 'BUS_STOP' else _bus_service_id_rule(row[0])
-                if row[0] == filter_id:
-                    data.append(row)
+                if csv_type == 'BUS_STOP':
+                    # bus stop code process
+                    row[0] = _bus_stop_code_rule(row[0])
+                    if row[0] == filter_id:
+                        data = row
+                        break
+                else:
+                    # bus service id process
+                    row[0] = _bus_service_id_rule(row[0])
+                    if row[0] == filter_id:
+                        data.append(row)
+
         _logger.info('Data retrieved from CSV successfully: %s' % csv_path)
     except Exception, ex:
         err_msg = 'An error occurred while retrieving data from CSV %s: %s' % (csv_path, ex)

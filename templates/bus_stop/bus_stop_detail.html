@@ -2,64 +2,60 @@
 {% block title %}Bus Stop Detail{% endblock %}
 {% block content %}
 <div>
-    <form action="/webapp/bus_stop/generate_bus_stop_sql/" method="post">
+    <form action="/webapp/bus_stop/bus_stop_handler/" method="post">
         {% csrf_token %}
-        <input type="hidden" name="bus_stop_ids_string" value="{{ bus_stop_ids_string }}" />
-        <input type="hidden" name="bus_stop_count" value="{{ total_bus_stop_info | length }}" />
+        <input type="hidden" name="method" value="{{ method }}" />
+        <input type="hidden" name="sr_number" value="{{ sr_number }}" />
+        <input type="hidden" name="bus_stop_count" value="{{ bus_stops | length }}" />
         <table>
-            <tr>
-                <td>SR Number</td>
-                <td><input type="text" name="sr_number" /></td>
-            </tr>
-            <tr><td colspan="2">&nbsp;</td></tr>
-            {% for bus_stop_info in total_bus_stop_info %}
+            {% for bus_stop in bus_stops %}
             <tr>
                 <td>ID</td>
                 <td>
-                    {{ bus_stop_info.0 }}
-                    <input type="hidden" name="bus_stop_id_{{ forloop.counter0 }}" value="{{ bus_stop_info.0 }}" />
+                    {{ bus_stop.0 }}
+                    <input type="hidden" name="bus_stop_id_{{ forloop.counter0 }}" value="{{ bus_stop.0 }}" />
                 </td>
             </tr>
             <tr>
                 <td>Street ID</td>
                 <td>
-                    <input type="text" name="street_id_{{ forloop.counter0 }}" value="{{ bus_stop_info.1 }}" />
+                    <input type="text" name="street_id_{{ forloop.counter0 }}" value="{{ bus_stop.1 }}" />
                 </td>
             </tr>
             <tr>
                 <td>Short Name</td>
                 <td>
-                    <input type="text" name="short_name_{{ forloop.counter0 }}" value="{{ bus_stop_info.2 }}" />
+                    <input type="text" name="short_name_{{ forloop.counter0 }}" value="{{ bus_stop.2 }}" />
                 </td>
             </tr>
             <tr>
                 <td>Long Name</td>
                 <td>
-                    <input type="text" name="long_name_{{ forloop.counter0 }}" value="{{ bus_stop_info.3 }}" />
+                    <input type="text" name="long_name_{{ forloop.counter0 }}" value="{{ bus_stop.3 }}" />
                 </td>
             </tr>
             <tr>
                 <td>Location Code</td>
                 <td>
-                    <input type="text" name="location_code_{{ forloop.counter0 }}" value="{{ bus_stop_info.4 }}" />
+                    <input type="text" name="location_code_{{ forloop.counter0 }}" value="{{ bus_stop.4 }}" />
                 </td>
             </tr>
             <tr>
                 <td>WAB Accessible</td>
                 <td>
-                    <input type="text" name="wab_accessible_{{ forloop.counter0 }}" value="{{ bus_stop_info.5 }}" />
+                    <input type="text" name="wab_accessible_{{ forloop.counter0 }}" value="{{ bus_stop.5 }}" />
                 </td>
             </tr>
             <tr>
                 <td>Non Bus Stop (Express)</td>
                 <td>
-                    <input type="text" name="non_bus_stop_{{ forloop.counter0 }}" value="{{ bus_stop_info.6 }}" />
+                    <input type="text" name="non_bus_stop_{{ forloop.counter0 }}" value="{{ bus_stop.6 }}" />
                 </td>
             </tr>
             <tr>
                 <td>Interchange</td>
                 <td>
-                    <input type="text" name="interchange_{{ forloop.counter0 }}" value="{{ bus_stop_info.7 }}" />
+                    <input type="text" name="interchange_{{ forloop.counter0 }}" value="{{ bus_stop.7 }}" />
                 </td>
             </tr>
             {% if forloop.counter0 < total_bus_stop_info|length|add:-1 %}
@@ -67,7 +63,7 @@
             {% endif %}
             {% endfor %}
         </table>
-        <input type="submit" value="Generate" />
+        <input type="submit" value="Proceed" />
     </form>
 </div>
 {% endblock %}

@@ -8,7 +8,7 @@ _logger = logging.getLogger('default')
 
 def get_first_matched_street_id_from_name(name):
     street_ids = street_search(name, 'NAME')
-    street_id = street_ids[0][0] if street_ids else ''
+    street_id = street_ids[0][0] if street_ids else None
     return street_id
 
 

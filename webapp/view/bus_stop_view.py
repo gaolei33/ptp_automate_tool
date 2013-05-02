@@ -5,32 +5,33 @@ from webapp.manager import bus_stop_manager, csv_manager
 __author__ = 'Gao Lei'
 
 
-def bus_stop_home(request, data_source_type):
+def bus_stop_home(request, method):
     csv_list = csv_manager.get_csv_list('BUS_STOP')
     return render(request, 'bus_stop/bus_stop_home.html', {
-        'data_source_type': data_source_type,
+        'method': method,
         'csv_list': csv_list,
     })
 
 
 def bus_stop_detail(request):
     try:
-        data_source_type = request.POST['data_source_type'].strip()
+        sr_number = request.POST['sr_number'].strip() or 'Unknown'
+        method = request.POST['method'].strip()
         bus_stop_ids_string = request.POST['bus_stop_ids'].strip()
-        bus_stop_ids = {elem.strip() for elem in bus_stop_ids_string.split(',') if elem.strip()}
+        bus_stop_ids = {item.strip() for item in bus_stop_ids_string.split(',') if item.strip()}
 
         if not bus_stop_ids:
-            raise ValueError('Please input the bus stop ids that you want to add or update.')
+            raise ValueError('Please input the bus stop IDs that you want to add or update.')
 
-        if data_source_type == 'CSV':
+        if method == 'BUS_STOP_ADD':
 
             csv_name = request.POST['csv_name'].strip()
             if not csv_name:
                 raise ValueError('Please select a valid bus stop CSV file.')
 
-            total_bus_stop_info = bus_stop_manager.get_bus_stop_info_from_csv(csv_name, bus_stop_ids)
+            bus_stops = bus_stop_manager.get_bus_stops_from_csv(csv_name, bus_stop_ids)
         else:
-            total_bus_stop_info = bus_stop_manager.get_bus_stop_info_from_db(bus_stop_ids)
+            bus_stops = bus_stop_manager.get_bus_stops_from_db(bus_stop_ids)
     except KeyError, ex:
         messages.error(request, ex)
         return render(request, 'common/result.html')
@@ -38,19 +39,19 @@ def bus_stop_detail(request):
         messages.error(request, ex)
         return render(request, 'common/result.html')
     return render(request, 'bus_stop/bus_stop_detail.html', {
-        'total_bus_stop_info': total_bus_stop_info,
-        'bus_stop_ids_string': '_'.join(bus_stop_ids),
+        'method': method,
+        'bus_stops': bus_stops,
+        'sr_number': sr_number,
     })
 
 
-def generate_bus_stop_sql(request):
+def bus_stop_handler(request):
     try:
-        total_bus_stop_info = list()
-
+        method = request.POST['method'].strip()
         sr_number = request.POST['sr_number'].strip() or 'Unknown'
-        bus_stop_ids_string = request.POST['bus_stop_ids_string'].strip()
-
         bus_stop_count = int(request.POST['bus_stop_count'].strip())
+
+        bus_stops = []
         for i in range(bus_stop_count):
             bus_stop_id = request.POST['bus_stop_id_%d' % i].strip()
             street_id = request.POST['street_id_%d' % i].strip()
@@ -61,11 +62,11 @@ def generate_bus_stop_sql(request):
             non_bus_stop = request.POST['non_bus_stop_%d' % i].strip()
             interchange = request.POST['interchange_%d' % i].strip()
 
-            bus_stop_info = [bus_stop_id, street_id, short_name, long_name, location_code, wab_accessible, non_bus_stop, interchange]
+            bus_stop = [bus_stop_id, street_id, short_name, long_name, location_code, wab_accessible, non_bus_stop, interchange]
 
-            total_bus_stop_info.append(bus_stop_info)
+            bus_stops.append(bus_stop)
 
-        bus_stop_manager.bus_stop_update(total_bus_stop_info, sr_number, bus_stop_ids_string)
+        bus_stop_manager.bus_stop_add_or_update(bus_stops, sr_number, method)
 
         messages.info(request, 'SQL generated and executed on development database successfully.')
     except KeyError, ex:
