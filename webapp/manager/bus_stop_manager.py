@@ -17,7 +17,7 @@ def get_bus_stops_from_csv(csv_name, bus_stop_ids):
         err_msg = '%d bus stops cannot be found in %s : %s' % (len(bus_stop_ids_missing), csv_name, ','.join(bus_stop_ids_missing))
         _logger.error(err_msg)
         raise ValueError(err_msg)
-    # auto amend and autocomplete bus stop data
+    # auto amend and complete bus stop data
     rule = BusStopRule(bus_stops)
     bus_stops_after_rules = rule.execute_rules()
 
@@ -86,7 +86,7 @@ def select_bus_stops(bus_stop_ids):
 
         connection = db_util.get_connection()
         cursor = connection.cursor()
-        cursor.execute("SELECT id, street_id, long_name, short_name, IF(location_code IS NULL, '', location_code), is_wab_accessible, is_non_bus_stop, is_interchange FROM bus_stops WHERE id IN (%s);" % bus_stop_ids_string_wrap_quotes)
+        cursor.execute("SELECT CONCAT(id), CONCAT(street_id), CONCAT(long_name), CONCAT(short_name), IF(location_code IS NULL, '', CONCAT(location_code)), CONCAT(is_wab_accessible), CONCAT(is_non_bus_stop), CONCAT(is_interchange) FROM bus_stops WHERE id IN (%s);" % bus_stop_ids_string_wrap_quotes)
         result = cursor.fetchall()
 
         bus_stop_ids_found = {bus_stop[0] for bus_stop in result}

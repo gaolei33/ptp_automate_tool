@@ -17,7 +17,7 @@ def bus_service_add_or_update(csv_name, bus_service_ids, sr_number):
         err_msg = '%d bus services cannot be found in %s : %s' % (len(bus_service_ids_missing), csv_name, ','.join(bus_service_ids_missing))
         _logger.error(err_msg)
         raise ValueError(err_msg)
-    # auto amend and autocomplete bus service data
+    # auto amend and complete bus service data
     rule = BusServiceRule(bus_services)
     bus_services_after_rules = rule.execute_rules()
 
@@ -122,7 +122,7 @@ def select_missing_bus_service_ids(bus_service_ids):
 
         connection = db_util.get_connection()
         cursor = connection.cursor()
-        cursor.execute("SELECT id FROM bus_services WHERE id IN (%s);" % bus_service_ids_string_wrap_quotes)
+        cursor.execute("SELECT CONCAT(id) FROM bus_services WHERE id IN (%s);" % bus_service_ids_string_wrap_quotes)
         result = cursor.fetchall()
 
         bus_service_ids_found = {bus_service[0] for bus_service in result}
@@ -136,3 +136,26 @@ def select_missing_bus_service_ids(bus_service_ids):
         raise ValueError(err_msg)
 
     return bus_service_ids_missing
+
+
+def select_missing_directions(directions):
+
+    try:
+        directions_string_wrap_quotes = ', '.join(["('%s', '%s')" % (direction[0], direction[1]) for direction in directions])
+
+        connection = db_util.get_connection()
+        cursor = connection.cursor()
+        cursor.execute("SELECT CONCAT(bus_service_id), CONCAT(direction) FROM bus_service_directions WHERE (bus_service_id, direction) IN (%s);" % directions_string_wrap_quotes)
+        result = cursor.fetchall()
+
+        directions_found = set(result)
+        directions_missing = directions - directions_found
+
+        cursor.close()
+        db_util.close_connection(connection)
+    except Exception, ex:
+        err_msg = 'An error occurred while select missing bus service ids from DB: %s' % ex
+        _logger.error(err_msg)
+        raise ValueError(err_msg)
+
+    return directions_missing

@@ -18,14 +18,16 @@ def bus_route_add_or_update(csv_name, csv_type, bus_service_ids, sr_number):
         _logger.error(err_msg)
         raise ValueError(err_msg)
 
-    # auto amend and autocomplete bus route data
+    # auto amend and complete bus route data
     rule = BusRouteNCSRule(bus_routes) if csv_type == 'BUS_ROUTE_NCS' else BusRouteLTARule(bus_routes)
     bus_routes_after_rules = rule.execute_rules()
 
-    # new bus service check
-    new_bus_service_ids = bus_service_manager.select_missing_bus_service_ids(bus_service_ids)
-    if new_bus_service_ids:
-        err_msg = '%d new bus services need to be created : %s' % (len(new_bus_service_ids), ','.join(new_bus_service_ids))
+    # new direction check
+    directions = {(route[0], route[1]) for bus_route in bus_routes_after_rules for route in bus_route}
+    new_directions = bus_service_manager.select_missing_directions(directions)
+    if new_directions:
+        new_directions_string = ','.join({'(%s,%s)' % (direction[0], direction[1]) for direction in new_directions})
+        err_msg = '%d new directions need to be created : %s' % (len(new_directions), new_directions_string)
         _logger.error(err_msg)
         raise ValueError(err_msg)
 
