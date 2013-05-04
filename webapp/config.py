@@ -11,6 +11,30 @@ DB_INFO = {
     'PASSWORD': '880428'
 }
 
+MENUS = (
+    {'TITLE': 'DB', 'LINK': '/webapp/db/'},
+    {'TITLE': 'CSV', 'LINK': '/webapp/csv/'},
+    {'TITLE': 'Bus Stop', 'LINK': '/webapp/bus_stop/',
+        'SUBMENUS': (
+            {'TITLE': 'Bus Stop Add', 'LINK': '/webapp/bus_stop/bus_stop_add/'},
+            {'TITLE': 'Bus Stop Update', 'LINK': '/webapp/bus_stop/bus_stop_update/'},
+        )
+    },
+    {'TITLE': 'Bus Service', 'LINK': '/webapp/bus_service/',
+        'SUBMENUS': (
+            {'TITLE': 'Bus Service Add / Update', 'LINK': '/webapp/bus_service/bus_service_add_or_update/'},
+            {'TITLE': 'Bus Service Enable / Disable', 'LINK': '/webapp/bus_service/bus_service_enable_or_disable/'},
+        )
+    },
+    {'TITLE': 'Bus Route', 'LINK': '/webapp/bus_route/',
+        'SUBMENUS': (
+            {'TITLE': 'Bus Route NCS', 'LINK': '/webapp/bus_route/bus_route_ncs/'},
+            {'TITLE': 'Bus Route LTA', 'LINK': '/webapp/bus_route/bus_route_lta'},
+        )
+    },
+    {'TITLE': 'Street Search', 'LINK': 'javascript: street_search_toggle();', 'ALIGN': 'right'},
+)
+
 ROOT = '/home/jonathan/Desktop/ptp_automate_tool'
 
 CSV_ROOT = os.path.join(ROOT, 'csv')
@@ -33,3 +57,9 @@ BACKUP_TABLES = (
 )
 
 SQL_FOLDER = os.path.join(ROOT, 'sql')
+
+
+def my_context_processor(request):
+    return {
+        'MENUS': MENUS,
+    }

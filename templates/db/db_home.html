@@ -4,16 +4,24 @@
 <div>
     <form action="/webapp/db/backup/" method="post">
         {% csrf_token %}
-        <div>
-            <input type="text" name="sr_number" />
-            <input type="submit" value="Backup" />
-        </div>
+        <table>
+            <tr>
+                <td>SR Number</td>
+                <td>
+                    <input type="text" name="sr_number" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="submit" value="Backup" />
+                </td>
+            </tr>
+        </table>
     </form>
 </div>
 <div>
     <form action="/webapp/db/restore/" method="post">
         {% csrf_token %}
-        <input type="hidden" name="original_url" value="{{ request.get_full_path }}" />
         <div>
             <select name="backup_name">
             {% for backup_name in backup_list %}

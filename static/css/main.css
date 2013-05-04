@@ -1,40 +1,104 @@
-/* Street Search */
-#street_search {
-    position: fixed;
-    top: 0;
-    right: 5px;
-    width: 330px;
+body, table, tr, td {
+    margin: 0;
+    padding: 0;
 }
 
-#street_search_switcher {
+body {
+    font-family: arial, sans-serif;
+    font-size: 13px;
+}
+
+a {
+    text-decoration: none;
+}
+
+.clear {
+    clear: both;
+}
+
+#content {
+    padding: 10px;
+}
+
+/* menu */
+#menu {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    background: #000;
+    overflow: hidden;
+    z-index: 9999;
+}
+
+#menu > li {
+    float: left;
+}
+
+#menu a {
+    display: block;
+    padding: 5px 12px;
+    color: #BBB;
+    font-weight: bold;
+}
+
+#menu a:hover {
+    background: #333;
+}
+
+#menu a.current {
+    color: #FFF;
+}
+
+.submenu {
+    list-style-type: none;
     position: absolute;
-    left: 120px;
-    bottom: -25px;
-    padding: 0 5px;
-    background: skyblue;
-    border: 2px solid black;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-#street_search_switcher:hover {
-    border-color: blue;
-}
-
-#street_search_switcher:active {
-    border-color: red;
-}
-
-#street_search_container {
+    margin: 0;
+    padding: 0;
+    background: #000;
     display: none;
 }
 
+.submenu a {
+    color: #FFF;
+}
+
+/* messages */
+.messages {
+    border: 1px dashed;
+}
+
+.messages .error {
+    color: red;
+}
+
+.messages .info {
+    color: green;
+}
+
+/* Street Search */
+#street_search {
+    position: fixed;
+    top: 25px;
+    right: 0;
+    padding: 10px;
+    background: #FFF;
+    border: 1px solid #CCC;
+    display: none;
+    z-index: 9998;
+}
+
 #street_search_input {
-    padding: 10px 0;
+    width: 300px;
+    margin: 0 0 10px 0;
+}
+
+#keyword {
+    width: 100px;
 }
 
 #street_search_result {
-    height: 200px;
+    width: 300px;
+    height: 300px;
     overflow: auto;
 }
 
