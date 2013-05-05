@@ -2,7 +2,7 @@ import logging
 import time
 from webapp.manager import csv_manager, sql_manager
 from webapp.rule.bus_service_rule import BusServiceRule
-from webapp.util import db_util
+from webapp.util import db_util, string_util
 
 __author__ = 'Gao Lei'
 
@@ -26,7 +26,7 @@ def bus_service_add_or_update(csv_name, bus_service_ids, sr_number):
     operator_wrap_quotes = "'%s'" % operator
 
     # wrap quotes for SQL generation
-    bus_services_wrap_quotes = wrap_quotes(bus_services_after_rules)
+    bus_services_wrap_quotes = string_util.wrap_quotes_except_null(bus_services_after_rules)
 
     # generate SQL string
     sql = generate_sql_add_or_update(bus_services_wrap_quotes, operator_wrap_quotes)
@@ -73,23 +73,6 @@ def get_operator_from_csv_name(csv_name):
         _logger.error(err_msg)
         raise ValueError(err_msg)
     return operator
-
-
-def wrap_quotes(origin_bus_services):
-    target_bus_services = []
-    for origin_bus_service in origin_bus_services:
-        target_bus_service = []
-        for origin_direction in origin_bus_service:
-            target_direction = []
-            for origin_col in origin_direction:
-                if origin_col == 'NULL':
-                    target_col = origin_col
-                else:
-                    target_col = "'%s'" % origin_col
-                target_direction.append(target_col)
-            target_bus_service.append(target_direction)
-        target_bus_services.append(target_bus_service)
-    return target_bus_services
 
 
 def generate_sql_add_or_update(bus_services, operator):

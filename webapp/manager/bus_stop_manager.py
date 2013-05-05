@@ -1,7 +1,7 @@
 import logging
 import time
 from webapp.rule.bus_stop_rule import BusStopRule
-from webapp.util import db_util
+from webapp.util import db_util, string_util
 from webapp.manager import csv_manager, sql_manager
 
 __author__ = 'Gao Lei'
@@ -38,7 +38,7 @@ def get_bus_stops_from_db(bus_stop_ids):
 
 def bus_stop_add_or_update(bus_stops, sr_number, method):
 
-    bus_stops_wrap_quotes = wrap_quotes(bus_stops)
+    bus_stops_wrap_quotes = string_util.wrap_quotes_except_null(bus_stops)
 
     # generate SQL string
     sql = generate_sql(bus_stops_wrap_quotes, method)
@@ -51,20 +51,6 @@ def bus_stop_add_or_update(bus_stops, sr_number, method):
     current_time = time.strftime('%Y%m%d%H%M%S')
     sql_name = 'SR_%s_%s_%s_%s.sql' % (sr_number, method, '_'.join(bus_stop_ids), current_time)
     sql_manager.save_sql(sql_name, sql)
-
-
-def wrap_quotes(origin_bus_stops):
-    target_bus_stops = []
-    for origin_bus_stop in origin_bus_stops:
-        target_bus_stop = []
-        for origin_col in origin_bus_stop:
-            if origin_col == 'NULL':
-                target_col = origin_col
-            else:
-                target_col = "'%s'" % origin_col
-            target_bus_stop.append(target_col)
-        target_bus_stops.append(target_bus_stop)
-    return target_bus_stops
 
 
 def generate_sql(bus_stops, method):

@@ -2,7 +2,7 @@ import logging
 import time
 from webapp.manager import csv_manager, sql_manager, bus_stop_manager, bus_service_manager
 from webapp.rule.bus_route_rule import BusRouteNCSRule, BusRouteLTARule
-from webapp.util import db_util
+from webapp.util import db_util, string_util
 
 __author__ = 'Gao Lei'
 
@@ -40,7 +40,7 @@ def bus_route_add_or_update(csv_name, csv_type, bus_service_ids, sr_number):
         raise ValueError(err_msg)
 
     # wrap quotes for SQL generation
-    bus_routes_wrap_quotes = wrap_quotes(bus_routes_after_rules)
+    bus_routes_wrap_quotes = string_util.wrap_quotes_except_null(bus_routes_after_rules)
 
     # generate SQL string
     sql = generate_sql(bus_routes_wrap_quotes, csv_type)
@@ -52,23 +52,6 @@ def bus_route_add_or_update(csv_name, csv_type, bus_service_ids, sr_number):
     current_time = time.strftime('%Y%m%d%H%M%S')
     sql_name = 'SR_%s_%s_%s_%s.sql' % (sr_number, csv_type, '_'.join(bus_service_ids), current_time)
     sql_manager.save_sql(sql_name, sql)
-
-
-def wrap_quotes(origin_bus_routes):
-    target_bus_routes = []
-    for origin_bus_route in origin_bus_routes:
-        target_bus_route = []
-        for origin_route in origin_bus_route:
-            target_route = []
-            for origin_col in origin_route:
-                if origin_col == 'NULL':
-                    target_col = origin_col
-                else:
-                    target_col = "'%s'" % origin_col
-                target_route.append(target_col)
-            target_bus_route.append(target_route)
-        target_bus_routes.append(target_bus_route)
-    return target_bus_routes
 
 
 def generate_sql(bus_routes, csv_type):
