@@ -2,7 +2,7 @@
 {% block title %}{{ description }}{% endblock %}
 {% block content %}
 <div class="form">
-    <form action="/webapp/bus_route/bus_route_handler/" method="post">
+    <form action="/webapp/bus_route/bus_route_handler/" method="post" id="bus_route_form">
         {% csrf_token %}
         <input type="hidden" name="csv_type" value="{{ csv_type }}" />
         <div class="form-row">

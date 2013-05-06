@@ -2,7 +2,7 @@
 {% block title %}{{ description }}{% endblock %}
 {% block content %}
 <div class="form">
-    <form action="/webapp/db/db_handler/" method="post">
+    <form action="/webapp/db/db_handler/" method="post" id="db_form">
         {% csrf_token %}
         <input type="hidden" name="method" value="{{ method }}">
         <div class="form-row">

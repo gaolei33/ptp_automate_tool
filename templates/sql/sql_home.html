@@ -2,7 +2,7 @@
 {% block title %}{{ description }}{% endblock %}
 {% block content %}
 <div class="form">
-    <form action="/webapp/sql/sql_handler/" method="{% if method == 'SQL_DOWNLOAD' %}get{% else %}post{% endif %}">
+    <form action="/webapp/sql/sql_handler/" method="{% if method == 'SQL_DOWNLOAD' %}get{% else %}post{% endif %}" id="sql_form">
         {% csrf_token %}
         <input type="hidden" name="method" value="{{ method }}">
         <div class="form-row">
