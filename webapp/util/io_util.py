@@ -37,6 +37,19 @@ def write_to_file(file_path, obj):
             raise ValueError(err_msg)
 
 
+def delete_file(file_path):
+    if not os.path.exists(file_path):
+        err_msg = 'File does not exist: %s' % file_path
+        _logger.error(err_msg)
+        raise ValueError(err_msg)
+    try:
+        os.remove(file_path)
+    except Exception, ex:
+        err_msg = 'An error occurred while deleting file %s: %s' % (file_path, ex)
+        _logger.error(err_msg)
+        raise ValueError(err_msg)
+
+
 def exec_cmd(cmd):
     process = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     result = process.stdout.read()

@@ -2,23 +2,18 @@
 {% block title %}{{ description }}{% endblock %}
 {% block content %}
 <div class="form">
-    <form action="/webapp/db/db_handler/" method="post">
+    <form action="/webapp/sql/sql_handler/" method="{% if method == 'SQL_DOWNLOAD' %}get{% else %}post{% endif %}">
         {% csrf_token %}
         <input type="hidden" name="method" value="{{ method }}">
         <div class="form-row">
-        {% if method == 'DB_BACKUP' %}
-            <label class="form-label">SR Number</label>
-            <input class="form-textbox" type="text" name="sr_number" />
-        {% else %}
-            <label class="form-label">Backup File</label>
-            <select class="form-list-long" name="backup_name">
-            {% for backup_name in backup_list %}
-                <option value="{{ backup_name }}">{{ backup_name }}</option>
+            <label class="form-label">SQL Name</label>
+            <select class="form-list-long" name="sql_name">
+            {% for sql_name in sql_list %}
+                <option value="{{ sql_name }}">{{ sql_name }}</option>
             {% empty %}
                 <option value="">------------------------------N/A------------------------------</option>
             {% endfor %}
             </select>
-        {% endif %}
         </div>
         <div class="form-row">
             <input type="submit" value="{{ description }}" />

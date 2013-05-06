@@ -1,39 +1,37 @@
 {% extends 'base.html' %}
-{% block title %}Upload CSV{% endblock %}
+{% block title %}{{ description }}{% endblock %}
 {% block content %}
-<div>
-    <form action="/webapp/csv/upload_csv/" enctype="multipart/form-data" method="post">
+<div class="form">
+    <form action="/webapp/csv/csv_handler/" enctype="multipart/form-data" method="post">
         {% csrf_token %}
-        <table>
-            <tr>
-                <td>SR Number</td>
-                <td>
-                    <input type="text" name="sr_number" />
-                </td>
-            </tr>
-            <tr>
-                <td>CSV Type</td>
-                <td>
-                    <select name="csv_type">
-                        <option value="BUS_STOP">BUS_STOP</option>
-                        <option value="BUS_SERVICE">BUS_SERVICE</option>
-                        <option value="BUS_ROUTE_NCS">BUS_ROUTE_NCS</option>
-                        <option value="BUS_ROUTE_LTA">BUS_ROUTE_LTA</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>CSV File</td>
-                <td>
-                    <input type="file" name="csv_file" />
-                </td>
-            </tr>
-             <tr>
-                <td colspan="2">
-                    <input type="submit" value="Upload" />
-                </td>
-            </tr>
-        </table>
+        <input type="hidden" name="method" value="{{ method }}">
+        {% if method == 'CSV_UPLOAD' %}
+            <div class="form-row">
+                <label class="form-label">SR Number</label>
+                <input class="form-textbox" type="text" name="sr_number" />
+            </div>
+            <div class="form-row">
+                <label class="form-label">CSV Type</label>
+                <select class="form-list-short" name="csv_type">
+                    <option value="BUS_STOP">BUS_STOP</option>
+                    <option value="BUS_SERVICE">BUS_SERVICE</option>
+                    <option value="BUS_ROUTE_NCS">BUS_ROUTE_NCS</option>
+                    <option value="BUS_ROUTE_LTA">BUS_ROUTE_LTA</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <label class="form-label">CSV File</label>
+                <input class="form-textbox" type="file" name="csv_file" />
+            </div>
+        {% else %}
+            <div class="form-row">
+                <label class="form-label">CSV Name</label>
+                {% include 'common/csv_list.html' %}
+            </div>
+        {% endif %}
+        <div class="form-row">
+            <input type="submit" value="{{ description }}" />
+        </div>
     </form>
 </div>
 {% endblock %}

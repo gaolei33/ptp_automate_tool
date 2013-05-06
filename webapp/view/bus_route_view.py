@@ -5,11 +5,12 @@ from webapp.manager import bus_route_manager, csv_manager
 __author__ = 'Gao Lei'
 
 
-def bus_route_home(request, csv_type):
+def bus_route_home(request, csv_type, description):
     csv_list = csv_manager.get_csv_list(csv_type)
     return render(request, 'bus_route/bus_route_home.html', {
         'csv_type': csv_type,
         'csv_list': csv_list,
+        'description': description,
     })
 
 
@@ -27,11 +28,14 @@ def bus_route_handler(request):
         if not csv_name:
             raise ValueError('Please select a valid bus route CSV file.')
 
-        bus_route_manager.bus_route_add_or_update(csv_name, csv_type, bus_service_ids, sr_number)
+        sql_name = bus_route_manager.bus_route_add_or_update(csv_name, csv_type, bus_service_ids, sr_number)
 
         messages.info(request, 'SQL generated and executed on development database successfully.')
+        context_dict = {'sql_name': sql_name}
     except KeyError, ex:
         messages.error(request, ex)
+        context_dict = None
     except ValueError, ex:
         messages.error(request, ex)
-    return render(request, 'common/result.html')
+        context_dict = None
+    return render(request, 'common/result.html', context_dict)

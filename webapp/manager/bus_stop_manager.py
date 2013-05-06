@@ -48,9 +48,10 @@ def bus_stop_add_or_update(bus_stops, sr_number, method):
 
     # save SQL string to file
     bus_stop_ids = [bus_stop_info[0] for bus_stop_info in bus_stops]
-    current_time = time.strftime('%Y%m%d%H%M%S')
-    sql_name = 'SR_%s_%s_%s_%s.sql' % (sr_number, method, '_'.join(bus_stop_ids), current_time)
+    sql_name = sql_manager.get_sql_name(sr_number, method, '_'.join(bus_stop_ids))
     sql_manager.save_sql(sql_name, sql)
+
+    return sql_name
 
 
 def generate_sql(bus_stops, method):

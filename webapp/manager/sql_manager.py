@@ -1,5 +1,6 @@
 import logging
 import os
+import time
 from webapp import config
 from webapp.util import io_util
 
@@ -10,8 +11,7 @@ _logger = logging.getLogger('default')
 
 def save_sql(sql_name, sql):
     try:
-        sql_folder = config.SQL_FOLDER
-        sql_path = os.path.join(sql_folder, sql_name)
+        sql_path = os.path.join(config.SQL_FOLDER, sql_name)
 
         io_util.write_to_file(sql_path, sql)
 
@@ -23,9 +23,7 @@ def save_sql(sql_name, sql):
 
 
 def get_sql(sql_name):
-
-    sql_folder = config.SQL_FOLDER
-    sql_path = os.path.join(sql_folder, sql_name)
+    sql_path = os.path.join(config.SQL_FOLDER, sql_name)
 
     if not os.path.exists(sql_path):
         err_msg = 'SQL file does not exist: %s' % sql_path
@@ -40,3 +38,23 @@ def get_sql(sql_name):
         raise ValueError(err_msg)
 
     return sql_file
+
+
+def get_sql_name(sr_number, sql_type, other_info, ):
+    current_time = time.strftime('%Y%m%d%H%M%S')
+    sql_name = '[%s][%s]%s_%s.sql' % (sr_number, sql_type, other_info, current_time)
+    return sql_name
+
+
+def get_sql_list():
+    sql_folder = config.SQL_FOLDER
+    io_util.create_folder_if_not_exists(sql_folder)
+    sql_list = [f for f in os.listdir(sql_folder) if os.path.isfile(os.path.join(sql_folder, f)) and f.lower().endswith('.sql')]
+    # sort by date reversed
+    sql_list.sort(key=lambda x: os.path.getmtime(os.path.join(sql_folder, x)), reverse=True)
+    return sql_list
+
+
+def delete(sql_name):
+    sql_path = os.path.join(config.SQL_FOLDER, sql_name)
+    io_util.delete_file(sql_path)

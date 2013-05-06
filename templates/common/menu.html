@@ -1,15 +1,14 @@
-<script type="text/javascript" src="/static/js/menu.js"></script>
-<div id="nav">
 {% if MENUS %}
+    <script type="text/javascript" src="/static/js/menu.js"></script>
     <ul id="menu">
     {% for menu in MENUS %}
-        <li {% if menu.ALIGN %}style="float: {{ menu.ALIGN }};" {% endif %}>
-            <a href="{{ menu.LINK }}">{{ menu.TITLE }}</a>
+        <li class="menu-item"{% if menu.ALIGN %} style="float: {{ menu.ALIGN }};" {% endif %}>
+            <a class="menu-link" href="{{ menu.LINK }}">{{ menu.TITLE }}</a>
         {% if menu.SUBMENUS %}
             <ul class="submenu">
             {% for submenu in menu.SUBMENUS %}
-                <li>
-                    <a href="{{ submenu.LINK }}">{{ submenu.TITLE }}</a>
+                <li class="submenu-item">
+                    <a class="submenu-link" href="{{ submenu.LINK }}">{{ submenu.TITLE }}</a>
                 </li>
             {% endfor %}
             </ul>
@@ -18,4 +17,3 @@
     {% endfor %}
     </ul>
 {% endif %}
-</div>

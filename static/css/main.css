@@ -3,6 +3,10 @@ body, table, tr, td {
     padding: 0;
 }
 
+input {
+    margin: 0;
+}
+
 body {
     font-family: arial, sans-serif;
     font-size: 13px;
@@ -10,6 +14,11 @@ body {
 
 a {
     text-decoration: none;
+    color: green;
+}
+
+a:hover {
+    color: orange;
 }
 
 .clear {
@@ -22,35 +31,15 @@ a {
 
 /* menu */
 #menu {
-    list-style-type: none;
+    list-style: none;
     margin: 0;
     padding: 0;
     background: #000;
     overflow: hidden;
-    z-index: 9999;
 }
 
-#menu > li {
-    float: left;
-}
-
-#menu a {
-    display: block;
-    padding: 5px 12px;
-    color: #BBB;
-    font-weight: bold;
-}
-
-#menu a:hover {
-    background: #333;
-}
-
-#menu a.current {
-    color: #FFF;
-}
-
-.submenu {
-    list-style-type: none;
+#menu .submenu {
+    list-style: none;
     position: absolute;
     margin: 0;
     padding: 0;
@@ -58,21 +47,23 @@ a {
     display: none;
 }
 
-.submenu a {
+#menu .menu-item {
+    float: left;
+}
+
+#menu .menu-link, #menu .submenu-link {
+    display: block;
+    padding: 5px 12px;
+    color: #BBB;
+    font-weight: bold;
+}
+
+#menu .menu-link:hover, #menu .submenu-link:hover {
+    background: #222;
+}
+
+#menu .menu-link.current, #menu .submenu-link.current {
     color: #FFF;
-}
-
-/* messages */
-.messages {
-    border: 1px dashed;
-}
-
-.messages .error {
-    color: red;
-}
-
-.messages .info {
-    color: green;
 }
 
 /* Street Search */
@@ -108,4 +99,47 @@ a {
 
 #street_search_result .street td {
     border: 1px solid;
+}
+
+/* messages */
+.messages {
+    border: 1px dashed;
+}
+
+.messages .error {
+    color: red;
+}
+
+.messages .info {
+    color: green;
+}
+
+/* form elements */
+.form {
+}
+
+.form-row {
+    padding: 5px 0;
+}
+
+.form-label {
+    display: inline-block;
+    width: 100px;
+}
+
+.form-textbox {
+    width: 300px;
+}
+
+.form-list-long {
+    width: 300px;
+}
+
+.form-list-short {
+    width: 100px;
+}
+
+label.error {
+    padding: 0 10px;
+    color: #F00;
 }

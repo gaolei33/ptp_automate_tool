@@ -5,11 +5,12 @@ from webapp.manager import bus_stop_manager, csv_manager
 __author__ = 'Gao Lei'
 
 
-def bus_stop_home(request, method):
+def bus_stop_home(request, method, description):
     csv_list = csv_manager.get_csv_list('BUS_STOP')
     return render(request, 'bus_stop/bus_stop_home.html', {
         'method': method,
         'csv_list': csv_list,
+        'description': description,
     })
 
 
@@ -66,11 +67,14 @@ def bus_stop_handler(request):
 
             bus_stops.append(bus_stop)
 
-        bus_stop_manager.bus_stop_add_or_update(bus_stops, sr_number, method)
+        sql_name = bus_stop_manager.bus_stop_add_or_update(bus_stops, sr_number, method)
 
         messages.info(request, 'SQL generated and executed on development database successfully.')
+        context_dict = {'sql_name': sql_name}
     except KeyError, ex:
         messages.error(request, ex)
+        context_dict = None
     except ValueError, ex:
         messages.error(request, ex)
-    return render(request, 'common/result.html')
+        context_dict = None
+    return render(request, 'common/result.html', context_dict)

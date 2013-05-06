@@ -19,7 +19,6 @@ def get_backup_list():
 
 
 def backup(sr_number):
-
     backup_folder = config.BACKUP_FOLDER
     io_util.create_folder_if_not_exists(backup_folder)
 
@@ -40,7 +39,6 @@ def backup(sr_number):
 
 
 def restore(backup_name):
-
     backup_folder = config.BACKUP_FOLDER
     backup_path = os.path.join(backup_folder, backup_name)
 
@@ -59,3 +57,8 @@ def restore(backup_name):
         raise ValueError(err_msg)
 
     _logger.info('Development database restored successfully.')
+
+
+def delete_backup(backup_name):
+    backup_path = os.path.join(config.BACKUP_FOLDER, backup_name)
+    io_util.delete_file(backup_path)

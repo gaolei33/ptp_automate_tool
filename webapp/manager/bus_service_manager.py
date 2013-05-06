@@ -35,9 +35,10 @@ def bus_service_add_or_update(csv_name, bus_service_ids, sr_number):
     db_util.exec_sql(sql)
 
     # save SQL string to file
-    current_time = time.strftime('%Y%m%d%H%M%S')
-    sql_name = 'SR_%s_%s_%s_%s.sql' % (sr_number, 'BUS_SERVICE_ADD_OR_UPDATE', '_'.join(bus_service_ids), current_time)
+    sql_name = sql_manager.get_sql_name(sr_number, 'BUS_SERVICE_ADD_OR_UPDATE', '_'.join(bus_service_ids))
     sql_manager.save_sql(sql_name, sql)
+
+    return sql_name
 
 
 def bus_service_enable_or_disable(bus_service_ids, enable_or_disable, sr_number):
@@ -56,9 +57,10 @@ def bus_service_enable_or_disable(bus_service_ids, enable_or_disable, sr_number)
     db_util.exec_sql(sql)
 
     # save SQL string to file
-    current_time = time.strftime('%Y%m%d%H%M%S')
-    sql_name = 'SR_%s_%s_%s_%s.sql' % (sr_number, 'BUS_SERVICE_ENABLE_OR_DISABLE', '_'.join(bus_service_ids), current_time)
+    sql_name = sql_manager.get_sql_name(sr_number, 'BUS_SERVICE_ENABLE_OR_DISABLE', '_'.join(bus_service_ids))
     sql_manager.save_sql(sql_name, sql)
+
+    return sql_name
 
 
 def get_operator_from_csv_name(csv_name):

@@ -1,33 +1,25 @@
 {% extends 'base.html' %}
-{% block title %}{{ csv_type }} - Bus Route{% endblock %}
+{% block title %}{{ description }}{% endblock %}
 {% block content %}
-<div>
+<div class="form">
     <form action="/webapp/bus_route/bus_route_handler/" method="post">
         {% csrf_token %}
         <input type="hidden" name="csv_type" value="{{ csv_type }}" />
-        <table>
-            <tr>
-                <td>SR Number</td>
-                <td>
-                    <input type="text" name="sr_number" />
-                </td>
-            </tr>
-            <tr>
-                <td>CSV Name</td>
-                <td>
-                    {% include 'common/csv_list.html' %}
-                </td>
-            </tr>
-            <tr>
-                <td>Bus Service IDs</td>
-                <td>
-                    <input type="text" name="bus_service_ids" />
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2"><input type="submit" value="Proceed" /></td>
-            </tr>
-        </table>
+        <div class="form-row">
+            <label class="form-label">SR Number</label>
+            <input class="form-textbox" type="text" name="sr_number" />
+        </div>
+        <div class="form-row">
+            <label class="form-label">CSV Name</label>
+            {% include 'common/csv_list.html' %}
+        </div>
+        <div class="form-row">
+            <label class="form-label">Service IDs</label>
+            <input class="form-textbox" type="text" name="bus_service_ids" />
+        </div>
+        <div class="form-row">
+            <input type="submit" value="{{ description }}" />
+        </div>
     </form>
 </div>
 {% endblock %}

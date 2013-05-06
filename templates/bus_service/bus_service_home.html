@@ -1,43 +1,33 @@
 {% extends 'base.html' %}
-{% block title %}{{ method }} - Bus Service{% endblock %}
+{% block title %}{{ description }}{% endblock %}
 {% block content %}
-<div>
+<div class="form">
     <form action="/webapp/bus_service/bus_service_handler/" method="post">
         {% csrf_token %}
         <input type="hidden" name="method" value="{{ method }}" />
-        <table>
-            <tr>
-                <td>SR Number</td>
-                <td><input type="text" name="sr_number" /></td>
-            </tr>
-            {% if method == 'BUS_SERVICE_ADD_OR_UPDATE' %}
-                <tr>
-                    <td>CSV Name</td>
-                    <td>
-                        {% include 'common/csv_list.html' %}
-                    </td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td>Enable or Disable</td>
-                    <td>
-                        <select name="enable_or_disable">
-                            <option value="BUS_SERVICE_DISABLE">Disable</option>
-                            <option value="BUS_SERVICE_ENABLE">Enable</option>
-                        </select>
-                    </td>
-                </tr>
-            {% endif %}
-            <tr>
-                <td>Bus Service IDs</td>
-                <td>
-                    <input type="text" name="bus_service_ids" />
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2"><input type="submit" value="Proceed" /></td>
-            </tr>
-        </table>
+        <div class="form-row">
+            <label class="form-label">SR Number</label>
+            <input class="form-textbox" type="text" name="sr_number" />
+        </div>
+        <div class="form-row">
+        {% if method == 'BUS_SERVICE_ADD_OR_UPDATE' %}
+            <label class="form-label">CSV Name</label>
+            {% include 'common/csv_list.html' %}
+        {% else %}
+            <label class="form-label">Enable / Disable</label>
+            <select class="form-list-short" name="enable_or_disable">
+                <option value="BUS_SERVICE_DISABLE">Disable</option>
+                <option value="BUS_SERVICE_ENABLE">Enable</option>
+            </select>
+        {% endif %}
+        </div>
+        <div class="form-row">
+            <label class="form-label">Service IDs</label>
+            <input class="form-textbox" type="text" name="bus_service_ids" />
+        </div>
+        <div class="form-row">
+            <input type="submit" value="{{ description }}" />
+        </div>
     </form>
 </div>
 {% endblock %}

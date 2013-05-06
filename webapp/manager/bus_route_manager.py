@@ -49,9 +49,10 @@ def bus_route_add_or_update(csv_name, csv_type, bus_service_ids, sr_number):
     db_util.exec_sql(sql)
 
     # save SQL string to file
-    current_time = time.strftime('%Y%m%d%H%M%S')
-    sql_name = 'SR_%s_%s_%s_%s.sql' % (sr_number, csv_type, '_'.join(bus_service_ids), current_time)
+    sql_name = sql_manager.get_sql_name(sr_number, csv_type, '_'.join(bus_service_ids))
     sql_manager.save_sql(sql_name, sql)
+
+    return sql_name
 
 
 def generate_sql(bus_routes, csv_type):

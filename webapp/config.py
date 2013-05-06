@@ -12,8 +12,19 @@ DB_INFO = {
 }
 
 MENUS = (
-    {'TITLE': 'DB', 'LINK': '/webapp/db/'},
-    {'TITLE': 'CSV', 'LINK': '/webapp/csv/'},
+    {'TITLE': 'DB', 'LINK': '/webapp/db/',
+        'SUBMENUS': (
+            {'TITLE': 'DB Backup', 'LINK': '/webapp/db/db_backup/'},
+            {'TITLE': 'DB Restore', 'LINK': '/webapp/db/db_restore/'},
+            {'TITLE': 'DB Backup Delete', 'LINK': '/webapp/db/db_backup_delete/'},
+        )
+    },
+    {'TITLE': 'CSV', 'LINK': '/webapp/csv/',
+        'SUBMENUS': (
+            {'TITLE': 'CSV Upload', 'LINK': '/webapp/csv/csv_upload/'},
+            {'TITLE': 'CSV Delete', 'LINK': '/webapp/csv/csv_delete/'},
+        )
+    },
     {'TITLE': 'Bus Stop', 'LINK': '/webapp/bus_stop/',
         'SUBMENUS': (
             {'TITLE': 'Bus Stop Add', 'LINK': '/webapp/bus_stop/bus_stop_add/'},
@@ -32,19 +43,25 @@ MENUS = (
             {'TITLE': 'Bus Route LTA', 'LINK': '/webapp/bus_route/bus_route_lta'},
         )
     },
+    {'TITLE': 'SQL', 'LINK': '/webapp/sql/',
+        'SUBMENUS': (
+            {'TITLE': 'SQL Download', 'LINK': '/webapp/sql/sql_download/'},
+            {'TITLE': 'SQL Delete', 'LINK': '/webapp/sql/sql_delete'},
+        )
+    },
     {'TITLE': 'Street Search', 'LINK': 'javascript: street_search_toggle();', 'ALIGN': 'right'},
 )
 
 ROOT = '/home/jonathan/Desktop/ptp_automate_tool'
 
-CSV_ROOT = os.path.join(ROOT, 'csv')
+CSV_FOLDER = os.path.join(ROOT, 'csv')
 
-CSV_FOLDERS = {
-    'BUS_STOP': os.path.join(CSV_ROOT, 'BUS_STOP'),
-    'BUS_SERVICE': os.path.join(CSV_ROOT, 'BUS_SERVICE'),
-    'BUS_ROUTE_NCS': os.path.join(CSV_ROOT, 'BUS_ROUTE_NCS'),
-    'BUS_ROUTE_LTA': os.path.join(CSV_ROOT, 'BUS_ROUTE_LTA'),
-}
+# CSV_FOLDERS = {
+#     'BUS_STOP': os.path.join(CSV_ROOT, 'BUS_STOP'),
+#     'BUS_SERVICE': os.path.join(CSV_ROOT, 'BUS_SERVICE'),
+#     'BUS_ROUTE_NCS': os.path.join(CSV_ROOT, 'BUS_ROUTE_NCS'),
+#     'BUS_ROUTE_LTA': os.path.join(CSV_ROOT, 'BUS_ROUTE_LTA'),
+# }
 
 BACKUP_FOLDER = os.path.join(ROOT, 'backup')
 

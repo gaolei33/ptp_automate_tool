@@ -1,33 +1,28 @@
 {% extends 'base.html' %}
-{% block title %}{{ method }} - Bus Stop{% endblock %}
+{% block title %}{{ description }}{% endblock %}
+{% block additional_head %}<script type="text/javascript" src="/static/js/bus_stop.js"></script>{% endblock %}
 {% block content %}
-<div>
+<div class="form">
     <form action="/webapp/bus_stop/bus_stop_detail/" method="post">
         {% csrf_token %}
         <input type="hidden" name="method" value="{{ method }}" />
-        <table>
-            <tr>
-                <td>SR Number</td>
-                <td><input type="text" name="sr_number" /></td>
-            </tr>
-            {% if method == 'BUS_STOP_ADD' %}
-                <tr>
-                    <td>CSV Name</td>
-                    <td>
-                        {% include 'common/csv_list.html' %}
-                    </td>
-                </tr>
-            {% endif %}
-            <tr>
-                <td>Bus Stop IDs</td>
-                <td>
-                    <input type="text" name="bus_stop_ids" />
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2"><input type="submit" value="Proceed" /></td>
-            </tr>
-        </table>
+        <div class="form-row">
+            <label class="form-label">SR Number</label>
+            <input class="form-textbox" type="text" name="sr_number" />
+        </div>
+        {% if method == 'BUS_STOP_ADD' %}
+            <div class="form-row">
+                <label class="form-label">CSV Name</label>
+                {% include 'common/csv_list.html' %}
+            </div>
+        {% endif %}
+        <div class="form-row">
+            <label class="form-label">Stop IDs</label>
+            <input class="form-textbox" type="text" name="bus_stop_ids" />
+        </div>
+        <div class="form-row">
+            <input type="submit" value="{{ description }}" />
+        </div>
     </form>
 </div>
 {% endblock %}

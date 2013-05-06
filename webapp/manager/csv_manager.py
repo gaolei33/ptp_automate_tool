@@ -23,19 +23,21 @@ def _bus_stop_code_rule(origin_bus_stop_code):
         return target_bus_stop_code
 
 
-def get_csv_list(csv_type):
-    csv_folder = config.CSV_FOLDERS[csv_type]
+def get_csv_list(csv_type=None):
+    csv_folder = config.CSV_FOLDER
     io_util.create_folder_if_not_exists(csv_folder)
     csv_list = [f for f in os.listdir(csv_folder) if os.path.isfile(os.path.join(csv_folder, f)) and f.lower().endswith('.csv')]
+    # CSV type filter
+    if csv_type:
+        csv_list = [f for f in csv_list if '[%s]' % csv_type in f]
     # sort by date reversed
     csv_list.sort(key=lambda x: os.path.getmtime(os.path.join(csv_folder, x)), reverse=True)
     return csv_list
 
 
 def save_csv(csv_file, csv_type, sr_number):
-    csv_folder = config.CSV_FOLDERS[csv_type]
-    csv_name = 'SR_%s_%s' % (sr_number, csv_file.name)
-    csv_path = os.path.join(csv_folder, csv_name)
+    csv_name = '[%s][%s]%s' % (sr_number, csv_type, csv_file.name)
+    csv_path = os.path.join(config.CSV_FOLDER, csv_name)
     io_util.write_to_file(csv_path, csv_file)
     _logger.info('CSV file saved: %s' % csv_path)
 
@@ -53,8 +55,7 @@ def retrieve_multiple_data_from_csv(csv_name, csv_type, filter_ids):
 
 
 def retrieve_data_from_csv(csv_name, csv_type, filter_id):
-    csv_folder = config.CSV_FOLDERS[csv_type]
-    csv_path = os.path.join(csv_folder, csv_name)
+    csv_path = os.path.join(config.CSV_FOLDER, csv_name)
     data = []
     try:
         with open(csv_path, 'r') as reader:
@@ -80,10 +81,6 @@ def retrieve_data_from_csv(csv_name, csv_type, filter_id):
     return data
 
 
-def get_sr_number_from_csv_name(csv_name):
-    m = re.search(r'^SR_(\d+)_', csv_name)
-    if m:
-        sr_number = m.group(1)
-    else:
-        sr_number = 'Unknown'
-    return sr_number
+def delete(csv_name):
+    csv_path = os.path.join(config.CSV_FOLDER, csv_name)
+    io_util.delete_file(csv_path)
