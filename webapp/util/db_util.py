@@ -1,27 +1,43 @@
 import logging
 import MySQLdb
 from webapp import config
-from webapp.util import io_util
 
 __author__ = 'Gao Lei'
 
 _logger = logging.getLogger('default')
 
 
-def get_connection():
-    connection = MySQLdb.connect(config.DB_INFO['HOST'], config.DB_INFO['USER'], config.DB_INFO['PASSWORD'], config.DB_INFO['NAME'], config.DB_INFO['PORT'])
-    return connection
+def exec_query(sql):
+    query = sql
+    return exec_sql(query, 'QUERY')
 
+def exec_cmds(sql):
+    cmds = [cmd for cmd in sql.split('\n') if cmd]
+    exec_sql(cmds, 'CMDS')
 
-def close_connection(connection):
-    connection.close()
+def exec_sql(exec_content, exec_type):
+    conn = None
+    try:
+        conn = MySQLdb.connect(config.DB_INFO['HOST'], config.DB_INFO['USER'], config.DB_INFO['PASSWORD'], config.DB_INFO['NAME'], config.DB_INFO['PORT'])
+        cur = conn.cursor()
+        if exec_type == 'QUERY':
+            cur.execute(exec_content)
+            result = cur.fetchall()
 
-
-def exec_sql(sql):
-    cmd = 'mysql -h %s -u %s -p%s %s -e "%s"' % (config.DB_INFO['HOST'], config.DB_INFO['USER'], config.DB_INFO['PASSWORD'], config.DB_INFO['NAME'], sql)
-    error = io_util.exec_cmd(cmd)
-    if error:
-        err_msg = 'An error occurred while executing the SQL: %s, you\'d better restore development database before next steps.' % error
+        else:
+            for cmd in exec_content:
+                cur.execute(cmd)
+            result = None
+        cur.close()
+        conn.commit()
+    except Exception, ex:
+        # rollback db if error occurred while executing SQLs
+        if conn:
+            conn.rollback()
+        err_msg = 'An error occurred while executing SQL: %s, you\'d better restore development database before next steps.' % ex
         _logger.error(err_msg)
         raise ValueError(err_msg)
-    return error
+    finally:
+        if conn:
+            conn.close()
+    return result

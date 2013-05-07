@@ -1,5 +1,4 @@
 import logging
-import time
 from webapp.rule.bus_stop_rule import BusStopRule
 from webapp.util import db_util, string_util
 from webapp.manager import csv_manager, sql_manager
@@ -67,23 +66,12 @@ def generate_sql(bus_stops, method):
 
 
 def select_bus_stops(bus_stop_ids):
+    bus_stop_ids_string_wrap_quotes = ', '.join({"'%s'" % bus_stop_id for bus_stop_id in bus_stop_ids})
+    sql = "SELECT CONCAT(id), CONCAT(street_id), CONCAT(long_name), CONCAT(short_name), IF(location_code IS NULL, '', CONCAT(location_code)), CONCAT(is_wab_accessible), CONCAT(is_non_bus_stop), CONCAT(is_interchange) FROM bus_stops WHERE id IN (%s);" % bus_stop_ids_string_wrap_quotes
 
-    try:
-        bus_stop_ids_string_wrap_quotes = ', '.join({"'%s'" % bus_stop_id for bus_stop_id in bus_stop_ids})
+    result = db_util.exec_sql(sql)
 
-        connection = db_util.get_connection()
-        cursor = connection.cursor()
-        cursor.execute("SELECT CONCAT(id), CONCAT(street_id), CONCAT(long_name), CONCAT(short_name), IF(location_code IS NULL, '', CONCAT(location_code)), CONCAT(is_wab_accessible), CONCAT(is_non_bus_stop), CONCAT(is_interchange) FROM bus_stops WHERE id IN (%s);" % bus_stop_ids_string_wrap_quotes)
-        result = cursor.fetchall()
-
-        bus_stop_ids_found = {bus_stop[0] for bus_stop in result}
-        bus_stop_ids_missing = bus_stop_ids - bus_stop_ids_found
-
-        cursor.close()
-        db_util.close_connection(connection)
-    except Exception, ex:
-        err_msg = 'An error occurred while select bus stops from DB: %s' % ex
-        _logger.error(err_msg)
-        raise ValueError(err_msg)
+    bus_stop_ids_found = {bus_stop[0] for bus_stop in result}
+    bus_stop_ids_missing = bus_stop_ids - bus_stop_ids_found
 
     return result, bus_stop_ids_missing

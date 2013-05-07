@@ -25,6 +25,16 @@ class BusRouteRule(BaseRule):
         target_bus_stop_code = self._normal_rule(origin_bus_stop_code)
         return target_bus_stop_code
 
+    def _sequence_rule(self, origin_bus_route):
+        directions = {route[1] for route in origin_bus_route}
+        for direction in directions:
+            sequences = [route[2] for route in origin_bus_route if route[1] == direction]
+            for i in range(len(sequences)):
+                if sequences[i] != str(i + 1):
+                    err_msg = 'Sequence error : bus service %s direction %s sequence %s' % (origin_bus_route[0][0], direction, sequences[i])
+                    _logger.error(err_msg)
+                    raise ValueError(err_msg)
+
 
 class BusRouteNCSRule(BusRouteRule):
 
@@ -49,6 +59,8 @@ class BusRouteNCSRule(BusRouteRule):
     def execute_rules(self):
 
         for origin_bus_route in self.origin_bus_routes:
+            # sequence validation
+            self._sequence_rule(origin_bus_route)
 
             target_bus_route = []
 
@@ -109,6 +121,8 @@ class BusRouteLTARule(BusRouteRule):
     def execute_rules(self):
 
         for origin_bus_route in self.origin_bus_routes:
+            # sequence validation
+            self._sequence_rule(origin_bus_route)
 
             target_bus_route = []
 

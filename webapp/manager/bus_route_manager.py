@@ -1,5 +1,4 @@
 import logging
-import time
 from webapp.manager import csv_manager, sql_manager, bus_stop_manager, bus_service_manager
 from webapp.rule.bus_route_rule import BusRouteNCSRule, BusRouteLTARule
 from webapp.util import db_util, string_util
@@ -59,11 +58,11 @@ def generate_sql(bus_routes, csv_type):
     sql = ''
     for bus_route in bus_routes:
         if csv_type == 'BUS_ROUTE_NCS':
-            sql += "DELETE FROM bus_routes WHERE bus_service_id = %s AND provider = 'NCS';\n" % bus_route[0][0]
+            sql += 'DELETE FROM bus_routes WHERE bus_service_id = %s AND provider = "NCS";\n' % bus_route[0][0]
             for route in bus_route:
-                sql += "INSERT INTO bus_routes (bus_service_id, direction, sequence, bus_stop_id, provider, express_code, distance, distance_fares_marker, weekday_first_trip, weekday_last_trip, saturday_first_trip, saturday_last_trip, sunday_first_trip, sunday_last_trip, note, shows_arrival_table, shows_fare_table, in_operation) VALUES (%s, %s, %s, %s, 'NCS', %s, %s, NULL, %s, %s, %s, %s, %s, %s, NULL, '0', '0', '1');\n" % (route[0], route[1], route[2], route[3], route[4], route[5], route[6], route[7], route[8], route[9], route[10], route[11])
+                sql += 'INSERT INTO bus_routes (bus_service_id, direction, sequence, bus_stop_id, provider, express_code, distance, distance_fares_marker, weekday_first_trip, weekday_last_trip, saturday_first_trip, saturday_last_trip, sunday_first_trip, sunday_last_trip, note, shows_arrival_table, shows_fare_table, in_operation) VALUES (%s, %s, %s, %s, "NCS", %s, %s, NULL, %s, %s, %s, %s, %s, %s, NULL, "0", "0", "1");\n' % (route[0], route[1], route[2], route[3], route[4], route[5], route[6], route[7], route[8], route[9], route[10], route[11])
         elif csv_type == 'BUS_ROUTE_LTA':
-            sql += "DELETE FROM bus_routes WHERE bus_service_id = %s AND provider = 'LTA';\n" % bus_route[0][0]
+            sql += 'DELETE FROM bus_routes WHERE bus_service_id = %s AND provider = "LTA";\n' % bus_route[0][0]
             for route in bus_route:
-                sql += "INSERT INTO bus_routes (bus_service_id, direction, sequence, bus_stop_id, provider, express_code, distance, distance_fares_marker, weekday_first_trip, weekday_last_trip, saturday_first_trip, saturday_last_trip, sunday_first_trip, sunday_last_trip, note, shows_arrival_table, shows_fare_table, in_operation) VALUES (%s, %s, %s, %s, 'LTA', %s, %s, %s, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', '0', '1');\n" % (route[0], route[1], route[2], route[3], route[4], route[5], route[6])
+                sql += 'INSERT INTO bus_routes (bus_service_id, direction, sequence, bus_stop_id, provider, express_code, distance, distance_fares_marker, weekday_first_trip, weekday_last_trip, saturday_first_trip, saturday_last_trip, sunday_first_trip, sunday_last_trip, note, shows_arrival_table, shows_fare_table, in_operation) VALUES (%s, %s, %s, %s, "LTA", %s, %s, %s, NULL, NULL, NULL, NULL, NULL, NULL, NULL, "0", "0", "1");\n' % (route[0], route[1], route[2], route[3], route[4], route[5], route[6])
     return sql

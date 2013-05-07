@@ -1,16 +1,14 @@
-body, table, tr, td {
+body {
     margin: 0;
     padding: 0;
+    font-family: arial, sans-serif;
+    font-size: 13px;
 }
 
 input, select {
     margin: 0;
 }
 
-body {
-    font-family: arial, sans-serif;
-    font-size: 13px;
-}
 
 a {
     text-decoration: none;
@@ -94,11 +92,7 @@ a:hover {
 
 #street_search_result .street {
     width: 100%;
-    border: 1px solid;
-}
-
-#street_search_result .street td {
-    border: 1px solid;
+    border-collapse: collapse;
 }
 
 /* messages */

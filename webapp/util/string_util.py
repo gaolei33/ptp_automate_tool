@@ -7,7 +7,7 @@ _logger = logging.getLogger('default')
 
 def wrap_quotes_except_null(origin_obj):
     if type(origin_obj) in (str, unicode):
-        target_obj = origin_obj if origin_obj == 'NULL' else "'%s'" % origin_obj
+        target_obj = origin_obj if origin_obj == 'NULL' else '"%s"' % origin_obj
     else:
         try:
             target_obj = [wrap_quotes_except_null(item) for item in origin_obj]

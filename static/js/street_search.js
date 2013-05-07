@@ -33,7 +33,7 @@ $(function() {
 
             $street_search_result_container.append($('<div><span>Result : ' + $data.length + ' found.</span></div>'));
 
-            var $street_container = $('<table cellpadding="5" cellspacing="0" class="street">');
+            var $street_container = $('<table cellpadding="5" cellspacing="0" border="1" class="street">');
             $data.each(function(index, street) {
 
                 var $street_id_container = $('<tr>').append($('<td>ID</td>')).append($('<td>').append(street[0]));

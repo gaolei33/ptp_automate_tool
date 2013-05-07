@@ -1,5 +1,4 @@
 import logging
-import time
 from webapp.manager import csv_manager, sql_manager
 from webapp.rule.bus_service_rule import BusServiceRule
 from webapp.util import db_util, string_util
@@ -83,64 +82,42 @@ def generate_sql_add_or_update(bus_services, operator):
         sql += 'DELETE FROM bus_service_directions WHERE bus_service_id = %s;\n' % bus_service[0][0]
         sql += 'DELETE FROM bus_service_loops WHERE bus_service_id = %s;\n' % bus_service[0][0]
         sql += 'DELETE FROM bus_services WHERE id = %s;\n' % bus_service[0][0]
-        sql += "INSERT INTO bus_services(id, category, operator, uses_distance_fares, is_non_service_number, operating_hours_1, operating_hours_2, fare, contact, website) VALUES (%s, %s, %s, '1', '0', NULL, NULL, NULL, NULL, NULL);\n" % (bus_service[0][0], bus_service[0][2], operator)
+        sql += 'INSERT INTO bus_services(id, category, operator, uses_distance_fares, is_non_service_number, operating_hours_1, operating_hours_2, fare, contact, website) VALUES (%s, %s, %s, "1", "0", NULL, NULL, NULL, NULL, NULL);\n' % (bus_service[0][0], bus_service[0][2], operator)
         for direction in bus_service:
-            sql += "INSERT INTO bus_service_directions(bus_service_id, direction, name, description, am_frequency_peak, am_frequency_off_peak, pm_frequency_peak, pm_frequency_off_peak) VALUES (%s, %s, NULL, NULL, %s, %s, %s, %s);\n" % (direction[0], direction[1], direction[3], direction[4], direction[5], direction[6])
+            sql += 'INSERT INTO bus_service_directions(bus_service_id, direction, name, description, am_frequency_peak, am_frequency_off_peak, pm_frequency_peak, pm_frequency_off_peak) VALUES (%s, %s, NULL, NULL, %s, %s, %s, %s);\n' % (direction[0], direction[1], direction[3], direction[4], direction[5], direction[6])
         if bus_service[0][7] != 'NULL':
-            sql += "INSERT INTO bus_service_loops(bus_service_id, loop_street_id) VALUES (%s, %s);\n" % (bus_service[0][0], bus_service[0][7])
+            sql += 'INSERT INTO bus_service_loops(bus_service_id, loop_street_id) VALUES (%s, %s);\n' % (bus_service[0][0], bus_service[0][7])
     return sql
 
 
 def generate_sql_enable_or_disable(bus_service_ids, enable_or_disable):
     sql = ''
     flag = '1' if enable_or_disable == 'BUS_SERVICE_ENABLE' else '0'
-    bus_service_ids_string_wrap_quotes = ', '.join(["'%s'" % bus_service_id for bus_service_id in bus_service_ids])
+    bus_service_ids_string_wrap_quotes = ', '.join(['"%s"' % bus_service_id for bus_service_id in bus_service_ids])
     sql += "UPDATE bus_services SET uses_distance_fares = '%s' WHERE id IN (%s);\n" % (flag, bus_service_ids_string_wrap_quotes)
     sql += "UPDATE bus_routes SET in_operation = '%s' WHERE bus_service_id IN (%s);\n" % (flag, bus_service_ids_string_wrap_quotes)
     return sql
 
 
 def select_missing_bus_service_ids(bus_service_ids):
+    bus_service_ids_string_wrap_quotes = ', '.join(["'%s'" % bus_service_id for bus_service_id in bus_service_ids])
+    sql = "SELECT CONCAT(id) FROM bus_services WHERE id IN (%s);" % bus_service_ids_string_wrap_quotes
 
-    try:
-        bus_service_ids_string_wrap_quotes = ', '.join(["'%s'" % bus_service_id for bus_service_id in bus_service_ids])
+    result = db_util.exec_sql(sql)
 
-        connection = db_util.get_connection()
-        cursor = connection.cursor()
-        cursor.execute("SELECT CONCAT(id) FROM bus_services WHERE id IN (%s);" % bus_service_ids_string_wrap_quotes)
-        result = cursor.fetchall()
-
-        bus_service_ids_found = {bus_service[0] for bus_service in result}
-        bus_service_ids_missing = bus_service_ids - bus_service_ids_found
-
-        cursor.close()
-        db_util.close_connection(connection)
-    except Exception, ex:
-        err_msg = 'An error occurred while select missing bus service ids from DB: %s' % ex
-        _logger.error(err_msg)
-        raise ValueError(err_msg)
+    bus_service_ids_found = {bus_service[0] for bus_service in result}
+    bus_service_ids_missing = bus_service_ids - bus_service_ids_found
 
     return bus_service_ids_missing
 
 
 def select_missing_directions(directions):
+    directions_string_wrap_quotes = ', '.join(["('%s', '%s')" % (direction[0], direction[1]) for direction in directions])
+    sql = "SELECT CONCAT(bus_service_id), CONCAT(direction) FROM bus_service_directions WHERE (bus_service_id, direction) IN (%s);" % directions_string_wrap_quotes
 
-    try:
-        directions_string_wrap_quotes = ', '.join(["('%s', '%s')" % (direction[0], direction[1]) for direction in directions])
+    result = db_util.exec_sql(sql)
 
-        connection = db_util.get_connection()
-        cursor = connection.cursor()
-        cursor.execute("SELECT CONCAT(bus_service_id), CONCAT(direction) FROM bus_service_directions WHERE (bus_service_id, direction) IN (%s);" % directions_string_wrap_quotes)
-        result = cursor.fetchall()
-
-        directions_found = set(result)
-        directions_missing = directions - directions_found
-
-        cursor.close()
-        db_util.close_connection(connection)
-    except Exception, ex:
-        err_msg = 'An error occurred while select missing bus service ids from DB: %s' % ex
-        _logger.error(err_msg)
-        raise ValueError(err_msg)
+    directions_found = set(result)
+    directions_missing = directions - directions_found
 
     return directions_missing
