@@ -9,13 +9,13 @@ _logger = logging.getLogger('default')
 
 def exec_query(sql):
     query = sql
-    return exec_sql(query, 'QUERY')
+    return _exec_sql(query, 'QUERY')
 
 def exec_cmds(sql):
     cmds = [cmd for cmd in sql.split('\n') if cmd]
-    exec_sql(cmds, 'CMDS')
+    _exec_sql(cmds, 'CMDS')
 
-def exec_sql(exec_content, exec_type):
+def _exec_sql(exec_content, exec_type):
     conn = None
     try:
         conn = MySQLdb.connect(config.DB_INFO['HOST'], config.DB_INFO['USER'], config.DB_INFO['PASSWORD'], config.DB_INFO['NAME'], config.DB_INFO['PORT'])

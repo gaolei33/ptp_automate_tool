@@ -43,7 +43,7 @@ def bus_stop_add_or_update(bus_stops, sr_number, method):
     sql = generate_sql(bus_stops_wrap_quotes, method)
 
     # execute the generated SQL on development database
-    db_util.exec_sql(sql)
+    db_util.exec_cmds(sql)
 
     # save SQL string to file
     bus_stop_ids = [bus_stop_info[0] for bus_stop_info in bus_stops]
@@ -69,7 +69,7 @@ def select_bus_stops(bus_stop_ids):
     bus_stop_ids_string_wrap_quotes = ', '.join({"'%s'" % bus_stop_id for bus_stop_id in bus_stop_ids})
     sql = "SELECT CONCAT(id), CONCAT(street_id), CONCAT(long_name), CONCAT(short_name), IF(location_code IS NULL, '', CONCAT(location_code)), CONCAT(is_wab_accessible), CONCAT(is_non_bus_stop), CONCAT(is_interchange) FROM bus_stops WHERE id IN (%s);" % bus_stop_ids_string_wrap_quotes
 
-    result = db_util.exec_sql(sql)
+    result = db_util.exec_query(sql)
 
     bus_stop_ids_found = {bus_stop[0] for bus_stop in result}
     bus_stop_ids_missing = bus_stop_ids - bus_stop_ids_found

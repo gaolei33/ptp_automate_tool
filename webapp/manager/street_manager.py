@@ -17,5 +17,5 @@ def street_search(keyword, keyword_type):
         sql = "select CONCAT(id), CONCAT(short_name), CONCAT(long_name) from streets where id like '%{0}%' limit 100".format(keyword)
     else:
         sql = "select CONCAT(id), CONCAT(short_name), CONCAT(long_name) from streets where short_name like '%{0}%' or long_name like '%{0}%' limit 100".format(keyword)
-    result = db_util.exec_sql(sql)
+    result = db_util.exec_query(sql)
     return result

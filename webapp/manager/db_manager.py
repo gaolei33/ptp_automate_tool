@@ -23,19 +23,19 @@ def backup(sr_number):
     io_util.create_folder_if_not_exists(backup_folder)
 
     current_time = time.strftime('%Y%m%d%H%M%S')
-    backup_name = 'SR_%s_dev_db_backup_%s.sql.gz' % (sr_number, current_time)
+    backup_name = '[%s][DB_BACKUP]%s.sql.gz' % (sr_number, current_time)
     backup_path = os.path.join(backup_folder, backup_name)
     backup_tables_string = ' '.join(config.BACKUP_TABLES)
-    cmd = 'mysqldump -h %s -u %s -p%s %s %s | gzip > %s' % (config.DB_INFO['HOST'], config.DB_INFO['USER'], config.DB_INFO['PASSWORD'], config.DB_INFO['NAME'], backup_tables_string, backup_path)
+    cmd = 'mysqldump --no-autocommit -h %s -u %s -p%s %s %s | gzip > %s' % (config.DB_INFO['HOST'], config.DB_INFO['USER'], config.DB_INFO['PASSWORD'], config.DB_INFO['NAME'], backup_tables_string, backup_path)
 
     error = io_util.exec_cmd(cmd)
 
     if error:
-        err_msg = 'An error occurred while backing up development database: %s' % error
-        _logger.error('Dev DB restore fail: ' + error)
+        err_msg = 'An error occurred while backing up DB: %s' % error
+        _logger.error('DB restore fail: ' + error)
         raise ValueError(err_msg)
 
-    _logger.info('Development database backed up successfully.')
+    _logger.info('DB backed up successfully.')
 
 
 def restore(backup_name):
@@ -52,11 +52,11 @@ def restore(backup_name):
     error = io_util.exec_cmd(cmd)
 
     if error:
-        err_msg = 'An error occurred while restoring development database: %s' % error
-        _logger.error('Dev DB restore fail: ' + error)
+        err_msg = 'An error occurred while restoring DB: %s' % error
+        _logger.error('DB restore fail: ' + error)
         raise ValueError(err_msg)
 
-    _logger.info('Development database restored successfully.')
+    _logger.info('DB restored successfully.')
 
 
 def delete_backup(backup_name):
