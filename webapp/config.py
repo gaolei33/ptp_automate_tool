@@ -40,13 +40,13 @@ MENUS = (
     {'TITLE': 'Bus Route', 'LINK': '/webapp/bus_route/',
         'SUBMENUS': (
             {'TITLE': 'Bus Route NCS', 'LINK': '/webapp/bus_route/bus_route_ncs/'},
-            {'TITLE': 'Bus Route LTA', 'LINK': '/webapp/bus_route/bus_route_lta'},
+            {'TITLE': 'Bus Route LTA', 'LINK': '/webapp/bus_route/bus_route_lta/'},
         )
     },
     {'TITLE': 'SQL', 'LINK': '/webapp/sql/',
         'SUBMENUS': (
             {'TITLE': 'SQL Download', 'LINK': '/webapp/sql/sql_download/'},
-            {'TITLE': 'SQL Delete', 'LINK': '/webapp/sql/sql_delete'},
+            {'TITLE': 'SQL Delete', 'LINK': '/webapp/sql/sql_delete/'},
         )
     },
     {'TITLE': 'Street Search', 'LINK': 'javascript: street_search_toggle();', 'ALIGN': 'right'},

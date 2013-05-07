@@ -11,7 +11,7 @@
             <input class="form-textbox" type="text" name="sr_number" />
         {% else %}
             <label class="form-label">Backup File</label>
-            <select class="form-list-long" name="backup_name">
+            <select class="form-dropdown-list" name="backup_name">
             {% for backup_name in backup_list %}
                 <option value="{{ backup_name }}">{{ backup_name }}</option>
             {% empty %}

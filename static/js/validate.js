@@ -10,7 +10,7 @@ $(function() {
         rules: {
             sr_number: {
                 required: true,
-                number: true
+                digits: true
             },
             backup_name: 'required'
         }
@@ -20,7 +20,7 @@ $(function() {
         rules: {
             sr_number: {
                 required: true,
-                number: true
+                digits: true
             },
             csv_name: 'required',
             csv_file: 'required'
@@ -31,7 +31,7 @@ $(function() {
         rules: {
             sr_number: {
                 required: true,
-                number: true
+                digits: true
             },
             csv_name: 'required',
             bus_stop_ids: 'required'
@@ -43,7 +43,7 @@ $(function() {
     $('input[name^=street_id]').each(function() {
         bus_stop_detail_rules[$(this).attr('name')] = {
             required: true,
-            number: true
+            digits: true
         };
     });
 
@@ -55,33 +55,6 @@ $(function() {
         bus_stop_detail_rules[$(this).attr('name')] = 'required';
     });
 
-    $('input[name^=wab_accessible]').each(function() {
-        bus_stop_detail_rules[$(this).attr('name')] = {
-            required: true,
-            number: true,
-            rangelength: [1, 1],
-            range: [0, 1]
-        };
-    });
-
-    $('input[name^=non_bus_stop]').each(function() {
-        bus_stop_detail_rules[$(this).attr('name')] = {
-            required: true,
-            number: true,
-            rangelength: [1, 1],
-            range: [0, 1]
-        };
-    });
-
-    $('input[name^=interchange]').each(function() {
-        bus_stop_detail_rules[$(this).attr('name')] = {
-            required: true,
-            number: true,
-            rangelength: [1, 1],
-            range: [0, 1]
-        };
-    });
-
     $('#bus_stop_detail_form').validate({
         rules: bus_stop_detail_rules
     });
@@ -90,7 +63,7 @@ $(function() {
         rules: {
             sr_number: {
                 required: true,
-                number: true
+                digits: true
             },
             csv_name: 'required',
             bus_service_ids: 'required'
@@ -101,7 +74,7 @@ $(function() {
         rules: {
             sr_number: {
                 required: true,
-                number: true
+                digits: true
             },
             csv_name: 'required',
             bus_service_ids: 'required'

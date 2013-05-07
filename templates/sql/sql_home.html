@@ -7,7 +7,7 @@
         <input type="hidden" name="method" value="{{ method }}">
         <div class="form-row">
             <label class="form-label">SQL Name</label>
-            <select class="form-list-long" name="sql_name">
+            <select class="form-dropdown-list" name="sql_name">
             {% for sql_name in sql_list %}
                 <option value="{{ sql_name }}">{{ sql_name }}</option>
             {% empty %}
