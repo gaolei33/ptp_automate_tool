@@ -33,10 +33,10 @@ def bus_stop_detail(request):
             bus_stops = bus_stop_manager.get_bus_stops_from_csv(csv_name, bus_stop_ids)
         else:
             bus_stops = bus_stop_manager.get_bus_stops_from_db(bus_stop_ids)
-    except KeyError, ex:
+    except ValueError, ex:
         messages.error(request, ex)
         return render(request, 'common/result.html')
-    except ValueError, ex:
+    except Exception, ex:
         messages.error(request, ex)
         return render(request, 'common/result.html')
     return render(request, 'bus_stop/bus_stop_detail.html', {
@@ -71,10 +71,10 @@ def bus_stop_handler(request):
 
         messages.info(request, 'SQL generated and executed on development database successfully.')
         context_dict = {'sql_name': sql_name}
-    except KeyError, ex:
+    except ValueError, ex:
         messages.error(request, ex)
         context_dict = None
-    except ValueError, ex:
+    except Exception, ex:
         messages.error(request, ex)
         context_dict = None
     return render(request, 'common/result.html', context_dict)

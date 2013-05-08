@@ -8,19 +8,19 @@ urlpatterns = patterns('',
     url(r'^$', RedirectView.as_view(url='/webapp/db/')),
 )
 
-urlpatterns += patterns('webapp.view.csv_view',
-    url(r'^csv/$', RedirectView.as_view(url='/webapp/csv/csv_upload/')),
-    url(r'^csv/csv_upload/$', 'csv_home', {'method': 'CSV_UPLOAD', 'description': 'CSV Upload'}),
-    url(r'^csv/csv_delete/$', 'csv_home', {'method': 'CSV_DELETE', 'description': 'CSV Delete'}),
-    url(r'^csv/csv_handler/$', 'csv_handler'),
-)
-
 urlpatterns += patterns('webapp.view.db_view',
     url(r'^db/$', RedirectView.as_view(url='/webapp/db/db_backup/')),
     url(r'^db/db_backup/$', 'db_home', {'method': 'DB_BACKUP', 'description': 'DB Backup'}),
     url(r'^db/db_restore/$', 'db_home', {'method': 'DB_RESTORE', 'description': 'DB Restore'}),
     url(r'^db/db_backup_delete/$', 'db_home', {'method': 'DB_BACKUP_DELETE', 'description': 'DB Backup Delete'}),
     url(r'^db/db_handler/$', 'db_handler'),
+)
+
+urlpatterns += patterns('webapp.view.csv_view',
+    url(r'^csv/$', RedirectView.as_view(url='/webapp/csv/csv_upload/')),
+    url(r'^csv/csv_upload/$', 'csv_home', {'method': 'CSV_UPLOAD', 'description': 'CSV Upload'}),
+    url(r'^csv/csv_delete/$', 'csv_home', {'method': 'CSV_DELETE', 'description': 'CSV Delete'}),
+    url(r'^csv/csv_handler/$', 'csv_handler'),
 )
 
 urlpatterns += patterns('webapp.view.bus_stop_view',
@@ -40,8 +40,8 @@ urlpatterns += patterns('webapp.view.bus_service_view',
 
 urlpatterns += patterns('webapp.view.bus_route_view',
     url(r'^bus_route/$', RedirectView.as_view(url='/webapp/bus_route/bus_route_ncs/')),
-    url(r'^bus_route/bus_route_ncs/$', 'bus_route_home', {'csv_type': 'BUS_ROUTE_NCS', 'description': 'Bus Route NCS Add / Update'}),
-    url(r'^bus_route/bus_route_lta/$', 'bus_route_home', {'csv_type': 'BUS_ROUTE_LTA', 'description': 'Bus Route LTA Add / Update'}),
+    url(r'^bus_route/bus_route_ncs/$', 'bus_route_home', {'method': 'BUS_ROUTE_NCS', 'description': 'Bus Route NCS Add / Update'}),
+    url(r'^bus_route/bus_route_lta/$', 'bus_route_home', {'method': 'BUS_ROUTE_LTA', 'description': 'Bus Route LTA Add / Update'}),
     url(r'^bus_route/bus_route_handler/$', 'bus_route_handler'),
 )
 

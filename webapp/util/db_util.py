@@ -34,7 +34,7 @@ def _exec_sql(exec_content, exec_type):
         # rollback db if error occurred while executing SQLs
         if conn:
             conn.rollback()
-        err_msg = 'An error occurred while executing SQL: %s, you\'d better restore development database before next steps.' % ex
+        err_msg = 'An error occurred while executing SQL: %s, DB has been rollbacked.' % ex
         _logger.error(err_msg)
         raise ValueError(err_msg)
     finally:

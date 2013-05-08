@@ -56,13 +56,6 @@ ROOT = '/home/jonathan/Desktop/ptp_automate_tool'
 
 CSV_FOLDER = os.path.join(ROOT, 'csv')
 
-# CSV_FOLDERS = {
-#     'BUS_STOP': os.path.join(CSV_ROOT, 'BUS_STOP'),
-#     'BUS_SERVICE': os.path.join(CSV_ROOT, 'BUS_SERVICE'),
-#     'BUS_ROUTE_NCS': os.path.join(CSV_ROOT, 'BUS_ROUTE_NCS'),
-#     'BUS_ROUTE_LTA': os.path.join(CSV_ROOT, 'BUS_ROUTE_LTA'),
-# }
-
 BACKUP_FOLDER = os.path.join(ROOT, 'backup')
 
 BACKUP_TABLES = (
@@ -71,6 +64,7 @@ BACKUP_TABLES = (
     'bus_service_directions',
     'bus_service_loops',
     'bus_routes',
+    'bus_route_polylines',
 )
 
 SQL_FOLDER = os.path.join(ROOT, 'sql')

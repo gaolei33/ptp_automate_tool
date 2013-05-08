@@ -31,16 +31,15 @@ def backup(sr_number):
     error = io_util.exec_cmd(cmd)
 
     if error:
-        err_msg = 'An error occurred while backing up DB: %s' % error
-        _logger.error('DB restore fail: ' + error)
+        err_msg = 'An error occurred while backuping DB: %s' % error
+        _logger.error(err_msg)
         raise ValueError(err_msg)
 
-    _logger.info('DB backed up successfully.')
+    _logger.info('DB backuped successfully.')
 
 
 def restore(backup_name):
-    backup_folder = config.BACKUP_FOLDER
-    backup_path = os.path.join(backup_folder, backup_name)
+    backup_path = os.path.join(config.BACKUP_FOLDER, backup_name)
 
     if not os.path.exists(backup_path):
         err_msg = 'Backup file does not exist: %s' % backup_path
@@ -53,7 +52,7 @@ def restore(backup_name):
 
     if error:
         err_msg = 'An error occurred while restoring DB: %s' % error
-        _logger.error('DB restore fail: ' + error)
+        _logger.error(err_msg)
         raise ValueError(err_msg)
 
     _logger.info('DB restored successfully.')

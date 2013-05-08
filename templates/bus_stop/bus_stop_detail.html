@@ -2,7 +2,7 @@
 {% block title %}Bus Stop Detail{% endblock %}
 {% block content %}
 <div class="form">
-    <form action="/webapp/bus_stop/bus_stop_handler/" method="post" id="bus_stop_detail_form">
+    <form action="/webapp/bus_stop/bus_stop_handler/" method="post" id="BUS_STOP_DETAIL_FORM">
         {% csrf_token %}
         <input type="hidden" name="method" value="{{ method }}" />
         <input type="hidden" name="sr_number" value="{{ sr_number }}" />

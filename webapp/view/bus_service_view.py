@@ -35,10 +35,10 @@ def bus_service_handler(request):
 
         messages.info(request, 'SQL generated and executed on development database successfully.')
         context_dict = {'sql_name': sql_name}
-    except KeyError, ex:
+    except ValueError, ex:
         messages.error(request, ex)
         context_dict = None
-    except ValueError, ex:
+    except Exception, ex:
         messages.error(request, ex)
         context_dict = None
     return render(request, 'common/result.html', context_dict)

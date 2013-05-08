@@ -2,7 +2,7 @@
 {% block title %}{{ description }}{% endblock %}
 {% block content %}
 <div class="form">
-    <form action="/webapp/csv/csv_handler/" enctype="multipart/form-data" method="post" id="csv_form">
+    <form action="/webapp/csv/csv_handler/" enctype="multipart/form-data" method="post" id="{{ method }}_FORM">
         {% csrf_token %}
         <input type="hidden" name="method" value="{{ method }}">
         {% if method == 'CSV_UPLOAD' %}

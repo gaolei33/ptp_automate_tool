@@ -1,6 +1,4 @@
-import json
 from django.contrib import messages
-from django.http.response import HttpResponse, Http404
 from django.shortcuts import render
 from webapp.manager import csv_manager
 
@@ -28,16 +26,14 @@ def csv_handler(request):
             csv_manager.save_csv(csv_file, csv_type, sr_number)
 
             messages.info(request, 'CSV file uploaded successfully.')
-        elif method == 'CSV_DELETE':
+        else:
             csv_name = request.POST['csv_name'].strip()
             if not csv_name:
                 raise ValueError('Please select a valid CSV file to delete.')
             csv_manager.delete(csv_name)
             messages.info(request, 'CSV file deleted successfully.')
-        else:
-            messages.error(request, 'Invalid Operation.')
-    except KeyError, ex:
-        messages.error(request, ex)
     except ValueError, ex:
+        messages.error(request, ex)
+    except Exception, ex:
         messages.error(request, ex)
     return render(request, 'common/result.html')

@@ -35,8 +35,8 @@ def sql_handler(request):
             messages.info(request, 'SQL file deleted successfully.')
         else:
             messages.error(request, 'Invalid Operation.')
-    except KeyError, ex:
-        messages.error(request, ex)
     except ValueError, ex:
+        messages.error(request, ex)
+    except Exception, ex:
         messages.error(request, ex)
     return render(request, 'common/result.html')

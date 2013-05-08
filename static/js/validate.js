@@ -5,38 +5,20 @@
  */
 
 
+function validate(form_id, rules, need_confirm) {
+    $('#' + form_id).validate({
+        rules: rules,
+        submitHandler: function(form) {
+            if (need_confirm && !(confirm('Are you sure to proceed?'))) {
+                return;
+            }
+            form.submit();
+        }
+    });
+}
+
+
 $(function() {
-    $('#db_form').validate({
-        rules: {
-            sr_number: {
-                required: true,
-                digits: true
-            },
-            backup_name: 'required'
-        }
-    });
-
-    $('#csv_form').validate({
-        rules: {
-            sr_number: {
-                required: true,
-                digits: true
-            },
-            csv_name: 'required',
-            csv_file: 'required'
-        }
-    });
-
-    $('#bus_stop_form').validate({
-        rules: {
-            sr_number: {
-                required: true,
-                digits: true
-            },
-            csv_name: 'required',
-            bus_stop_ids: 'required'
-        }
-    });
 
     var bus_stop_detail_rules = {};
 
@@ -55,11 +37,70 @@ $(function() {
         bus_stop_detail_rules[$(this).attr('name')] = 'required';
     });
 
-    $('#bus_stop_detail_form').validate({
-        rules: bus_stop_detail_rules
-    });
-
-    $('#bus_service_form').validate({
+    rules_set = [{
+        form_id: 'DB_BACKUP_FORM',
+        rules: {
+            sr_number: {
+                required: true,
+                digits: true
+            }
+        },
+        need_confirm: false
+    }, {
+        form_id: 'DB_RESTORE_FORM',
+        rules: {
+            backup_name: 'required'
+        },
+        need_confirm: true
+    }, {
+        form_id: 'DB_BACKUP_DELETE_FORM',
+        rules: {
+            backup_name: 'required'
+        },
+        need_confirm: true
+    }, {
+        form_id: 'CSV_UPLOAD_FORM',
+        rules: {
+            sr_number: {
+                required: true,
+                digits: true
+            },
+            csv_file: 'required'
+        },
+        need_confirm: false
+    }, {
+        form_id: 'CSV_DELETE_FORM',
+        rules: {
+            csv_name: 'required'
+        },
+        need_confirm: true
+    }, {
+        form_id: 'BUS_STOP_ADD_FORM',
+        rules: {
+            sr_number: {
+                required: true,
+                digits: true
+            },
+            csv_name: 'required',
+            bus_stop_ids: 'required'
+        },
+        need_confirm: false
+    }, {
+        form_id: 'BUS_STOP_UPDATE_FORM',
+        rules: {
+            sr_number: {
+                required: true,
+                digits: true
+            },
+            bus_stop_ids: 'required'
+        },
+        need_confirm: false
+    }, {
+        form_id: 'BUS_STOP_DETAIL_FORM',
+        rules: bus_stop_detail_rules,
+        need_confirm: false
+    }, {
+        form_id: 'BUS_SERVICE_ADD_OR_UPDATE_FORM',
         rules: {
             sr_number: {
                 required: true,
@@ -67,10 +108,20 @@ $(function() {
             },
             csv_name: 'required',
             bus_service_ids: 'required'
-        }
-    });
-
-    $('#bus_route_form').validate({
+        },
+        need_confirm: false
+    }, {
+        form_id: 'BUS_SERVICE_ENABLE_OR_DISABLE_FORM',
+        rules: {
+            sr_number: {
+                required: true,
+                digits: true
+            },
+            bus_service_ids: 'required'
+        },
+        need_confirm: false
+    }, {
+        form_id: 'BUS_ROUTE_NCS_FORM',
         rules: {
             sr_number: {
                 required: true,
@@ -78,12 +129,35 @@ $(function() {
             },
             csv_name: 'required',
             bus_service_ids: 'required'
-        }
-    });
-    
-    $('#sql_form').validate({
+        },
+        need_confirm: false
+    }, {
+        form_id: 'BUS_ROUTE_LTA_FORM',
+        rules: {
+            sr_number: {
+                required: true,
+                digits: true
+            },
+            csv_name: 'required',
+            bus_service_ids: 'required'
+        },
+        need_confirm: false
+    }, {
+        form_id: 'SQL_DOWNLOAD_FORM',
+        rules: {
+
+        },
+        need_confirm: false
+    }, {
+        form_id: 'SQL_DELETE_FORM',
         rules: {
             sql_name: 'required'
-        }
+        },
+        need_confirm: false
+    }];
+
+    $(rules_set).each(function() {
+        validate(this.form_id, this.rules, this.need_confirm);
     });
+
 });

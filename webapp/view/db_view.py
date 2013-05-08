@@ -20,23 +20,23 @@ def db_handler(request):
         if method == 'DB_BACKUP':
             sr_number = request.POST['sr_number'].strip() or 'Unknown'
             db_manager.backup(sr_number)
-            messages.info(request, 'Development Database backed up successfully.')
+            messages.info(request, 'DB backuped successfully.')
         elif method == 'DB_RESTORE':
             backup_name = request.POST['backup_name'].strip()
             if not backup_name:
                 raise ValueError('Please select a valid DB backup file.')
             db_manager.restore(backup_name)
-            messages.info(request, 'Development database restored successfully.')
+            messages.info(request, 'DB restored successfully.')
         elif method == 'DB_BACKUP_DELETE':
             backup_name = request.POST['backup_name'].strip()
             if not backup_name:
                 raise ValueError('Please select a valid DB backup file.')
             db_manager.delete_backup(backup_name)
-            messages.info(request, 'DB Backup file deleted successfully.')
+            messages.info(request, 'DB backup file deleted successfully.')
         else:
             messages.error(request, 'Invalid Operation.')
-    except KeyError, ex:
-        messages.error(request, ex)
     except ValueError, ex:
+        messages.error(request, ex)
+    except Exception, ex:
         messages.error(request, ex)
     return render(request, 'common/result.html')
