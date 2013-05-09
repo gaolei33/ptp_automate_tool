@@ -11,6 +11,27 @@ DB_INFO = {
     'PASSWORD': '880428'
 }
 
+HOST = '10.70.194.184'
+
+ROOT = '/home/jonathan/Desktop/ptp_automate_tool'
+
+LOG_FILE_PATH = os.path.join(ROOT, 'log/ptp_automate_tool.log')
+
+CSV_FOLDER = os.path.join(ROOT, 'csv')
+
+BACKUP_FOLDER = os.path.join(ROOT, 'backup')
+
+BACKUP_TABLES = (
+    'bus_stops',
+    'bus_services',
+    'bus_service_directions',
+    'bus_service_loops',
+    'bus_routes',
+    'bus_route_polylines',
+)
+
+SQL_FOLDER = os.path.join(ROOT, 'sql')
+
 MENUS = (
     {'TITLE': 'DB', 'LINK': '/webapp/db/',
         'SUBMENUS': (
@@ -51,24 +72,6 @@ MENUS = (
     },
     {'TITLE': 'Street Search', 'LINK': 'javascript: street_search_toggle();', 'ALIGN': 'right'},
 )
-
-ROOT = '/home/jonathan/Desktop/ptp_automate_tool'
-
-CSV_FOLDER = os.path.join(ROOT, 'csv')
-
-BACKUP_FOLDER = os.path.join(ROOT, 'backup')
-
-BACKUP_TABLES = (
-    'bus_stops',
-    'bus_services',
-    'bus_service_directions',
-    'bus_service_loops',
-    'bus_routes',
-    'bus_route_polylines',
-)
-
-SQL_FOLDER = os.path.join(ROOT, 'sql')
-
 
 def my_context_processor(request):
     return {

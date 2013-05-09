@@ -153,7 +153,7 @@ $(function() {
         rules: {
             sql_name: 'required'
         },
-        need_confirm: false
+        need_confirm: true
     }];
 
     $(rules_set).each(function() {
