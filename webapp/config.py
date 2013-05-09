@@ -6,16 +6,14 @@ __author__ = 'Gao Lei'
 DB_INFO = {
     'HOST': '127.0.0.1',
     'PORT': 3306,
-    'NAME': 'test',
+    'NAME': 'ptp_automate_tool_test',
     'USER': 'root',
-    'PASSWORD': '880428'
+    'PASSWORD': '880428',
 }
-
-HOST = '10.70.194.184'
 
 ROOT = '/home/jonathan/Desktop/ptp_automate_tool'
 
-LOG_FILE_PATH = os.path.join(ROOT, 'log/ptp_automate_tool.log')
+# LOG_FILE_PATH = os.path.join(ROOT, 'log', 'ptp_automate_tool.log')
 
 CSV_FOLDER = os.path.join(ROOT, 'csv')
 

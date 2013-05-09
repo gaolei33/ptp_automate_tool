@@ -1,7 +1,7 @@
 # Django settings for ptp_automate_tool project.
 
 import os
-from webapp import config
+import socket
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -26,7 +26,12 @@ DATABASES = {
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', config.HOST]
+def getNetworkIp():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(('google.com', 0))
+    return s.getsockname()[0]
+
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', getNetworkIp()]
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -151,16 +156,16 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'default'
         },
-        'file': {
-            'level': 'INFO',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': config.LOG_FILE_PATH,
-            'formatter': 'default',
-        },
+        # 'file': {
+        #     'level': 'INFO',
+        #     'class': 'logging.handlers.RotatingFileHandler',
+        #     'filename': config.LOG_FILE_PATH,
+        #     'formatter': 'default',
+        # },
     },
     'loggers': {
         'default': {
-            'handlers': ['console', 'file'],
+            'handlers': ['console'],
             'level': 'INFO',
             'propagate': False,
         },
