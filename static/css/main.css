@@ -57,6 +57,7 @@ a:hover {
 }
 
 #menu .menu-link:hover, #menu .submenu-link:hover {
+    color: #FFF;
     background: #222;
 }
 
