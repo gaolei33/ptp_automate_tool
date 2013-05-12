@@ -2,6 +2,7 @@ import logging
 import os
 import time
 from webapp import config
+from webapp.exceptions import PTPValueError
 from webapp.util import io_util
 
 __author__ = 'Gao Lei'
@@ -19,7 +20,7 @@ def save_sql(sql_name, sql):
     except Exception, ex:
         err_msg = 'An error occurred while saving SQL to file: %s' % ex
         _logger.error(err_msg)
-        raise ValueError(err_msg)
+        raise PTPValueError(err_msg)
 
 
 def get_sql(sql_name):
@@ -28,14 +29,14 @@ def get_sql(sql_name):
     if not os.path.exists(sql_path):
         err_msg = 'SQL file does not exist: %s' % sql_path
         _logger.error(err_msg)
-        raise ValueError(err_msg)
+        raise PTPValueError(err_msg)
 
     try:
         sql_file = file(sql_path)
     except Exception, ex:
         err_msg = 'An error occurred while reading SQL file: %s: %s' % (sql_path, ex)
         _logger.error(err_msg)
-        raise ValueError(err_msg)
+        raise PTPValueError(err_msg)
 
     return sql_file
 

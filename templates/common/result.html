@@ -2,10 +2,10 @@
 {% block title %}Result{% endblock %}
 {% block content %}
 {% include 'common/messages.html' %}
-{% if sql_name %}
+{% if request.ATTRIBUTES.sql_name %}
     <div>
         <label class="form-label">SQL Download : </label>
-        <a href="/webapp/sql/sql_handler/?method=SQL_DOWNLOAD&sql_name={{ sql_name }}">{{ sql_name }}</a>
+        <a href="/webapp/sql/sql_handler/?method=SQL_DOWNLOAD&sql_name={{ request.ATTRIBUTES.sql_name }}">{{ request.ATTRIBUTES.sql_name }}</a>
     </div>
 {% endif %}
 {% endblock %}

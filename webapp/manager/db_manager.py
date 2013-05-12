@@ -2,6 +2,7 @@ import logging
 import os
 import time
 from webapp import config
+from webapp.exceptions import PTPValueError
 from webapp.util import io_util
 
 __author__ = 'jonathan'
@@ -33,7 +34,7 @@ def backup(sr_number):
     if error:
         err_msg = 'An error occurred while backuping DB: %s' % error
         _logger.error(err_msg)
-        raise ValueError(err_msg)
+        raise PTPValueError(err_msg)
 
     _logger.info('DB backuped successfully.')
 
@@ -44,7 +45,7 @@ def restore(backup_name):
     if not os.path.exists(backup_path):
         err_msg = 'Backup file does not exist: %s' % backup_path
         _logger.error(err_msg)
-        raise ValueError(err_msg)
+        raise PTPValueError(err_msg)
 
     cmd = 'gunzip < %s | mysql -h %s -u %s -p%s %s' % (backup_path, config.DB_INFO['HOST'], config.DB_INFO['USER'], config.DB_INFO['PASSWORD'], config.DB_INFO['NAME'])
 
@@ -53,7 +54,7 @@ def restore(backup_name):
     if error:
         err_msg = 'An error occurred while restoring DB: %s' % error
         _logger.error(err_msg)
-        raise ValueError(err_msg)
+        raise PTPValueError(err_msg)
 
     _logger.info('DB restored successfully.')
 

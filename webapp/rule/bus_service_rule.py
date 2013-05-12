@@ -1,4 +1,5 @@
 import logging
+from webapp.exceptions import PTPValueError
 from webapp.manager import street_manager
 from webapp.rule.rule import BaseRule
 
@@ -19,7 +20,7 @@ class BusServiceRule(BaseRule):
             if not target_loop_street_id:
                 err_msg = 'Cannot find the loop street id for: %s' % origin_loop_street_name
                 _logger.error(err_msg)
-                raise ValueError(err_msg)
+                raise PTPValueError(err_msg)
         else:
             target_loop_street_id = 'NULL'
         return target_loop_street_id
@@ -37,7 +38,7 @@ class BusServiceRule(BaseRule):
                 if len(origin_direction) < 10:
                     err_msg = 'CSV columns must be more than 10.'
                     _logger.error(err_msg)
-                    raise ValueError(err_msg)
+                    raise PTPValueError(err_msg)
 
                 for i in range(0, 10):
                     if i == 9:

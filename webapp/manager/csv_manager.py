@@ -2,6 +2,7 @@ import logging
 import os
 import re
 from webapp import config
+from webapp.exceptions import PTPValueError
 from webapp.util import io_util
 
 __author__ = 'Gao Lei'
@@ -77,7 +78,7 @@ def retrieve_data_from_csv(csv_name, csv_type, filter_id):
     except Exception, ex:
         err_msg = 'An error occurred while retrieving data from CSV %s: %s' % (csv_path, ex)
         _logger.error(err_msg)
-        raise ValueError(err_msg)
+        raise PTPValueError(err_msg)
     return data
 
 

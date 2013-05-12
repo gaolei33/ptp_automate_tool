@@ -1,4 +1,5 @@
 import logging
+from webapp.exceptions import PTPValueError
 
 __author__ = 'Gao Lei'
 
@@ -15,5 +16,5 @@ def wrap_quotes_except_null(origin_obj):
         except:
             err_msg = 'An error occurred while wrapping quotes for SQL generation: data must be strings.'
             _logger.error(err_msg)
-            raise ValueError(err_msg)
+            raise PTPValueError(err_msg)
     return target_obj

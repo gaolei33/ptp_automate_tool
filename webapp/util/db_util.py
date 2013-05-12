@@ -1,6 +1,7 @@
 import logging
 import MySQLdb
 from webapp import config
+from webapp.exceptions import PTPDatabaseError
 
 __author__ = 'Gao Lei'
 
@@ -16,9 +17,8 @@ def exec_cmds(sql):
     _exec_sql(cmds, 'CMDS')
 
 def _exec_sql(exec_content, exec_type):
-    conn = None
+    conn = MySQLdb.connect(config.DB_INFO['HOST'], config.DB_INFO['USER'], config.DB_INFO['PASSWORD'], config.DB_INFO['NAME'], config.DB_INFO['PORT'])
     try:
-        conn = MySQLdb.connect(config.DB_INFO['HOST'], config.DB_INFO['USER'], config.DB_INFO['PASSWORD'], config.DB_INFO['NAME'], config.DB_INFO['PORT'])
         cur = conn.cursor()
         if exec_type == 'QUERY':
             cur.execute(exec_content)
@@ -36,7 +36,7 @@ def _exec_sql(exec_content, exec_type):
             conn.rollback()
         err_msg = 'An error occurred while executing SQL: %s, DB has been rollbacked.' % ex
         _logger.error(err_msg)
-        raise ValueError(err_msg)
+        raise PTPDatabaseError(err_msg)
     finally:
         if conn:
             conn.close()

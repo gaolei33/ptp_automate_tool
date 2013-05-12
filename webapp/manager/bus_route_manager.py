@@ -1,4 +1,5 @@
 import logging
+from webapp.exceptions import PTPValueError
 from webapp.manager import csv_manager, sql_manager, bus_stop_manager, bus_service_manager
 from webapp.rule.bus_route_rule import BusRouteNCSRule, BusRouteLTARule
 from webapp.util import db_util, string_util
@@ -15,7 +16,7 @@ def bus_route_add_or_update(csv_name, method, bus_service_ids, sr_number):
     if new_bus_service_ids:
         err_msg = 'Bus routes of %d bus services cannot be found in %s : %s' % (len(new_bus_service_ids), csv_name, ','.join(new_bus_service_ids))
         _logger.error(err_msg)
-        raise ValueError(err_msg)
+        raise PTPValueError(err_msg)
 
     # auto amend and complete bus route data
     rule = BusRouteNCSRule(bus_routes) if method == 'BUS_ROUTE_NCS' else BusRouteLTARule(bus_routes)
@@ -28,7 +29,7 @@ def bus_route_add_or_update(csv_name, method, bus_service_ids, sr_number):
         new_directions_string = ','.join({'(%s,%s)' % (direction[0], direction[1]) for direction in new_directions})
         err_msg = '%d new directions need to be created : %s' % (len(new_directions), new_directions_string)
         _logger.error(err_msg)
-        raise ValueError(err_msg)
+        raise PTPValueError(err_msg)
 
     # new bus stops check
     bus_stop_ids = {route[3] for bus_route in bus_routes_after_rules for route in bus_route}
@@ -36,7 +37,7 @@ def bus_route_add_or_update(csv_name, method, bus_service_ids, sr_number):
     if new_bus_stop_ids:
         err_msg = '%s new bus stops need to be created : %s' % (len(new_bus_stop_ids), ','.join(new_bus_stop_ids))
         _logger.error(err_msg)
-        raise ValueError(err_msg)
+        raise PTPValueError(err_msg)
 
     # wrap quotes for SQL generation
     bus_routes_wrap_quotes = string_util.wrap_quotes_except_null(bus_routes_after_rules)

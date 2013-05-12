@@ -1,4 +1,5 @@
 import logging
+from webapp.exceptions import PTPValueError
 from webapp.rule.bus_stop_rule import BusStopRule
 from webapp.util import db_util, string_util
 from webapp.manager import csv_manager, sql_manager
@@ -15,7 +16,7 @@ def get_bus_stops_from_csv(csv_name, bus_stop_ids):
     if bus_stop_ids_missing:
         err_msg = '%d bus stops cannot be found in %s : %s' % (len(bus_stop_ids_missing), csv_name, ','.join(bus_stop_ids_missing))
         _logger.error(err_msg)
-        raise ValueError(err_msg)
+        raise PTPValueError(err_msg)
     # auto amend and complete bus stop data
     rule = BusStopRule(bus_stops)
     bus_stops_after_rules = rule.execute_rules()
@@ -30,7 +31,7 @@ def get_bus_stops_from_db(bus_stop_ids):
     if bus_stop_ids_missing:
         err_msg = '%d bus stops cannot be found in DB : %s' % (len(bus_stop_ids_missing), ','.join(bus_stop_ids_missing))
         _logger.error(err_msg)
-        raise ValueError(err_msg)
+        raise PTPValueError(err_msg)
 
     return bus_stops
 

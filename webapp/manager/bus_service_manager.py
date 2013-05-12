@@ -1,4 +1,5 @@
 import logging
+from webapp.exceptions import PTPValueError
 from webapp.manager import csv_manager, sql_manager
 from webapp.rule.bus_service_rule import BusServiceRule
 from webapp.util import db_util, string_util
@@ -15,7 +16,7 @@ def bus_service_add_or_update(csv_name, bus_service_ids, sr_number):
     if bus_service_ids_missing:
         err_msg = '%d bus services cannot be found in %s : %s' % (len(bus_service_ids_missing), csv_name, ','.join(bus_service_ids_missing))
         _logger.error(err_msg)
-        raise ValueError(err_msg)
+        raise PTPValueError(err_msg)
     # auto amend and complete bus service data
     rule = BusServiceRule(bus_services)
     bus_services_after_rules = rule.execute_rules()
@@ -47,7 +48,7 @@ def bus_service_enable_or_disable(bus_service_ids, enable_or_disable, sr_number)
     if bus_service_ids_missing:
         err_msg = '%d bus services cannot be found in DB : %s' % (len(bus_service_ids_missing), ','.join(bus_service_ids_missing))
         _logger.error(err_msg)
-        raise ValueError(err_msg)
+        raise PTPValueError(err_msg)
 
     # generate SQL string
     sql = generate_sql_enable_or_disable(bus_service_ids, enable_or_disable)
@@ -72,7 +73,7 @@ def get_operator_from_csv_name(csv_name):
     if not operator:
         err_msg = 'Operator name cannot be found in the name of CSV file : %s' % (csv_name)
         _logger.error(err_msg)
-        raise ValueError(err_msg)
+        raise PTPValueError(err_msg)
     return operator
 
 

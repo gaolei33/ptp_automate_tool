@@ -1,4 +1,5 @@
 import logging
+from webapp.exceptions import PTPValueError
 from webapp.manager import street_manager
 from webapp.rule.rule import BaseRule
 
@@ -18,7 +19,7 @@ class BusStopRule(BaseRule):
         if not target_street_id:
             err_msg = 'Cannot find the street id for: %s' % target_street_id
             _logger.error(err_msg)
-            raise ValueError(err_msg)
+            raise PTPValueError(err_msg)
         return target_street_id
 
     def _non_bus_stop_and_wab_rule(self, origin_bus_stop_id):
@@ -37,7 +38,7 @@ class BusStopRule(BaseRule):
             if len(origin_bus_stop) < 3:
                 err_msg = 'CSV columns must be more than 3.'
                 _logger.error(err_msg)
-                raise ValueError(err_msg)
+                raise PTPValueError(err_msg)
 
             target_bus_stop = []
 

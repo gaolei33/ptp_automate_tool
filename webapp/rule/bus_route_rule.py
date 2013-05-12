@@ -1,5 +1,6 @@
 import logging
 import re
+from webapp.exceptions import PTPValueError
 from webapp.rule.rule import BaseRule
 
 __author__ = 'Gao Lei'
@@ -33,7 +34,7 @@ class BusRouteRule(BaseRule):
                 if sequences[i] != str(i + 1):
                     err_msg = 'Sequence error : bus service %s direction %s sequence %s' % (origin_bus_route[0][0], direction, sequences[i])
                     _logger.error(err_msg)
-                    raise ValueError(err_msg)
+                    raise PTPValueError(err_msg)
 
 
 class BusRouteNCSRule(BusRouteRule):
@@ -69,7 +70,7 @@ class BusRouteNCSRule(BusRouteRule):
                 if len(origin_row) < 12:
                     err_msg = 'BUS_ROUTE_NCS CSV columns must be more than 12.'
                     _logger.error(err_msg)
-                    raise ValueError(err_msg)
+                    raise PTPValueError(err_msg)
 
                 target_row = []
 
@@ -131,7 +132,7 @@ class BusRouteLTARule(BusRouteRule):
                 if len(origin_row) < 7:
                     err_msg = 'BUS_ROUTE_LTA CSV columns must be more than 7.'
                     _logger.error(err_msg)
-                    raise ValueError(err_msg)
+                    raise PTPValueError(err_msg)
 
                 target_row = []
 

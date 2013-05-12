@@ -1,6 +1,7 @@
 import logging
 import os
 import subprocess
+from webapp.exceptions import PTPValueError
 
 __author__ = 'Gao Lei'
 
@@ -15,7 +16,7 @@ def create_folder_if_not_exists(folder):
         except Exception, ex:
             err_msg = 'An error occurred while creating folder %s: %s' % (folder, ex)
             _logger.error(err_msg)
-            raise ValueError(err_msg)
+            raise PTPValueError(err_msg)
 
 
 def write_to_file(file_path, obj):
@@ -34,20 +35,20 @@ def write_to_file(file_path, obj):
     except Exception, ex:
             err_msg = 'An error occurred while writing file %s: %s' % (file_path, ex)
             _logger.error(err_msg)
-            raise ValueError(err_msg)
+            raise PTPValueError(err_msg)
 
 
 def delete_file(file_path):
     if not os.path.exists(file_path):
         err_msg = 'File does not exist: %s' % file_path
         _logger.error(err_msg)
-        raise ValueError(err_msg)
+        raise PTPValueError(err_msg)
     try:
         os.remove(file_path)
     except Exception, ex:
         err_msg = 'An error occurred while deleting file %s: %s' % (file_path, ex)
         _logger.error(err_msg)
-        raise ValueError(err_msg)
+        raise PTPValueError(err_msg)
 
 
 def exec_cmd(cmd):
