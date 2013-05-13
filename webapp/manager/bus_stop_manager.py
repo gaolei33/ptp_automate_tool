@@ -12,7 +12,7 @@ _logger = logging.getLogger('default')
 def get_bus_stops_from_csv(csv_name, bus_stop_ids):
     # retrieve data from CSV
     bus_stops, bus_stop_ids_missing = csv_manager.retrieve_multiple_data_from_csv(csv_name, 'BUS_STOP', bus_stop_ids)
-    # incorrect bus stop check
+    # raise exception if bus stop cannot be found in CSV
     if bus_stop_ids_missing:
         err_msg = '%d bus stops cannot be found in %s : %s' % (len(bus_stop_ids_missing), csv_name, ','.join(bus_stop_ids_missing))
         _logger.error(err_msg)
@@ -21,13 +21,21 @@ def get_bus_stops_from_csv(csv_name, bus_stop_ids):
     rule = BusStopRule(bus_stops)
     bus_stops_after_rules = rule.execute_rules()
 
+    # retrieve data from DB
+    bus_stop_ids_found_in_db = bus_stop_ids - select_bus_stops(bus_stop_ids)[1]
+    # raise exception if bus stop already exist in DB
+    if bus_stop_ids_found_in_db:
+        err_msg = '%d bus stops already exist in DB, please use Bus Stop Update function : %s' % (len(bus_stop_ids_found_in_db), ','.join(bus_stop_ids_found_in_db))
+        _logger.error(err_msg)
+        raise PTPValueError(err_msg)
+
     return bus_stops_after_rules
 
 
 def get_bus_stops_from_db(bus_stop_ids):
     # retrieve data from DB
     bus_stops, bus_stop_ids_missing = select_bus_stops(bus_stop_ids)
-    # incorrect bus stop check
+    # raise exception if bus stop cannot be found in DB
     if bus_stop_ids_missing:
         err_msg = '%d bus stops cannot be found in DB : %s' % (len(bus_stop_ids_missing), ','.join(bus_stop_ids_missing))
         _logger.error(err_msg)
@@ -58,7 +66,6 @@ def generate_sql(bus_stops, method):
     sql = ''
     if method == 'BUS_STOP_ADD':
         for bus_stop in bus_stops:
-            sql += "DELETE FROM bus_stops WHERE id = %s;\n" % bus_stop[0]
             sql += "INSERT INTO bus_stops (id, linked_bus_stop_id, street_id, nearby_station_id, long_name, short_name, location_code, is_wab_accessible, is_non_bus_stop, is_interchange, is_pickup_point, has_arrival_info, has_arrival_panel, allows_boarding, allows_alighting, longitude, latitude) VALUES (%s, NULL, %s, NULL, %s, %s, %s, %s, %s, %s, '0', '0', '0', '1', '1', '', '');\n" % (bus_stop[0], bus_stop[1], bus_stop[2], bus_stop[3], bus_stop[4], bus_stop[5], bus_stop[6], bus_stop[7])
     else:
         for bus_stop in bus_stops:
