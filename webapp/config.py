@@ -3,17 +3,40 @@ import os
 __author__ = 'Gao Lei'
 
 
-DB_INFO = {
-    'HOST': '127.0.0.1',
-    'PORT': 3306,
-    'NAME': 'ptp_automate_tool_test',
-    'USER': 'root',
-    'PASSWORD': '880428',
+MODE_SWITCHER = 'SERVER'
+
+DEBUGS = {
+    'SERVER': False,
+    'LOCAL': True,
 }
 
-ROOT = '/home/jonathan/Desktop/ptp_automate_tool'
+DB_INFOS = {
+    'SERVER': {
+        'HOST': '127.0.0.1',
+        'PORT': 3306,
+        'NAME': 'ptp_automate_tool_test',
+        'USER': 'developer',
+        'PASSWORD': 'password'
+    },
+    'LOCAL': {
+        'HOST': '127.0.0.1',
+        'PORT': 3306,
+        'NAME': 'ptp_automate_tool_test',
+        'USER': 'root',
+        'PASSWORD': '880428',
+    }
+}
 
-# LOG_FILE_PATH = os.path.join(ROOT, 'log', 'ptp_automate_tool.log')
+ROOTS = {
+    'SERVER': '/media/ext/Public/share/ptp_automate_tool',
+    'LOCAL': '/home/jonathan/Desktop/ptp_automate_tool',
+}
+
+DEBUG = DEBUGS[MODE_SWITCHER]
+
+DB_INFO = DB_INFOS[MODE_SWITCHER]
+
+ROOT = ROOTS[MODE_SWITCHER]
 
 CSV_FOLDER = os.path.join(ROOT, 'csv')
 
@@ -68,8 +91,94 @@ MENUS = (
             {'TITLE': 'SQL Delete', 'LINK': '/webapp/sql/sql_delete/'},
         )
     },
+    {'TITLE': 'HTML & SHP & KML Tools', 'LINK': 'http://192.168.152.135:8381/publictransport-maintenance/', 'TARGET': '_blank'},
     {'TITLE': 'Street Search', 'LINK': 'javascript: street_search_toggle();', 'ALIGN': 'right'},
 )
+
+BUS_STOP_SHORT_NAME_LONG_NAME_MAP = {
+    'admin': 'Administration',
+    'amk': 'Ang Mo Kio',
+    'apt': 'Apartment',
+    'assn': 'Association',
+    'ave': 'Avenue',
+    'aye': 'Ayer Rajah Expressway',
+    'bke': 'Bukit Timah Expressway',
+    'bldg': 'Building',
+    'blk': 'Block',
+    'blvd': 'Boulevard',
+    'bo': 'Branch Office',
+    'br': 'Branch',
+    'bt': 'Bukit',
+    'c\'wealth': 'Commonwealth',
+    'cath': 'Cathedral',
+    'cbd': 'Central Business District',
+    'cc': 'Community',
+    'cck': 'Choa Chu Kang',
+    'cemy': 'Cemetery',
+    'ch': 'Church',
+    'cine': 'Cinema',
+    'cl': 'Close',
+    'clubhse': 'Clubhouse',
+    'cmplx': 'Complex',
+    'condo': 'Condominium',
+    'cres': 'Crescent',
+    'ct': 'Court',
+    'cte': 'Central Expressway',
+    'ctr': 'Centre',
+    'ctrl': 'Central',
+    'dr': 'Drive',
+    'e\'way': 'Expressway',
+    'ecp': 'East Coast Parkway',
+    'env': 'Environment',
+    'est': 'Estate',
+    'fc': 'Food Centre',
+    'gdn': 'Garden',
+    'govt': 'Government',
+    'gr': 'Grove',
+    'hts': 'Heights',
+    'ind': 'Industrial',
+    'inst': 'Institute',
+    'instn': 'Institution',
+    'jln': 'Jalan',
+    'jnr': 'Junior',
+    'kg': 'Kampong',
+    'kje': 'Kranji Expressway',
+    'kt': 'Katong',
+    'lib': 'Library',
+    'lk': 'Link',
+    'lor': 'Lorong',
+    'meth': 'Methodist',
+    'mjd': 'Masjid',
+    'mkt': 'Market',
+    'mt': 'Mount',
+    'n\'hood': 'Neightbourhood',
+    'natl': 'National',
+    'npc': 'Neightbourhood Police Center',
+    'npp': 'Neightbourhood Police Post',
+    'nth': 'North',
+    'opp': 'Opposite',
+    'pie': 'Pan-Island Expressway',
+    'pk': 'Park',
+    'poly': 'Polyclinic',
+    'pr': 'Primary',
+    'pt': 'Point',
+    'rd': 'Road',
+    's\'pore': 'Singapore',
+    'sch': 'School',
+    'sec': 'Secondary',
+    'sle': 'Seletar Expressway',
+    'sq': 'Square',
+    'st': 'Street',
+    'sth': 'South',
+    'stn': 'Station',
+    'tc': 'Town Council',
+    'tech': 'Technical',
+    'ter': 'Terrace',
+    'tg': 'Tanjong',
+    'tpe': 'Tampines Expressway',
+    'upp': 'Upper',
+    'voc': 'Vocational',
+}
 
 def my_context_processor(request):
     return {

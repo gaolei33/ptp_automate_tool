@@ -3,12 +3,12 @@
     <ul id="menu">
     {% for menu in MENUS %}
         <li class="menu-item"{% if menu.ALIGN %} style="float: {{ menu.ALIGN }};" {% endif %}>
-            <a class="menu-link" href="{{ menu.LINK }}">{{ menu.TITLE }}</a>
+            <a class="menu-link" target="{{ menu.TARGET | default:'_top' }}" href="{{ menu.LINK }}">{{ menu.TITLE }}</a>
         {% if menu.SUBMENUS %}
             <ul class="submenu">
             {% for submenu in menu.SUBMENUS %}
                 <li class="submenu-item">
-                    <a class="submenu-link" href="{{ submenu.LINK }}">{{ submenu.TITLE }}</a>
+                    <a class="submenu-link" target="{{ submenu.TARGET | default:'_top' }}" href="{{ submenu.LINK }}">{{ submenu.TITLE }}</a>
                 </li>
             {% endfor %}
             </ul>

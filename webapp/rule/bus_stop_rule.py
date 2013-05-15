@@ -1,4 +1,5 @@
 import logging
+from webapp import config
 from webapp.exceptions import PTPValueError
 from webapp.manager import street_manager
 from webapp.rule.rule import BaseRule
@@ -17,10 +18,20 @@ class BusStopRule(BaseRule):
     def _street_id_rule(self, origin_street_name):
         target_street_id = street_manager.get_first_matched_street_id_from_name(origin_street_name)
         if not target_street_id:
-            err_msg = 'Cannot find the street id for: %s' % target_street_id
+            err_msg = 'Cannot find the street id for: %s, maybe you uploaded an incorrect CSV file, please check and modify the CSV file.' % target_street_id
             _logger.error(err_msg)
             raise PTPValueError(err_msg)
         return target_street_id
+
+    def _long_name_rule(self, origin_short_name):
+        target_words = []
+        origin_words = origin_short_name.split(' ')
+        for origin_word in origin_words:
+            origin_word_lower = origin_word.lower()
+            target_word = config.BUS_STOP_SHORT_NAME_LONG_NAME_MAP[origin_word_lower] if origin_word_lower in config.BUS_STOP_SHORT_NAME_LONG_NAME_MAP else origin_word
+            target_words.append(target_word)
+        target_long_name = ' '.join(target_words)
+        return target_long_name
 
     def _non_bus_stop_and_wab_rule(self, origin_bus_stop_id):
         if origin_bus_stop_id.lower().startswith('e'):
@@ -36,7 +47,7 @@ class BusStopRule(BaseRule):
         for origin_bus_stop in self.origin_bus_stops:
 
             if len(origin_bus_stop) < 3:
-                err_msg = 'CSV columns must be more than 3.'
+                err_msg = 'CSV columns must be more than 3, maybe you uploaded an incorrect CSV file, please check and modify the CSV file.'
                 _logger.error(err_msg)
                 raise PTPValueError(err_msg)
 
@@ -51,7 +62,7 @@ class BusStopRule(BaseRule):
             target_short_name = self._normal_rule(origin_bus_stop[2])
             target_bus_stop.append(target_short_name)
 
-            target_long_name = target_short_name
+            target_long_name = self._long_name_rule(target_short_name)
             target_bus_stop.append(target_long_name)
 
             target_location_code = ''
@@ -63,6 +74,12 @@ class BusStopRule(BaseRule):
 
             target_interchange = '0'
             target_bus_stop.append(target_interchange)
+
+            target_longitude = '0.00000000000000'
+            target_bus_stop.append(target_longitude)
+
+            target_latitude = '0.00000000000000'
+            target_bus_stop.append(target_latitude)
 
             self.target_bus_stops.append(target_bus_stop)
 

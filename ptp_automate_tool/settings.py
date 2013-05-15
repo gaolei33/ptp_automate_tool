@@ -2,8 +2,9 @@
 
 import os
 import socket
+from webapp import config
 
-DEBUG = True
+DEBUG = config.DEBUG
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -145,23 +146,12 @@ LOGGING = {
             'format': '[%(levelname)s] [%(asctime)s] [Module:%(module)s] [Function:%(funcName)s] [Line:%(lineno)d] %(message)s'
         },
     },
-    'filters': {
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse'
-        }
-    },
     'handlers': {
         'console': {
             'level': 'INFO',
             'class': 'logging.StreamHandler',
             'formatter': 'default'
         },
-        # 'file': {
-        #     'level': 'INFO',
-        #     'class': 'logging.handlers.RotatingFileHandler',
-        #     'filename': config.LOG_FILE_PATH,
-        #     'formatter': 'default',
-        # },
     },
     'loggers': {
         'default': {

@@ -60,8 +60,10 @@ def bus_stop_handler(request):
         wab_accessible = request.POST['wab_accessible_%d' % i].strip()
         non_bus_stop = request.POST['non_bus_stop_%d' % i].strip()
         interchange = request.POST['interchange_%d' % i].strip()
+        longitude = request.POST['longitude_%d' % i].strip()
+        latitude = request.POST['latitude_%d' % i].strip()
 
-        bus_stop = [bus_stop_id, street_id, short_name, long_name, location_code, wab_accessible, non_bus_stop, interchange]
+        bus_stop = [bus_stop_id, street_id, short_name, long_name, location_code, wab_accessible, non_bus_stop, interchange, longitude, latitude]
 
         bus_stops.append(bus_stop)
 

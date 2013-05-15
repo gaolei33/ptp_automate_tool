@@ -32,7 +32,7 @@ class BusRouteRule(BaseRule):
             sequences = [route[2] for route in origin_bus_route if route[1] == direction]
             for i in range(len(sequences)):
                 if sequences[i] != str(i + 1):
-                    err_msg = 'Sequence error : bus service %s direction %s sequence %s' % (origin_bus_route[0][0], direction, sequences[i])
+                    err_msg = 'Sequence error : bus service %s direction %s sequence %s, maybe you uploaded an incorrect CSV file, please check and modify the CSV file.' % (origin_bus_route[0][0], direction, sequences[i])
                     _logger.error(err_msg)
                     raise PTPValueError(err_msg)
 
@@ -68,7 +68,7 @@ class BusRouteNCSRule(BusRouteRule):
             for origin_row in origin_bus_route:
 
                 if len(origin_row) < 12:
-                    err_msg = 'BUS_ROUTE_NCS CSV columns must be more than 12.'
+                    err_msg = 'BUS_ROUTE_NCS CSV columns must be more than 12, maybe you uploaded an incorrect CSV file, please check and modify the CSV file.'
                     _logger.error(err_msg)
                     raise PTPValueError(err_msg)
 
@@ -130,7 +130,7 @@ class BusRouteLTARule(BusRouteRule):
             for origin_row in origin_bus_route:
 
                 if len(origin_row) < 7:
-                    err_msg = 'BUS_ROUTE_LTA CSV columns must be more than 7.'
+                    err_msg = 'BUS_ROUTE_LTA CSV columns must be more than 7, maybe you uploaded an incorrect CSV file, please check and modify the CSV file.'
                     _logger.error(err_msg)
                     raise PTPValueError(err_msg)
 

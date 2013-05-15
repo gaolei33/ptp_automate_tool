@@ -130,7 +130,16 @@ a:hover {
     width: 300px;
 }
 
-label.error {
+.form-specification {
+    padding: 20px 0;
+    font-size: 12px;
+}
+
+.form-manually {
+    color: green;
+}
+
+.form label.error {
     padding: 0 10px;
     color: #F00;
 }

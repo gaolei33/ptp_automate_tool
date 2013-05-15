@@ -18,7 +18,7 @@ class BusServiceRule(BaseRule):
         if origin_loop_street_name:
             target_loop_street_id = street_manager.get_first_matched_street_id_from_name(origin_loop_street_name)
             if not target_loop_street_id:
-                err_msg = 'Cannot find the loop street id for: %s' % origin_loop_street_name
+                err_msg = 'Cannot find the loop street id for: %s, maybe you uploaded an incorrect CSV file, please check and modify the CSV file.' % origin_loop_street_name
                 _logger.error(err_msg)
                 raise PTPValueError(err_msg)
         else:
@@ -36,7 +36,7 @@ class BusServiceRule(BaseRule):
                 target_direction = []
 
                 if len(origin_direction) < 10:
-                    err_msg = 'CSV columns must be more than 10.'
+                    err_msg = 'CSV columns must be more than 10, maybe you uploaded an incorrect CSV file, please check and modify the CSV file.'
                     _logger.error(err_msg)
                     raise PTPValueError(err_msg)
 

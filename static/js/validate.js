@@ -37,6 +37,20 @@ $(function() {
         bus_stop_detail_rules[$(this).attr('name')] = 'required';
     });
 
+    $('input[name^=longitude]').each(function() {
+        bus_stop_detail_rules[$(this).attr('name')] = {
+            required: true,
+            number: true
+        };
+    });
+
+    $('input[name^=latitude]').each(function() {
+        bus_stop_detail_rules[$(this).attr('name')] = {
+            required: true,
+            number: true
+        };
+    });
+
     rules_set = [{
         form_id: 'DB_BACKUP_FORM',
         rules: {

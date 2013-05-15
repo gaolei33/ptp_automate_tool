@@ -14,7 +14,7 @@ def bus_route_add_or_update(csv_name, method, bus_service_ids, sr_number):
     bus_routes, new_bus_service_ids = csv_manager.retrieve_multiple_data_from_csv(csv_name, method, bus_service_ids)
     # incorrect bus service check
     if new_bus_service_ids:
-        err_msg = 'Bus routes of %d bus services cannot be found in %s : %s' % (len(new_bus_service_ids), csv_name, ','.join(new_bus_service_ids))
+        err_msg = 'Bus routes of %d bus services cannot be found in %s, please check whether you inputted incorrect bus service IDs : %s' % (len(new_bus_service_ids), csv_name, ','.join(new_bus_service_ids))
         _logger.error(err_msg)
         raise PTPValueError(err_msg)
 
@@ -27,7 +27,7 @@ def bus_route_add_or_update(csv_name, method, bus_service_ids, sr_number):
     new_directions = bus_service_manager.select_missing_directions(directions)
     if new_directions:
         new_directions_string = ','.join({'(%s,%s)' % (direction[0], direction[1]) for direction in new_directions})
-        err_msg = '%d new directions need to be created : %s' % (len(new_directions), new_directions_string)
+        err_msg = '%d new directions need to be created, please use the Bus Service Add / Update function first : %s' % (len(new_directions), new_directions_string)
         _logger.error(err_msg)
         raise PTPValueError(err_msg)
 
@@ -35,7 +35,7 @@ def bus_route_add_or_update(csv_name, method, bus_service_ids, sr_number):
     bus_stop_ids = {route[3] for bus_route in bus_routes_after_rules for route in bus_route}
     new_bus_stop_ids = bus_stop_manager.select_bus_stops(bus_stop_ids)[1]
     if new_bus_stop_ids:
-        err_msg = '%s new bus stops need to be created : %s' % (len(new_bus_stop_ids), ','.join(new_bus_stop_ids))
+        err_msg = '%s new bus stops need to be created, please use the Bus Stop Add function first : %s' % (len(new_bus_stop_ids), ','.join(new_bus_stop_ids))
         _logger.error(err_msg)
         raise PTPValueError(err_msg)
 

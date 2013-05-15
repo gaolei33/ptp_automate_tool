@@ -28,6 +28,7 @@
             <div class="form-row">
                 <label class="form-label">Location Code</label>
                 <input class="form-textbox" type="text" name="location_code_{{ forloop.counter0 }}" value="{{ bus_stop.4 }}" />
+                {% if method == 'BUS_STOP_ADD' %}<span class="form-manually">*</span>{% endif %}
             </div>
             <div class="form-row">
                 <label class="form-label">WAB Accessible</label>
@@ -49,11 +50,27 @@
                     <option value="0"{% if bus_stop.7 == '0' %} selected="selected"{% endif %}>0</option>
                     <option value="1"{% if bus_stop.7 == '1' %} selected="selected"{% endif %}>1</option>
                 </select>
+                {% if method == 'BUS_STOP_ADD' %}<span class="form-manually">*</span>{% endif %}
+            </div>
+            <div class="form-row">
+                <label class="form-label">Longitude</label>
+                <input class="form-textbox" type="text" name="longitude_{{ forloop.counter0 }}" value="{{ bus_stop.8 }}" />
+                {% if method == 'BUS_STOP_ADD' %}<span class="form-manually">*</span>{% endif %}
+            </div>
+            <div class="form-row">
+                <label class="form-label">Latitude</label>
+                <input class="form-textbox" type="text" name="latitude_{{ forloop.counter0 }}" value="{{ bus_stop.9 }}" />
+                {% if method == 'BUS_STOP_ADD' %}<span class="form-manually">*</span>{% endif %}
             </div>
             {% if forloop.counter0 < bus_stops|length|add:-1 %}
                 <div class="form-row">&nbsp;</div>
             {% endif %}
         {% endfor %}
+        {% if method == 'BUS_STOP_ADD' %}
+            <div class="form-specification">
+                <span class="form-manually">*</span> : This field cannot be retrieved from CSV, please input manually.
+            </div>
+        {% endif %}
         <div class="form-row">
             <input type="submit" value="Proceed" />
         </div>
