@@ -14,14 +14,14 @@ DB_INFOS = {
     'SERVER': {
         'HOST': '127.0.0.1',
         'PORT': 3306,
-        'NAME': 'ptp_automate_tool_test',
+        'NAME': 'ptp2',
         'USER': 'developer',
         'PASSWORD': 'password'
     },
     'LOCAL': {
         'HOST': '127.0.0.1',
         'PORT': 3306,
-        'NAME': 'ptp_automate_tool_test',
+        'NAME': 'ptp2',
         'USER': 'root',
         'PASSWORD': '880428',
     }
