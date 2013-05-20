@@ -159,7 +159,7 @@ $(function() {
     }, {
         form_id: 'SQL_DOWNLOAD_FORM',
         rules: {
-
+            sql_name: 'required'
         },
         need_confirm: false
     }, {
