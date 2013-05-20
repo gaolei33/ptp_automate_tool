@@ -59,11 +59,11 @@ class BusStopRule(BaseRule):
             target_street_id = self._street_id_rule(origin_bus_stop[1])
             target_bus_stop.append(target_street_id)
 
+            target_long_name = self._long_name_rule(origin_bus_stop[2])
+            target_bus_stop.append(target_long_name)
+
             target_short_name = self._normal_rule(origin_bus_stop[2])
             target_bus_stop.append(target_short_name)
-
-            target_long_name = self._long_name_rule(target_short_name)
-            target_bus_stop.append(target_long_name)
 
             target_location_code = ''
             target_bus_stop.append(target_location_code)
