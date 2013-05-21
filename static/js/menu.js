@@ -4,7 +4,8 @@
  * Time: 11:13 AM
  */
 
-function set_current_link(current_url) {
+function set_current_link() {
+    var current_url = $(location).attr('pathname');
     var $current_link = $('#menu').find('a[href="' + current_url + '"]');
     // add 'current' style for itself
     $current_link.addClass('current');
@@ -14,12 +15,17 @@ function set_current_link(current_url) {
 
 $(function() {
     // menu hover animations
-    $('#menu').children('li').hover(function() {
-        $(this).children('.submenu').slideDown(200);
+    $('#menu').children('.menu-item').hover(function() {
+        var $menu_item_hover = $(this);
+        $menu_item_hover.data('timer', setTimeout(function() {
+            $menu_item_hover.children('.submenu').stop().slideDown(200);
+        }, 250));
     }, function() {
-        $(this).children('.submenu').slideUp(100);
+        var $menu_item_hover = $(this);
+        clearTimeout($menu_item_hover.data('timer'));
+        $menu_item_hover.children('.submenu').stop().slideUp(100);
     });
+
     // set current link
-    var current_url = $(location).attr('pathname');
-    set_current_link(current_url);
+    set_current_link();
 });
