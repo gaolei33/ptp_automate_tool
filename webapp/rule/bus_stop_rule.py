@@ -12,6 +12,7 @@ _logger = logging.getLogger('default')
 class BusStopRule(BaseRule):
 
     def __init__(self, origin_bus_stops):
+        BaseRule.__init__(self, 3)
         self.origin_bus_stops = origin_bus_stops
         self.target_bus_stops = []
 
@@ -45,15 +46,12 @@ class BusStopRule(BaseRule):
     def execute_rules(self):
 
         for origin_bus_stop in self.origin_bus_stops:
-
-            if len(origin_bus_stop) < 3:
-                err_msg = 'CSV columns must be more than 3, maybe you uploaded an incorrect CSV file, please check and modify the CSV file.'
-                _logger.error(err_msg)
-                raise PTPValueError(err_msg)
+            # column number check
+            self._column_number_rule(origin_bus_stop)
 
             target_bus_stop = []
 
-            target_bus_stop_id = self._normal_rule(origin_bus_stop[0])
+            target_bus_stop_id = origin_bus_stop[0]
             target_bus_stop.append(target_bus_stop_id)
 
             target_street_id = self._street_id_rule(origin_bus_stop[1])
@@ -62,7 +60,7 @@ class BusStopRule(BaseRule):
             target_long_name = self._long_name_rule(origin_bus_stop[2])
             target_bus_stop.append(target_long_name)
 
-            target_short_name = self._normal_rule(origin_bus_stop[2])
+            target_short_name = origin_bus_stop[2]
             target_bus_stop.append(target_short_name)
 
             target_location_code = ''

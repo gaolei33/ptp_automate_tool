@@ -31,7 +31,7 @@ def bus_stop_detail(request):
 
         csv_name = request.POST['csv_name'].strip()
         if not csv_name:
-            raise PTPValueError('Please select a valid bus stop CSV file.')
+            raise PTPValueError('Please select a valid CSV file.')
 
         bus_stops = bus_stop_manager.get_bus_stops_from_csv(csv_name, bus_stop_ids)
     else:

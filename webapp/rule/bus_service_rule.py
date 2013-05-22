@@ -11,6 +11,7 @@ _logger = logging.getLogger('default')
 class BusServiceRule(BaseRule):
 
     def __init__(self, origin_bus_services):
+        BaseRule.__init__(self, 10)
         self.origin_bus_services = origin_bus_services
         self.target_bus_services = []
 
@@ -32,13 +33,10 @@ class BusServiceRule(BaseRule):
             target_bus_service = []
 
             for origin_direction in origin_bus_service:
+                # column number check
+                self._column_number_rule(origin_direction)
 
                 target_direction = []
-
-                if len(origin_direction) < 10:
-                    err_msg = 'CSV columns must be more than 10, maybe you uploaded an incorrect CSV file, please check and modify the CSV file.'
-                    _logger.error(err_msg)
-                    raise PTPValueError(err_msg)
 
                 for i in range(0, 10):
                     if i == 9:
@@ -48,7 +46,7 @@ class BusServiceRule(BaseRule):
                         #skip 2 columns
                         continue
                     else:
-                        target_col = self._normal_rule(origin_direction[i])
+                        target_col = origin_direction[i]
                         target_direction.append(target_col)
 
                 target_bus_service.append(target_direction)

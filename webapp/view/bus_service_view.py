@@ -30,7 +30,7 @@ def bus_service_handler(request):
     if method == 'BUS_SERVICE_ADD_OR_UPDATE':
         csv_name = request.POST['csv_name'].strip()
         if not csv_name:
-            raise PTPValueError('Please select a valid bus service CSV file.')
+            raise PTPValueError('Please select a valid CSV file.')
         sql_name = bus_service_manager.bus_service_add_or_update(csv_name, bus_service_ids, sr_number)
     else:
         enable_or_disable = request.POST['enable_or_disable'].strip()

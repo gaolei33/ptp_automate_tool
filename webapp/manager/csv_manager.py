@@ -15,13 +15,22 @@ def _bus_service_id_rule(string):
 
 
 def _bus_stop_code_rule(origin_bus_stop_code):
-        pattern = r'^\d{4}$'
-        if re.search(pattern, origin_bus_stop_code):
-            offset = '0' * (5 - len(origin_bus_stop_code))
-            target_bus_stop_code = '%s%s' % (offset,  origin_bus_stop_code)
-        else:
-            target_bus_stop_code = origin_bus_stop_code
-        return target_bus_stop_code
+    pattern = r'^\d{4}$'
+    if re.search(pattern, origin_bus_stop_code):
+        offset = '0' * (5 - len(origin_bus_stop_code))
+        target_bus_stop_code = '%s%s' % (offset,  origin_bus_stop_code)
+    else:
+        target_bus_stop_code = origin_bus_stop_code
+    return target_bus_stop_code
+
+
+def _post_id_rule(origin_post_id):
+    pattern = r'^\d+$'
+    if re.search(pattern, origin_post_id):
+        is_post_id = True
+    else:
+        is_post_id = False
+    return is_post_id
 
 
 def get_csv_list(csv_type=None):
@@ -55,7 +64,7 @@ def retrieve_multiple_data_from_csv(csv_name, csv_type, filter_ids):
     return multiple_data, filter_ids_missing
 
 
-def retrieve_data_from_csv(csv_name, csv_type, filter_id):
+def retrieve_data_from_csv(csv_name, csv_type, filter_id=None):
     csv_path = os.path.join(config.CSV_FOLDER, csv_name)
     data = []
     try:
@@ -68,11 +77,16 @@ def retrieve_data_from_csv(csv_name, csv_type, filter_id):
                     if row[0] == filter_id:
                         data = row
                         break
-                else:
+                elif csv_type in ('BUS_SERVICE', 'BUS_ROUTE_NCS', 'BUS_ROUTE_LTA'):
                     # bus service id process
                     row[0] = _bus_service_id_rule(row[0])
                     if row[0] == filter_id:
                         data.append(row)
+                elif csv_type in ('TAXI_POST', 'TAXI_POST_TIMING'):
+                    if _post_id_rule(row[0]):
+                        data.append(row)
+                else:
+                    data.append(row)
 
         _logger.info('Data retrieved from CSV successfully: %s' % csv_path)
     except Exception, ex:

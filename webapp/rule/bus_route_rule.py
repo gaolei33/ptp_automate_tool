@@ -14,7 +14,8 @@ def _is_empty(origin_str):
 
 class BusRouteRule(BaseRule):
 
-    def __init__(self, origin_bus_routes):
+    def __init__(self, origin_bus_routes, column_number):
+        BaseRule.__init__(self, column_number)
         self.origin_bus_routes = origin_bus_routes
         self.target_bus_routes = []
 
@@ -23,7 +24,7 @@ class BusRouteRule(BaseRule):
         if re.search(pattern, origin_bus_stop_code):
             offset = '0' * (5 - len(origin_bus_stop_code))
             origin_bus_stop_code = '%s%s' % (offset,  origin_bus_stop_code)
-        target_bus_stop_code = self._normal_rule(origin_bus_stop_code)
+        target_bus_stop_code = origin_bus_stop_code
         return target_bus_stop_code
 
     def _sequence_rule(self, origin_bus_route):
@@ -39,12 +40,15 @@ class BusRouteRule(BaseRule):
 
 class BusRouteNCSRule(BusRouteRule):
 
+    def __init__(self, origin_bus_routes):
+        BusRouteRule.__init__(self, origin_bus_routes, 12)
+
     def _express_code_and_distance_rule(self, origin_express_code, origin_distance):
         if _is_empty(origin_express_code):
             target_express_code = 'NULL'
-            target_distance = self._normal_rule(origin_distance)
+            target_distance = origin_distance
         else:
-            target_express_code = self._normal_rule(origin_express_code)
+            target_express_code = origin_express_code
             target_distance = 'NULL'
         return target_express_code, target_distance
 
@@ -54,7 +58,7 @@ class BusRouteNCSRule(BusRouteRule):
         else:
             offset = '0' * (4 - len(origin_trip))
             origin_trip = '%s%s' % (offset,  origin_trip)
-        target_trip = self._normal_rule(origin_trip)
+        target_trip = origin_trip
         return target_trip
 
     def execute_rules(self):
@@ -66,11 +70,8 @@ class BusRouteNCSRule(BusRouteRule):
             target_bus_route = []
 
             for origin_row in origin_bus_route:
-
-                if len(origin_row) < 12:
-                    err_msg = 'BUS_ROUTE_NCS CSV columns must be more than 12, maybe you uploaded an incorrect CSV file, please check and modify the CSV file.'
-                    _logger.error(err_msg)
-                    raise PTPValueError(err_msg)
+                # column number check
+                self._column_number_rule(origin_row)
 
                 target_row = []
 
@@ -89,7 +90,7 @@ class BusRouteNCSRule(BusRouteRule):
                         target_trip = self._trip_rule(origin_row[i])
                         target_row.append(target_trip)
                     else:
-                        target_col = self._normal_rule(origin_row[i])
+                        target_col = origin_row[i]
                         target_row.append(target_col)
 
                 target_bus_route.append(target_row)
@@ -101,13 +102,16 @@ class BusRouteNCSRule(BusRouteRule):
 
 class BusRouteLTARule(BusRouteRule):
 
+    def __init__(self, origin_bus_routes):
+        BusRouteRule.__init__(self, origin_bus_routes, 7)
+
     def _express_code_and_distance_and_fare_marker_rule(self, origin_express_code, origin_distance, origin_fare_marker):
         if _is_empty(origin_express_code):
             target_express_code = 'NULL'
-            target_distance = self._normal_rule(origin_distance)
+            target_distance = origin_distance
             target_fare_marker = self._fare_marker_rule(origin_fare_marker)
         else:
-            target_express_code = self._normal_rule(origin_express_code)
+            target_express_code = origin_express_code
             target_distance = 'NULL'
             target_fare_marker = 'NULL'
         return target_express_code, target_distance, target_fare_marker
@@ -116,7 +120,7 @@ class BusRouteLTARule(BusRouteRule):
         if origin_fare_marker in ('', '0'):
             target_fare_marker = 'NULL'
         else:
-            target_fare_marker = self._normal_rule(origin_fare_marker)
+            target_fare_marker = origin_fare_marker
         return target_fare_marker
 
     def execute_rules(self):
@@ -128,11 +132,8 @@ class BusRouteLTARule(BusRouteRule):
             target_bus_route = []
 
             for origin_row in origin_bus_route:
-
-                if len(origin_row) < 7:
-                    err_msg = 'BUS_ROUTE_LTA CSV columns must be more than 7, maybe you uploaded an incorrect CSV file, please check and modify the CSV file.'
-                    _logger.error(err_msg)
-                    raise PTPValueError(err_msg)
+                # column number check
+                self._column_number_rule(origin_row)
 
                 target_row = []
 
@@ -150,7 +151,7 @@ class BusRouteLTARule(BusRouteRule):
                         #skip 2 column
                         continue
                     else:
-                        target_col = self._normal_rule(origin_row[i])
+                        target_col = origin_row[i]
                         target_row.append(target_col)
 
                 target_bus_route.append(target_row)

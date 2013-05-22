@@ -27,7 +27,7 @@ def backup(sr_number):
     backup_name = '[%s][DB_BACKUP]%s.sql.gz' % (sr_number, current_time)
     backup_path = os.path.join(backup_folder, backup_name)
     backup_tables_string = ' '.join(config.BACKUP_TABLES)
-    cmd = 'mysqldump --no-autocommit -h %s -u %s -p%s %s %s | gzip > %s' % (config.DB_INFO['HOST'], config.DB_INFO['USER'], config.DB_INFO['PASSWORD'], config.DB_INFO['NAME'], backup_tables_string, backup_path)
+    cmd = 'mysqldump --no-autocommit -h %s -u %s -p%s %s %s | gzip > %s' % (config.DB_INFO['HOST'], config.DB_INFO['USER'], config.DB_INFO['PASSWORD'], config.DB_INFO['NAMES']['MAIN'], backup_tables_string, backup_path)
 
     error = io_util.exec_cmd(cmd)
 
@@ -47,7 +47,7 @@ def restore(backup_name):
         _logger.error(err_msg)
         raise PTPValueError(err_msg)
 
-    cmd = 'gunzip < %s | mysql -h %s -u %s -p%s %s' % (backup_path, config.DB_INFO['HOST'], config.DB_INFO['USER'], config.DB_INFO['PASSWORD'], config.DB_INFO['NAME'])
+    cmd = 'gunzip < %s | mysql -h %s -u %s -p%s %s' % (backup_path, config.DB_INFO['HOST'], config.DB_INFO['USER'], config.DB_INFO['PASSWORD'], config.DB_INFO['NAMES']['MAIN'])
 
     error = io_util.exec_cmd(cmd)
 

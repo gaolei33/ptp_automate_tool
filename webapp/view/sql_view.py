@@ -2,6 +2,7 @@ import logging
 from django.contrib import messages
 from django.http.response import HttpResponse
 from django.shortcuts import render
+from webapp.exceptions import PTPValueError
 from webapp.manager import sql_manager
 from webapp.view import GlobalErrorHandler
 
@@ -26,6 +27,10 @@ def sql_handler(request):
 
     if method == 'SQL_DOWNLOAD':
         sql_name = request.GET['sql_name'].strip()
+
+        if not sql_name:
+            raise PTPValueError('Please select a valid SQL file.')
+
         sql_file = sql_manager.get_sql(sql_name)
         response = HttpResponse(sql_file, content_type='text/plain')
         response['Content-Disposition'] = 'attachment; filename="%s"' % sql_name
@@ -33,6 +38,10 @@ def sql_handler(request):
         return response
     else:
         sql_name = request.POST['sql_name'].strip()
+
+        if not sql_name:
+            raise PTPValueError('Please select a valid SQL file.')
+
         sql_manager.delete(sql_name)
         messages.info(request, 'SQL file deleted successfully.')
 
