@@ -14,20 +14,14 @@ DB_INFOS = {
     'SERVER': {
         'HOST': '127.0.0.1',
         'PORT': 3306,
-        'NAMES': {
-            'MAIN': 'ptp2',
-            'TAXI': 'taxi',
-        },
+        'NAMES': 'ptp2',
         'USER': 'developer',
         'PASSWORD': 'password'
     },
     'LOCAL': {
         'HOST': '127.0.0.1',
         'PORT': 3306,
-        'NAMES': {
-            'MAIN': 'ptp2',
-            'TAXI': 'taxi',
-        },
+        'NAMES': 'ptp2',
         'USER': 'root',
         'PASSWORD': '880428',
     }
@@ -89,12 +83,6 @@ MENUS = (
         'SUBMENUS': (
             {'TITLE': 'Bus Route NCS', 'LINK': '/webapp/bus_route/bus_route_ncs/'},
             {'TITLE': 'Bus Route LTA', 'LINK': '/webapp/bus_route/bus_route_lta/'},
-        )
-    },
-    {'TITLE': 'Taxi', 'LINK': '/webapp/taxi/',
-        'SUBMENUS': (
-            {'TITLE': 'Taxi Post', 'LINK': '/webapp/taxi/taxi_post/'},
-            {'TITLE': 'Taxi Post Timing', 'LINK': '/webapp/taxi/taxi_post_timing/'},
         )
     },
     {'TITLE': 'SQL', 'LINK': '/webapp/sql/',

@@ -45,13 +45,6 @@ urlpatterns += patterns('webapp.view.bus_route_view',
     url(r'^bus_route/bus_route_handler/$', 'bus_route_handler'),
 )
 
-urlpatterns += patterns('webapp.view.taxi_view',
-    url(r'^taxi/$', RedirectView.as_view(url='/webapp/taxi/taxi_post/')),
-    url(r'^taxi/taxi_post/$', 'taxi_home', {'method': 'TAXI_POST', 'description': 'Taxi Post'}),
-    url(r'^taxi/taxi_post_timing/$', 'taxi_home', {'method': 'TAXI_POST_TIMING', 'description': 'Taxi Post Timing'}),
-    url(r'^taxi/taxi_handler/$', 'taxi_handler'),
-)
-
 urlpatterns += patterns('webapp.view.sql_view',
     url(r'^sql/$', RedirectView.as_view(url='/webapp/sql/sql_download/')),
     url(r'^sql/sql_download/$', 'sql_home', {'method': 'SQL_DOWNLOAD', 'description': 'SQL Download'}),

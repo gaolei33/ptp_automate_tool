@@ -8,22 +8,21 @@ __author__ = 'Gao Lei'
 _logger = logging.getLogger('default')
 
 
-def exec_query(sql, db='MAIN'):
+def exec_query(sql):
     query = sql
-    return _exec_sql(query, db, 'QUERY')
+    return _exec_sql(query, 'QUERY')
 
-def exec_cmds(sql, db='MAIN'):
+def exec_cmds(sql):
     cmds = [cmd for cmd in sql.split('\n') if cmd]
-    _exec_sql(cmds, db, 'CMDS')
+    _exec_sql(cmds, 'CMDS')
 
-def _exec_sql(exec_content, db, exec_type):
-    conn = MySQLdb.connect(config.DB_INFO['HOST'], config.DB_INFO['USER'], config.DB_INFO['PASSWORD'], config.DB_INFO['NAMES'][db], config.DB_INFO['PORT'])
+def _exec_sql(exec_content, exec_type):
+    conn = MySQLdb.connect(config.DB_INFO['HOST'], config.DB_INFO['USER'], config.DB_INFO['PASSWORD'], config.DB_INFO['NAMES'], config.DB_INFO['PORT'])
     try:
         cur = conn.cursor()
         if exec_type == 'QUERY':
             cur.execute(exec_content)
             result = cur.fetchall()
-
         else:
             for cmd in exec_content:
                 cur.execute(cmd)
