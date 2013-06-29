@@ -168,18 +168,6 @@ $(function() {
             sql_name: 'required'
         },
         need_confirm: true
-    }, {
-        form_id: 'TAXI_POST_FORM',
-        rules: {
-            csv_name: 'required'
-        },
-        need_confirm: false
-    }, {
-        form_id: 'TAXI_POST_TIMING_FORM',
-        rules: {
-            csv_name: 'required'
-        },
-        need_confirm: false
     }];
 
     $(rules_set).each(function() {
