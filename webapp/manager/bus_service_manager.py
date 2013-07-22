@@ -1,4 +1,5 @@
 import logging
+from webapp.dao import bus_service_dao
 from webapp.exceptions import PTPValueError
 from webapp.manager import csv_manager, sql_manager
 from webapp.rule.bus_service_rule import BusServiceRule
@@ -43,7 +44,7 @@ def bus_service_add_or_update(csv_name, bus_service_ids, sr_number):
 
 def bus_service_enable_or_disable(bus_service_ids, enable_or_disable, sr_number):
     # find missing bus service ids
-    bus_service_ids_missing = select_missing_bus_service_ids(bus_service_ids)
+    bus_service_ids_missing = bus_service_dao.get_missing_bus_service_ids(bus_service_ids)
     # incorrect bus stop check
     if bus_service_ids_missing:
         err_msg = '%d bus services cannot be found in DB, please check whether you inputted incorrect bus service IDs : %s' % (len(bus_service_ids_missing), ','.join(bus_service_ids_missing))
@@ -98,27 +99,3 @@ def generate_sql_enable_or_disable(bus_service_ids, enable_or_disable):
     sql += "UPDATE bus_services SET uses_distance_fares = '%s' WHERE id IN (%s);\n" % (flag, bus_service_ids_string_wrap_quotes)
     sql += "UPDATE bus_routes SET in_operation = '%s' WHERE bus_service_id IN (%s);\n" % (flag, bus_service_ids_string_wrap_quotes)
     return sql
-
-
-def select_missing_bus_service_ids(bus_service_ids):
-    bus_service_ids_string_wrap_quotes = ', '.join(["'%s'" % bus_service_id for bus_service_id in bus_service_ids])
-    sql = "SELECT CONCAT(id) FROM bus_services WHERE id IN (%s);" % bus_service_ids_string_wrap_quotes
-
-    result = db_util.exec_query(sql)
-
-    bus_service_ids_found = {bus_service[0] for bus_service in result}
-    bus_service_ids_missing = bus_service_ids - bus_service_ids_found
-
-    return bus_service_ids_missing
-
-
-def select_missing_directions(directions):
-    directions_string_wrap_quotes = ', '.join(["('%s', '%s')" % (direction[0], direction[1]) for direction in directions])
-    sql = "SELECT CONCAT(bus_service_id), CONCAT(direction) FROM bus_service_directions WHERE (bus_service_id, direction) IN (%s);" % directions_string_wrap_quotes
-
-    result = db_util.exec_query(sql)
-
-    directions_found = set(result)
-    directions_missing = directions - directions_found
-
-    return directions_missing

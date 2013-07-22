@@ -1,4 +1,5 @@
 import logging
+from webapp.dao import bus_stop_dao
 from webapp.exceptions import PTPValueError
 from webapp.rule.bus_stop_rule import BusStopRule
 from webapp.util import db_util, string_util
@@ -22,7 +23,7 @@ def get_bus_stops_from_csv(csv_name, bus_stop_ids):
     bus_stops_after_rules = rule.execute_rules()
 
     # retrieve data from DB
-    bus_stop_ids_found_in_db = bus_stop_ids - select_bus_stops(bus_stop_ids)[1]
+    bus_stop_ids_found_in_db = bus_stop_ids - bus_stop_dao.get_bus_stops_by_ids(bus_stop_ids)[1]
     # raise exception if bus stop already exist in DB
     if bus_stop_ids_found_in_db:
         err_msg = '%d bus stops already exist in DB, please use the Bus Stop Update function instead : %s' % (len(bus_stop_ids_found_in_db), ','.join(bus_stop_ids_found_in_db))
@@ -34,7 +35,7 @@ def get_bus_stops_from_csv(csv_name, bus_stop_ids):
 
 def get_bus_stops_from_db(bus_stop_ids):
     # retrieve data from DB
-    bus_stops, bus_stop_ids_missing = select_bus_stops(bus_stop_ids)
+    bus_stops, bus_stop_ids_missing = bus_stop_dao.get_bus_stops_by_ids(bus_stop_ids)
     # raise exception if bus stop cannot be found in DB
     if bus_stop_ids_missing:
         err_msg = '%d bus stops cannot be found in DB, please check whether you inputted incorrect bus stop IDs : %s' % (len(bus_stop_ids_missing), ','.join(bus_stop_ids_missing))
@@ -71,15 +72,3 @@ def generate_sql(bus_stops, method):
         for bus_stop in bus_stops:
             sql += "UPDATE bus_stops SET street_id = %s, long_name = %s, short_name = %s, location_code = %s, is_wab_accessible = %s, is_non_bus_stop = %s, is_interchange = %s, longitude= %s, latitude = %s WHERE id = %s;\n" % (bus_stop[1], bus_stop[2], bus_stop[3], bus_stop[4], bus_stop[5], bus_stop[6], bus_stop[7], bus_stop[8], bus_stop[9], bus_stop[0])
     return sql
-
-
-def select_bus_stops(bus_stop_ids):
-    bus_stop_ids_string_wrap_quotes = ', '.join({"'%s'" % bus_stop_id for bus_stop_id in bus_stop_ids})
-    sql = "SELECT CONCAT(id), CONCAT(street_id), CONCAT(long_name), CONCAT(short_name), IF(location_code IS NULL, '', CONCAT(location_code)), CONCAT(is_wab_accessible), CONCAT(is_non_bus_stop), CONCAT(is_interchange), CONCAT(longitude), CONCAT(latitude) FROM bus_stops WHERE id IN (%s);" % bus_stop_ids_string_wrap_quotes
-
-    result = db_util.exec_query(sql)
-
-    bus_stop_ids_found = {bus_stop[0] for bus_stop in result}
-    bus_stop_ids_missing = bus_stop_ids - bus_stop_ids_found
-
-    return result, bus_stop_ids_missing

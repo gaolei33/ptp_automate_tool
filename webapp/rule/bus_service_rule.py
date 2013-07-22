@@ -1,6 +1,6 @@
 import logging
+from webapp.dao import street_dao
 from webapp.exceptions import PTPValueError
-from webapp.manager import street_manager
 from webapp.rule.rule import BaseRule
 
 __author__ = 'Gao Lei'
@@ -17,7 +17,7 @@ class BusServiceRule(BaseRule):
 
     def _loop_street_rule(self, origin_loop_street_name):
         if origin_loop_street_name:
-            target_loop_street_id = street_manager.get_first_matched_street_id_from_name(origin_loop_street_name)
+            target_loop_street_id = street_dao.get_first_matched_street_id_by_name(origin_loop_street_name)
             if not target_loop_street_id:
                 err_msg = 'Cannot find the loop street id for: %s, maybe you uploaded an incorrect CSV file, please check and modify the CSV file.' % origin_loop_street_name
                 _logger.error(err_msg)

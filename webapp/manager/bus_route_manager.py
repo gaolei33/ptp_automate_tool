@@ -1,6 +1,8 @@
 import logging
+from webapp.dao import bus_stop_dao
+from webapp.dao import bus_service_dao
 from webapp.exceptions import PTPValueError
-from webapp.manager import csv_manager, sql_manager, bus_stop_manager, bus_service_manager
+from webapp.manager import csv_manager, sql_manager
 from webapp.rule.bus_route_rule import BusRouteNCSRule, BusRouteLTARule
 from webapp.util import db_util, string_util
 
@@ -24,7 +26,7 @@ def bus_route_add_or_update(csv_name, method, bus_service_ids, sr_number):
 
     # new direction check
     directions = {(route[0], route[1]) for bus_route in bus_routes_after_rules for route in bus_route}
-    new_directions = bus_service_manager.select_missing_directions(directions)
+    new_directions = bus_service_dao.get_missing_directions(directions)
     if new_directions:
         new_directions_string = ','.join({'(%s,%s)' % (direction[0], direction[1]) for direction in new_directions})
         err_msg = '%d new directions need to be created, please use the Bus Service Add / Update function first : %s' % (len(new_directions), new_directions_string)
@@ -33,7 +35,7 @@ def bus_route_add_or_update(csv_name, method, bus_service_ids, sr_number):
 
     # new bus stops check
     bus_stop_ids = {route[3] for bus_route in bus_routes_after_rules for route in bus_route}
-    new_bus_stop_ids = bus_stop_manager.select_bus_stops(bus_stop_ids)[1]
+    new_bus_stop_ids = bus_stop_dao.get_bus_stops_by_ids(bus_stop_ids)[1]
     if new_bus_stop_ids:
         err_msg = '%s new bus stops need to be created, please use the Bus Stop Add function first : %s' % (len(new_bus_stop_ids), ','.join(new_bus_stop_ids))
         _logger.error(err_msg)
