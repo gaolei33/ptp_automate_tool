@@ -31,8 +31,8 @@ def sql_handler(request):
         if not sql_name:
             raise PTPValueError('Please select a valid SQL file.')
 
-        sql_file = sql_manager.get_sql(sql_name)
-        response = HttpResponse(sql_file, content_type='text/plain')
+        sql_content = sql_manager.get_sql_content(sql_name)
+        response = HttpResponse(sql_content, content_type='text/plain')
         response['Content-Disposition'] = 'attachment; filename="%s"' % sql_name
 
         return response

@@ -23,7 +23,7 @@ def save_sql(sql_name, sql):
         raise PTPValueError(err_msg)
 
 
-def get_sql(sql_name):
+def get_sql_content(sql_name):
     sql_path = os.path.join(config.SQL_FOLDER, sql_name)
 
     if not os.path.exists(sql_path):
@@ -32,13 +32,14 @@ def get_sql(sql_name):
         raise PTPValueError(err_msg)
 
     try:
-        sql_file = file(sql_path)
+        with file(sql_path) as sql_file:
+            sql_content = sql_file.read()
     except Exception, ex:
         err_msg = 'An error occurred while reading SQL file: %s: %s' % (sql_path, ex)
         _logger.error(err_msg)
         raise PTPValueError(err_msg)
 
-    return sql_file
+    return sql_content
 
 
 def get_sql_name(sr_number, sql_type, other_info, ):
