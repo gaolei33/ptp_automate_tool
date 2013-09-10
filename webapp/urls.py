@@ -52,6 +52,11 @@ urlpatterns += patterns('webapp.view.sql_view',
     url(r'^sql/sql_handler/$', 'sql_handler'),
 )
 
+urlpatterns += patterns('webapp.view.pdf_view',
+    url(r'^pdf/$', 'pdf_home', {'method': 'PDF_RENAME', 'description': 'PDF Rename'}),
+    url(r'^pdf/pdf_handler/$', 'pdf_handler'),
+)
+
 urlpatterns += patterns('webapp.view.street_view',
     url(r'^street/street_search/$', 'street_search'),
 )

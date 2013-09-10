@@ -131,11 +131,11 @@ a:hover {
 }
 
 .form-specification {
-    padding: 20px 0;
+    padding: 10px 0;
     font-size: 12px;
 }
 
-.form-manually {
+.form-green {
     color: green;
 }
 

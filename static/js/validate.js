@@ -168,6 +168,12 @@ $(function() {
             sql_name: 'required'
         },
         need_confirm: true
+    }, {
+        form_id: 'PDF_RENAME_FORM',
+        rules: {
+            pdf_zip_file: 'required'
+        },
+        need_confirm: false
     }];
 
     $(rules_set).each(function() {

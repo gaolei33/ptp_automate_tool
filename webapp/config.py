@@ -53,6 +53,10 @@ BACKUP_TABLES = (
 
 SQL_FOLDER = os.path.join(ROOT, 'sql')
 
+PDF_RENAME_PATTERN = r'_\d_Index'
+
+PDF_ROOT = 'pdf/roadIndex/'
+
 MENUS = (
     {'TITLE': 'DB', 'LINK': '/webapp/db/',
         'SUBMENUS': (
@@ -91,6 +95,7 @@ MENUS = (
             {'TITLE': 'SQL Delete', 'LINK': '/webapp/sql/sql_delete/'},
         )
     },
+    {'TITLE': 'PDF Rename', 'LINK': '/webapp/pdf/'},
     {'TITLE': 'HTML & SHP & KML Tools', 'LINK': 'http://192.168.152.135:8381/publictransport-maintenance/', 'TARGET': '_blank'},
     {'TITLE': 'Street Search', 'LINK': 'javascript: street_search_toggle();', 'ALIGN': 'right'},
 )
