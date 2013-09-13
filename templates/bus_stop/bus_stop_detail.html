@@ -6,7 +6,7 @@
         {% csrf_token %}
         <input type="hidden" name="method" value="{{ method }}" />
         <input type="hidden" name="sr_number" value="{{ sr_number }}" />
-        <input type="hidden" name="bus_stop_count" value="{{ bus_stops | length }}" />
+        <input type="hidden" name="bus_stop_count" value="{{ bus_stops|length }}" />
         {% for bus_stop in bus_stops %}
             <div class="form-row">
                 <label class="form-label">ID</label>

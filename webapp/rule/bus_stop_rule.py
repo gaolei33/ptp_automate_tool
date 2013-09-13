@@ -19,7 +19,7 @@ class BusStopRule(BaseRule):
     def _street_id_rule(self, origin_street_name):
         target_street_id = street_dao.get_first_matched_street_id_by_name(origin_street_name)
         if not target_street_id:
-            err_msg = 'Cannot find the street id for: %s, maybe you uploaded an incorrect CSV file, please check and modify the CSV file.' % target_street_id
+            err_msg = 'Cannot find the street id for: %s, maybe you uploaded an incorrect CSV file, please check and modify the CSV file.' % origin_street_name
             _logger.error(err_msg)
             raise PTPValueError(err_msg)
         return target_street_id

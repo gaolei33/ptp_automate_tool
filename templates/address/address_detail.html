@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}Address Detail{% endblock %}
+{% block content %}
+<div class="form">
+    <form action="/webapp/address/address_handler/" method="post" id="ADDRESS_DETAIL_FORM">
+        {% csrf_token %}
+        <input type="hidden" name="address_count" value="{{ postal_codes|length }}" />
+        {% for postal_code in postal_codes %}
+            <div class="form-row">
+                <label class="form-label">Postal Code</label>
+                {{ postal_code }}
+                <input type="hidden" name="postal_code_{{ forloop.counter0 }}" value="{{ postal_code }}" />
+            </div>
+            <div class="form-row">
+                <label class="form-label">Block</label>
+                <input class="form-textbox" type="text" name="block_{{ forloop.counter0 }}" />
+            </div>
+            <div class="form-row">
+                <label class="form-label">Street Name</label>
+                <input class="form-textbox" type="text" name="street_name_{{ forloop.counter0 }}" />
+            </div>
+            <div class="form-row">
+                <label class="form-label">Longitude</label>
+                <input class="form-textbox" type="text" name="longitude_{{ forloop.counter0 }}" />
+            </div>
+            <div class="form-row">
+                <label class="form-label">Latitude</label>
+                <input class="form-textbox" type="text" name="latitude_{{ forloop.counter0 }}" />
+            </div>
+            {% if forloop.counter0 < bus_stops|length|add:-1 %}
+                <div class="form-row">&nbsp;</div>
+            {% endif %}
+        {% endfor %}
+        <div class="form-row">
+            <input type="submit" value="Proceed" />
+        </div>
+    </form>
+</div>
+{% endblock %}

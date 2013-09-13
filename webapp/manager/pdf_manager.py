@@ -29,13 +29,3 @@ def pdf_rename(file_origin):
     file_target.close()
 
     return file_content_target
-
-
-def main():
-    with file('/home/jonathan/Desktop/pdf.zip', 'r') as zip_origin, file('/home/jonathan/Desktop/pdf_target.zip', 'w') as zip_target:
-        file_content_target = pdf_rename(zip_origin)
-        zip_target.write(file_content_target)
-
-
-if __name__ == '__main__':
-    main()

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}{{ description }}{% endblock %}
+{% block content %}
+<div class="form">
+    <form action="/webapp/address/address_detail/" method="post" id="{{ method }}_FORM">
+        {% csrf_token %}
+        <div class="form-row">
+            <label class="form-label">Postal Codes</label>
+            <input class="form-textbox" type="text" name="postal_codes" />
+        </div>
+        <div class="form-row">
+            <input type="submit" value="{{ description }}" />
+        </div>
+    </form>
+</div>
+{% endblock %}
+

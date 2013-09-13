@@ -49,6 +49,7 @@ BACKUP_TABLES = (
     'bus_service_loops',
     'bus_routes',
     'bus_route_polylines',
+    'addresses',
 )
 
 SQL_FOLDER = os.path.join(ROOT, 'sql')
@@ -89,13 +90,22 @@ MENUS = (
             {'TITLE': 'Bus Route LTA', 'LINK': '/webapp/bus_route/bus_route_lta/'},
         )
     },
+    {'TITLE': 'Address', 'LINK': '/webapp/address/',
+        'SUBMENUS': (
+            {'TITLE': 'Address Add', 'LINK': '/webapp/address/address_add/'},
+        )
+    },
     {'TITLE': 'SQL', 'LINK': '/webapp/sql/',
         'SUBMENUS': (
             {'TITLE': 'SQL Download', 'LINK': '/webapp/sql/sql_download/'},
             {'TITLE': 'SQL Delete', 'LINK': '/webapp/sql/sql_delete/'},
         )
     },
-    {'TITLE': 'PDF Rename', 'LINK': '/webapp/pdf/'},
+    {'TITLE': 'PDF', 'LINK': '/webapp/pdf/',
+        'SUBMENUS': (
+            {'TITLE': 'PDF Rename', 'LINK': '/webapp/pdf/pdf_rename/'},
+        )
+    },
     {'TITLE': 'HTML & SHP & KML Tools', 'LINK': 'http://192.168.152.135:8381/publictransport-maintenance/', 'TARGET': '_blank'},
     {'TITLE': 'Street Search', 'LINK': 'javascript: street_search_toggle();', 'ALIGN': 'right'},
 )

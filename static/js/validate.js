@@ -21,37 +21,63 @@ function validate(form_id, rules, need_confirm) {
 $(function() {
 
     var bus_stop_detail_rules = {};
+    var $bus_stop_detail_form = $('#BUS_STOP_DETAIL_FORM');
 
-    $('input[name^=street_id]').each(function() {
+    $bus_stop_detail_form.find('input[name^=street_id]').each(function() {
         bus_stop_detail_rules[$(this).attr('name')] = {
             required: true,
             digits: true
         };
     });
 
-    $('input[name^=short_name]').each(function() {
+    $bus_stop_detail_form.find('input[name^=short_name]').each(function() {
         bus_stop_detail_rules[$(this).attr('name')] = 'required';
     });
 
-    $('input[name^=long_name]').each(function() {
+    $bus_stop_detail_form.find('input[name^=long_name]').each(function() {
         bus_stop_detail_rules[$(this).attr('name')] = 'required';
     });
 
-    $('input[name^=longitude]').each(function() {
+    $bus_stop_detail_form.find('input[name^=longitude]').each(function() {
         bus_stop_detail_rules[$(this).attr('name')] = {
             required: true,
             number: true
         };
     });
 
-    $('input[name^=latitude]').each(function() {
+    $bus_stop_detail_form.find('input[name^=latitude]').each(function() {
         bus_stop_detail_rules[$(this).attr('name')] = {
             required: true,
             number: true
         };
     });
 
-    rules_set = [{
+    var address_detail_rules = {};
+    var $address_detail_form = $('#ADDRESS_DETAIL_FORM');
+
+    $address_detail_form.find('input[name^=block]').each(function() {
+        address_detail_rules[$(this).attr('name')] = 'required';
+    });
+
+    $address_detail_form.find('input[name^=street_name]').each(function() {
+        address_detail_rules[$(this).attr('name')] = 'required';
+    });
+
+    $address_detail_form.find('input[name^=longitude]').each(function() {
+        address_detail_rules[$(this).attr('name')] = {
+            required: true,
+            number: true
+        };
+    });
+
+    $address_detail_form.find('input[name^=latitude]').each(function() {
+        address_detail_rules[$(this).attr('name')] = {
+            required: true,
+            number: true
+        };
+    });
+
+    var rules_set = [{
         form_id: 'DB_BACKUP_FORM',
         rules: {
             sr_number: {
@@ -155,6 +181,16 @@ $(function() {
             csv_name: 'required',
             bus_service_ids: 'required'
         },
+        need_confirm: false
+    }, {
+        form_id: 'ADDRESS_ADD_FORM',
+        rules: {
+            postal_codes: 'required'
+        },
+        need_confirm: false
+    }, {
+        form_id: 'ADDRESS_DETAIL_FORM',
+        rules: address_detail_rules,
         need_confirm: false
     }, {
         form_id: 'SQL_DOWNLOAD_FORM',

@@ -45,6 +45,13 @@ urlpatterns += patterns('webapp.view.bus_route_view',
     url(r'^bus_route/bus_route_handler/$', 'bus_route_handler'),
 )
 
+urlpatterns += patterns('webapp.view.address_view',
+    url(r'^address/$', RedirectView.as_view(url='/webapp/address/address_add/')),
+    url(r'^address/address_add/$', 'address_home', {'method': 'ADDRESS_ADD', 'description': 'Address Add'}),
+    url(r'^address/address_detail/$', 'address_detail'),
+    url(r'^address/address_handler/$', 'address_handler'),
+)
+
 urlpatterns += patterns('webapp.view.sql_view',
     url(r'^sql/$', RedirectView.as_view(url='/webapp/sql/sql_download/')),
     url(r'^sql/sql_download/$', 'sql_home', {'method': 'SQL_DOWNLOAD', 'description': 'SQL Download'}),
@@ -53,7 +60,8 @@ urlpatterns += patterns('webapp.view.sql_view',
 )
 
 urlpatterns += patterns('webapp.view.pdf_view',
-    url(r'^pdf/$', 'pdf_home', {'method': 'PDF_RENAME', 'description': 'PDF Rename'}),
+    url(r'^pdf/$', RedirectView.as_view(url='/webapp/pdf/pdf_rename/')),
+    url(r'^pdf/pdf_rename/$', 'pdf_home', {'method': 'PDF_RENAME', 'description': 'PDF Rename'}),
     url(r'^pdf/pdf_handler/$', 'pdf_handler'),
 )
 
