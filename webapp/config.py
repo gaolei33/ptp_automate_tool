@@ -42,15 +42,15 @@ CSV_FOLDER = os.path.join(ROOT, 'csv')
 
 BACKUP_FOLDER = os.path.join(ROOT, 'backup')
 
-BACKUP_TABLES = (
-    'bus_stops',
-    'bus_services',
-    'bus_service_directions',
-    'bus_service_loops',
-    'bus_routes',
-    'bus_route_polylines',
-    'addresses',
-)
+#BACKUP_TABLES = (
+#    'bus_stops',
+#    'bus_services',
+#    'bus_service_directions',
+#    'bus_service_loops',
+#    'bus_routes',
+#    'bus_route_polylines',
+#    'addresses',
+#)
 
 SQL_FOLDER = os.path.join(ROOT, 'sql')
 
