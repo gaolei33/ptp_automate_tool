@@ -72,7 +72,7 @@ def get_sql_merged_list():
 
 
 def _get_sr_number_from_sql_name(sql_name):
-    match = re.search(r'\[(\d+)\]', sql_name)
+    match = re.search(r'^\[(\d+)\]', sql_name)
     if match:
         return match.group(1)
     else:
