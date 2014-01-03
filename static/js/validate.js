@@ -199,6 +199,12 @@ $(function() {
         },
         need_confirm: false
     }, {
+        form_id: 'SQL_MERGED_DOWNLOAD_FORM',
+        rules: {
+            sql_name: 'required'
+        },
+        need_confirm: false
+    }, {
         form_id: 'SQL_DELETE_FORM',
         rules: {
             sql_name: 'required'

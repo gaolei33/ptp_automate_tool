@@ -55,6 +55,7 @@ urlpatterns += patterns('webapp.view.address_view',
 urlpatterns += patterns('webapp.view.sql_view',
     url(r'^sql/$', RedirectView.as_view(url='/webapp/sql/sql_download/')),
     url(r'^sql/sql_download/$', 'sql_home', {'method': 'SQL_DOWNLOAD', 'description': 'SQL Download'}),
+    url(r'^sql/sql_merged_download/$', 'sql_home', {'method': 'SQL_MERGED_DOWNLOAD', 'description': 'SQL Merged Download'}),
     url(r'^sql/sql_delete/$', 'sql_home', {'method': 'SQL_DELETE', 'description': 'SQL Delete'}),
     url(r'^sql/sql_handler/$', 'sql_handler'),
 )

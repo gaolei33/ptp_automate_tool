@@ -98,6 +98,7 @@ MENUS = (
     {'TITLE': 'SQL', 'LINK': '/webapp/sql/',
         'SUBMENUS': (
             {'TITLE': 'SQL Download', 'LINK': '/webapp/sql/sql_download/'},
+            {'TITLE': 'SQL Merged Download', 'LINK': '/webapp/sql/sql_merged_download/'},
             {'TITLE': 'SQL Delete', 'LINK': '/webapp/sql/sql_delete/'},
         )
     },
