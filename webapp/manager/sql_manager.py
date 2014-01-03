@@ -53,7 +53,7 @@ def get_sql_list(sr_number=None):
     sql_folder = config.SQL_FOLDER
     io_util.create_folder_if_not_exists(sql_folder)
     sql_list = [f for f in os.listdir(sql_folder) if os.path.isfile(os.path.join(sql_folder, f)) and f.lower().endswith('.sql')]
-    # SR filter
+    # SR number filter
     if sr_number:
         sql_list = [f for f in sql_list if f.lower().startswith('[%s]' % sr_number)]
     # sort by date reversed
@@ -86,7 +86,6 @@ def get_sql_merged_content(sr_number):
         sql_content = get_sql_content(sql_name)
         sql_merged_content += '/* %s */\n%s\n' % (sql_name, sql_content)
     return sql_merged_content
-
 
 
 def delete(sql_name):
