@@ -1,4 +1,4 @@
-<select class="form-dropdown-list" name="csv_name">
+<select class="form-dropdown-list" name="{{ filed|default:'csv_name' }}">
     {% for csv_name in csv_list %}
     <option value="{{ csv_name }}">{{ csv_name }}</option>
     {% empty %}

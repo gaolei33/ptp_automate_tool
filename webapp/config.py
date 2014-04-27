@@ -86,8 +86,7 @@ MENUS = (
     },
     {'TITLE': 'Bus Route', 'LINK': '/webapp/bus_route/',
         'SUBMENUS': (
-            {'TITLE': 'Bus Route NCS', 'LINK': '/webapp/bus_route/bus_route_ncs/'},
-            {'TITLE': 'Bus Route LTA', 'LINK': '/webapp/bus_route/bus_route_lta/'},
+            {'TITLE': 'Bus Route Add / Update', 'LINK': '/webapp/bus_route/bus_route_add_or_update/'},
         )
     },
     {'TITLE': 'Address', 'LINK': '/webapp/address/',

@@ -1,5 +1,5 @@
 /**
- * User: Gao Lei
+ * Author: Gao Lei
  * Date: 5/7/13
  * Time: 1:38 AM
  */
@@ -161,24 +161,14 @@ $(function() {
         },
         need_confirm: false
     }, {
-        form_id: 'BUS_ROUTE_NCS_FORM',
+        form_id: 'BUS_ROUTE_ADD_OR_UPDATE_FORM',
         rules: {
             sr_number: {
                 required: true,
                 digits: true
             },
-            csv_name: 'required',
-            bus_service_ids: 'required'
-        },
-        need_confirm: false
-    }, {
-        form_id: 'BUS_ROUTE_LTA_FORM',
-        rules: {
-            sr_number: {
-                required: true,
-                digits: true
-            },
-            csv_name: 'required',
+            csv_name_ncs: 'required',
+            csv_name_lta: 'required',
             bus_service_ids: 'required'
         },
         need_confirm: false

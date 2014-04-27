@@ -24,15 +24,6 @@ def _bus_stop_code_rule(origin_bus_stop_code):
     return target_bus_stop_code
 
 
-def _post_id_rule(origin_post_id):
-    pattern = r'^\d+$'
-    if re.search(pattern, origin_post_id):
-        is_post_id = True
-    else:
-        is_post_id = False
-    return is_post_id
-
-
 def get_csv_list(csv_type=None):
     csv_folder = config.CSV_FOLDER
     io_util.create_folder_if_not_exists(csv_folder)
@@ -81,9 +72,6 @@ def retrieve_data_from_csv(csv_name, csv_type, filter_id=None):
                     # bus service id process
                     row[0] = _bus_service_id_rule(row[0])
                     if row[0] == filter_id:
-                        data.append(row)
-                elif csv_type in ('TAXI_POST', 'TAXI_POST_TIMING'):
-                    if _post_id_rule(row[0]):
                         data.append(row)
                 else:
                     data.append(row)

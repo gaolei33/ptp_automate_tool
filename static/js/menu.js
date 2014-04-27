@@ -1,5 +1,5 @@
 /**
- * User: Gao Lei
+ * Author: Gao Lei
  * Date: 5/4/13
  * Time: 11:13 AM
  */

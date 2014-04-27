@@ -4,14 +4,17 @@
 <div class="form">
     <form action="/webapp/bus_route/bus_route_handler/" method="post" id="{{ method }}_FORM">
         {% csrf_token %}
-        <input type="hidden" name="method" value="{{ method }}" />
         <div class="form-row">
             <label class="form-label">SR Number</label>
             <input class="form-textbox" type="text" name="sr_number" />
         </div>
         <div class="form-row">
-            <label class="form-label">CSV Name</label>
-            {% include 'common/csv_list.html' %}
+            <label class="form-label">CSV Name NCS</label>
+            {% include 'common/csv_list.html' with filed='csv_name_ncs' csv_list=csv_list_ncs %}
+        </div>
+        <div class="form-row">
+            <label class="form-label">CSV Name LTA</label>
+            {% include 'common/csv_list.html' with filed='csv_name_lta' csv_list=csv_list_lta %}
         </div>
         <div class="form-row">
             <label class="form-label">Service IDs</label>

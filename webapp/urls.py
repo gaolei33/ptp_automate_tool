@@ -39,9 +39,8 @@ urlpatterns += patterns('webapp.view.bus_service_view',
 )
 
 urlpatterns += patterns('webapp.view.bus_route_view',
-    url(r'^bus_route/$', RedirectView.as_view(url='/webapp/bus_route/bus_route_ncs/')),
-    url(r'^bus_route/bus_route_ncs/$', 'bus_route_home', {'method': 'BUS_ROUTE_NCS', 'description': 'Bus Route NCS Add / Update'}),
-    url(r'^bus_route/bus_route_lta/$', 'bus_route_home', {'method': 'BUS_ROUTE_LTA', 'description': 'Bus Route LTA Add / Update'}),
+    url(r'^bus_route/$', RedirectView.as_view(url='/webapp/bus_route/bus_route_add_or_update/')),
+    url(r'^bus_route/bus_route_add_or_update/$', 'bus_route_home', {'method': 'BUS_ROUTE_ADD_OR_UPDATE', 'description': 'Bus Route Add / Update'}),
     url(r'^bus_route/bus_route_handler/$', 'bus_route_handler'),
 )
 
