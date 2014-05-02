@@ -1,14 +1,14 @@
-{% if MENUS %}
+{% if menus %}
     <script type="text/javascript" src="/static/js/menu.js"></script>
     <ul id="menu">
-    {% for menu in MENUS %}
-        <li class="menu-item"{% if menu.ALIGN %} style="float: {{ menu.ALIGN }};" {% endif %}>
-            <a class="menu-link" target="{{ menu.TARGET | default:'_top' }}" href="{{ menu.LINK }}">{{ menu.TITLE }}</a>
-        {% if menu.SUBMENUS %}
+    {% for menu in menus %}
+        <li class="menu-item"{% if menu.align %} style="float: {{ menu.align }};" {% endif %}>
+            <a class="menu-link" target="{{ menu.target | default:'_top' }}" href="{{ menu.link }}">{{ menu.title }}</a>
+        {% if menu.submenus %}
             <ul class="submenu">
-            {% for submenu in menu.SUBMENUS %}
+            {% for submenu in menu.submenus %}
                 <li class="submenu-item">
-                    <a class="submenu-link" target="{{ submenu.TARGET | default:'_top' }}" href="{{ submenu.LINK }}">{{ submenu.TITLE }}</a>
+                    <a class="submenu-link" target="{{ submenu.target | default:'_top' }}" href="{{ submenu.link }}">{{ submenu.title }}</a>
                 </li>
             {% endfor %}
             </ul>

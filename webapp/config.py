@@ -3,40 +3,36 @@ import os
 __author__ = 'Gao Lei'
 
 
-MODE_SWITCHER = 'SERVER'
+ENV = 'server'
 
-DEBUGS = {
-    'SERVER': False,
-    'LOCAL': True,
-}
-
-DB_INFOS = {
-    'SERVER': {
-        'HOST': '127.0.0.1',
-        'PORT': 3306,
-        'NAMES': 'ptp2',
-        'USER': 'developer',
-        'PASSWORD': 'password'
+CONFIG = {
+    'server': {
+        'debug': False,
+        'db': {
+            'host': '127.0.0.1',
+            'user': 'developer',
+            'password': 'password',
+            'database': 'ptp2',
+        },
+        'root': '/media/ext/Public/share/ptp_automate_tool',
     },
-    'LOCAL': {
-        'HOST': '127.0.0.1',
-        'PORT': 3306,
-        'NAMES': 'ptp2',
-        'USER': 'root',
-        'PASSWORD': '880428',
-    }
+    'local': {
+        'debug': True,
+        'db': {
+            'host': '127.0.0.1',
+            'user': 'root',
+            'password': '880428',
+            'database': 'ptp2',
+        },
+        'root': '/home/jonathan/Desktop/ptp_automate_tool',
+    },
 }
 
-ROOTS = {
-    'SERVER': '/media/ext/Public/share/ptp_automate_tool',
-    'LOCAL': '/home/jonathan/Desktop/ptp_automate_tool',
-}
+DEBUG = CONFIG[ENV]['debug']
 
-DEBUG = DEBUGS[MODE_SWITCHER]
+DB = CONFIG[ENV]['db']
 
-DB_INFO = DB_INFOS[MODE_SWITCHER]
-
-ROOT = ROOTS[MODE_SWITCHER]
+ROOT = CONFIG[ENV]['root']
 
 CSV_FOLDER = os.path.join(ROOT, 'csv')
 
@@ -59,55 +55,63 @@ PDF_RENAME_PATTERN = r'_\d_Index'
 PDF_ROOT = 'pdf/roadIndex/'
 
 MENUS = (
-    {'TITLE': 'DB', 'LINK': '/webapp/db/',
-        'SUBMENUS': (
-            {'TITLE': 'DB Backup', 'LINK': '/webapp/db/db_backup/'},
-            {'TITLE': 'DB Restore', 'LINK': '/webapp/db/db_restore/'},
-            {'TITLE': 'DB Backup Delete', 'LINK': '/webapp/db/db_backup_delete/'},
+    {
+        'title': 'DB', 'link': '/webapp/db/',
+        'submenus': (
+            {'title': 'DB Backup', 'link': '/webapp/db/db_backup/'},
+            {'title': 'DB Restore', 'link': '/webapp/db/db_restore/'},
+            {'title': 'DB Backup Delete', 'link': '/webapp/db/db_backup_delete/'},
         )
     },
-    {'TITLE': 'CSV', 'LINK': '/webapp/csv/',
-        'SUBMENUS': (
-            {'TITLE': 'CSV Upload', 'LINK': '/webapp/csv/csv_upload/'},
-            {'TITLE': 'CSV Delete', 'LINK': '/webapp/csv/csv_delete/'},
+    {
+        'title': 'CSV', 'link': '/webapp/csv/',
+        'submenus': (
+            {'title': 'CSV Upload', 'link': '/webapp/csv/csv_upload/'},
+            {'title': 'CSV Delete', 'link': '/webapp/csv/csv_delete/'},
         )
     },
-    {'TITLE': 'Bus Stop', 'LINK': '/webapp/bus_stop/',
-        'SUBMENUS': (
-            {'TITLE': 'Bus Stop Add', 'LINK': '/webapp/bus_stop/bus_stop_add/'},
-            {'TITLE': 'Bus Stop Update', 'LINK': '/webapp/bus_stop/bus_stop_update/'},
+    {
+        'title': 'Bus Stop', 'link': '/webapp/bus_stop/',
+        'submenus': (
+            {'title': 'Bus Stop Add', 'link': '/webapp/bus_stop/bus_stop_add/'},
+            {'title': 'Bus Stop Update', 'link': '/webapp/bus_stop/bus_stop_update/'},
         )
     },
-    {'TITLE': 'Bus Service', 'LINK': '/webapp/bus_service/',
-        'SUBMENUS': (
-            {'TITLE': 'Bus Service Add / Update', 'LINK': '/webapp/bus_service/bus_service_add_or_update/'},
-            {'TITLE': 'Bus Service Enable / Disable', 'LINK': '/webapp/bus_service/bus_service_enable_or_disable/'},
+    {
+        'title': 'Bus Service', 'link': '/webapp/bus_service/',
+        'submenus': (
+            {'title': 'Bus Service Add / Update', 'link': '/webapp/bus_service/bus_service_add_or_update/'},
+            {'title': 'Bus Service Enable / Disable', 'link': '/webapp/bus_service/bus_service_enable_or_disable/'},
         )
     },
-    {'TITLE': 'Bus Route', 'LINK': '/webapp/bus_route/',
-        'SUBMENUS': (
-            {'TITLE': 'Bus Route Add / Update', 'LINK': '/webapp/bus_route/bus_route_add_or_update/'},
+    {
+        'title': 'Bus Route', 'link': '/webapp/bus_route/',
+        'submenus': (
+            {'title': 'Bus Route Add / Update', 'link': '/webapp/bus_route/bus_route_add_or_update/'},
         )
     },
-    {'TITLE': 'Address', 'LINK': '/webapp/address/',
-        'SUBMENUS': (
-            {'TITLE': 'Address Add', 'LINK': '/webapp/address/address_add/'},
+    {
+        'title': 'Address', 'link': '/webapp/address/',
+        'submenus': (
+            {'title': 'Address Add', 'link': '/webapp/address/address_add/'},
         )
     },
-    {'TITLE': 'SQL', 'LINK': '/webapp/sql/',
-        'SUBMENUS': (
-            {'TITLE': 'SQL Download', 'LINK': '/webapp/sql/sql_download/'},
-            {'TITLE': 'SQL Merged Download', 'LINK': '/webapp/sql/sql_merged_download/'},
-            {'TITLE': 'SQL Delete', 'LINK': '/webapp/sql/sql_delete/'},
+    {
+        'title': 'SQL', 'link': '/webapp/sql/',
+        'submenus': (
+            {'title': 'SQL Download', 'link': '/webapp/sql/sql_download/'},
+            {'title': 'SQL Merged Download', 'link': '/webapp/sql/sql_merged_download/'},
+            {'title': 'SQL Delete', 'link': '/webapp/sql/sql_delete/'},
         )
     },
-    {'TITLE': 'PDF', 'LINK': '/webapp/pdf/',
-        'SUBMENUS': (
-            {'TITLE': 'PDF Rename', 'LINK': '/webapp/pdf/pdf_rename/'},
+    {
+        'title': 'PDF', 'link': '/webapp/pdf/',
+        'submenus': (
+            {'title': 'PDF Rename', 'link': '/webapp/pdf/pdf_rename/'},
         )
     },
-    {'TITLE': 'HTML & SHP & KML Tools', 'LINK': 'http://192.168.152.135:8381/publictransport-maintenance/', 'TARGET': '_blank'},
-    {'TITLE': 'Street Search', 'LINK': 'javascript: street_search_toggle();', 'ALIGN': 'right'},
+    {'title': 'HTML & SHP & KML Tools', 'link': 'http://192.168.152.135:8381/publictransport-maintenance/', 'target': '_blank'},
+    {'title': 'Street Search', 'link': 'javascript: street_search_toggle();', 'align': 'right'},
 )
 
 BUS_STOP_SHORT_NAME_LONG_NAME_MAP = {
@@ -197,5 +201,5 @@ BUS_STOP_SHORT_NAME_LONG_NAME_MAP = {
 
 def my_context_processor(request):
     return {
-        'MENUS': MENUS,
+        'menus': MENUS,
     }
