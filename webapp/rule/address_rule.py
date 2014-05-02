@@ -11,6 +11,7 @@ _logger = logging.getLogger('default')
 class AddressRule(BaseRule):
 
     def __init__(self, origin_addresses):
+        BaseRule.__init__()
         self.origin_addresses = origin_addresses
         self.target_addresses = []
 

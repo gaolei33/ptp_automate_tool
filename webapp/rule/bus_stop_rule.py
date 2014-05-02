@@ -2,17 +2,17 @@ import logging
 from webapp import config
 from webapp.dao import street_dao
 from webapp.exceptions import PTPValueError
-from webapp.rule.rule import BaseRule
+from webapp.rule.rule import CsvRule
 
 __author__ = 'Gao Lei'
 
 _logger = logging.getLogger('default')
 
 
-class BusStopRule(BaseRule):
+class BusStopRule(CsvRule):
 
     def __init__(self, origin_bus_stops):
-        BaseRule.__init__(self, 3)
+        CsvRule.__init__(self, 3)
         self.origin_bus_stops = origin_bus_stops
         self.target_bus_stops = []
 

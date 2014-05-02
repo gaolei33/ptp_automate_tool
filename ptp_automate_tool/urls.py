@@ -5,7 +5,8 @@ from django.conf.urls import patterns, include, url
 # admin.autodiscover()
 from django.views.generic.base import RedirectView
 
-urlpatterns = patterns('',
+urlpatterns = patterns(
+    '',
     # Examples:
     # url(r'^$', 'ptp_automate_tool.views.home', name='home'),
     # url(r'^ptp_automate_tool/', include('ptp_automate_tool.foo.urls')),

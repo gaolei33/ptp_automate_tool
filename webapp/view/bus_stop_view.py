@@ -70,6 +70,6 @@ def bus_stop_handler(request):
     sql_name = bus_stop_manager.bus_stop_add_or_update(bus_stops, sr_number, method)
 
     messages.info(request, 'SQL generated and executed on development database successfully.')
-    request.ATTRIBUTES = {'sql_name': sql_name}
+    request.attributes = {'sql_name': sql_name}
 
     return render(request, 'common/result.html')

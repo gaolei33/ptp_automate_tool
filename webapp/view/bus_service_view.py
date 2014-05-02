@@ -37,6 +37,6 @@ def bus_service_handler(request):
         sql_name = bus_service_manager.bus_service_enable_or_disable(bus_service_ids, enable_or_disable, sr_number)
 
     messages.info(request, 'SQL generated and executed on development database successfully.')
-    request.ATTRIBUTES = {'sql_name': sql_name}
+    request.attributes = {'sql_name': sql_name}
 
     return render(request, 'common/result.html')

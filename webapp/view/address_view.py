@@ -49,6 +49,6 @@ def address_handler(request):
     sql_name = address_manager.address_add(addresses)
 
     messages.info(request, 'SQL generated and executed on development database successfully.')
-    request.ATTRIBUTES = {'sql_name': sql_name}
+    request.attributes = {'sql_name': sql_name}
 
     return render(request, 'common/result.html')

@@ -39,6 +39,6 @@ def bus_route_handler(request):
     sql_name = bus_route_manager.bus_route_add_or_update(csv_name_ncs, csv_name_lta, bus_service_ids, sr_number)
 
     messages.info(request, 'SQL generated and executed on development database successfully.')
-    request.ATTRIBUTES = {'sql_name': sql_name}
+    request.attributes = {'sql_name': sql_name}
 
     return render(request, 'common/result.html')

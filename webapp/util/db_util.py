@@ -12,9 +12,11 @@ def exec_query(sql):
     query = sql
     return _exec_sql(query, 'QUERY')
 
+
 def exec_cmds(sql):
     cmds = [cmd for cmd in sql.split('\n') if cmd]
     _exec_sql(cmds, 'CMDS')
+
 
 def _exec_sql(exec_content, exec_type):
     conn = connector.connect(**config.DB)

@@ -1,17 +1,17 @@
 import logging
 from webapp.dao import street_dao
 from webapp.exceptions import PTPValueError
-from webapp.rule.rule import BaseRule
+from webapp.rule.rule import CsvRule
 
 __author__ = 'Gao Lei'
 
 _logger = logging.getLogger('default')
 
 
-class BusServiceRule(BaseRule):
+class BusServiceRule(CsvRule):
 
     def __init__(self, origin_bus_services):
-        BaseRule.__init__(self, 10)
+        CsvRule.__init__(self, 10)
         self.origin_bus_services = origin_bus_services
         self.target_bus_services = []
 

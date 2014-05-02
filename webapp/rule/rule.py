@@ -8,6 +8,15 @@ _logger = logging.getLogger('default')
 
 class BaseRule():
 
+    def __init__(self):
+        pass
+
+    def execute_rules(self):
+        pass
+
+
+class CsvRule(BaseRule):
+
     def __init__(self, column_number):
         self.column_number = column_number
 
@@ -16,6 +25,3 @@ class BaseRule():
             err_msg = 'CSV columns must be more than %d, maybe you uploaded an incorrect CSV file, please check and modify the CSV file.' % self.column_number
             _logger.error(err_msg)
             raise PTPValueError(err_msg)
-
-    def execute_rules(self):
-        pass

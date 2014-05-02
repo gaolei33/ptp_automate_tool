@@ -199,6 +199,7 @@ BUS_STOP_SHORT_NAME_LONG_NAME_MAP = {
     'voc': 'Vocational',
 }
 
+
 def my_context_processor(request):
     return {
         'menus': MENUS,

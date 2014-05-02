@@ -1,7 +1,7 @@
 import logging
 import re
 from webapp.exceptions import PTPValueError
-from webapp.rule.rule import BaseRule
+from webapp.rule.rule import CsvRule
 
 __author__ = 'Gao Lei'
 
@@ -12,10 +12,10 @@ def _is_empty(origin_str):
     return origin_str in ('', '-')
 
 
-class BusRouteRule(BaseRule):
+class BusRouteRule(CsvRule):
 
     def __init__(self, origin_bus_routes, column_number):
-        BaseRule.__init__(self, column_number)
+        CsvRule.__init__(self, column_number)
         self.origin_bus_routes = origin_bus_routes
         self.target_bus_routes = []
 
