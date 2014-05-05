@@ -18,6 +18,7 @@ class BaseRule():
 class CsvRule(BaseRule):
 
     def __init__(self, column_number):
+        BaseRule.__init__(self)
         self.column_number = column_number
 
     def _column_number_rule(self, origin_row):
