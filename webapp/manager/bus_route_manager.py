@@ -75,7 +75,7 @@ def sequence_check_between_ncs_and_lta(bus_routes_ncs, bus_routes_lta):
         for bus_route_ncs, bus_route_lta in zip(bus_routes_ncs, bus_routes_lta):
             if len(bus_route_ncs) == len(bus_route_lta):
                 for route_ncs, route_lta in zip(bus_route_ncs, bus_route_lta):
-                    if (route_ncs[1], route_ncs[2], route_ncs[3], route_ncs[4], route_ncs[5]) != (route_lta[1], route_lta[2], route_lta[3], route_lta[4], route_lta[5]):
+                    if (route_ncs[1], route_ncs[2], route_ncs[3]) != (route_lta[1], route_lta[2], route_lta[3]):
                         bus_service_not_match_ids.append(route_ncs[0])
                         break
             else:
