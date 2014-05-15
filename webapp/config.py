@@ -54,6 +54,8 @@ PDF_RENAME_PATTERN = r'_\d_Index'
 
 PDF_ROOT = 'pdf/roadIndex/'
 
+HTML_SHP_KML_REAL_URL = 'http://192.168.152.135:8381/publictransport-maintenance/'
+
 MENUS = (
     {
         'title': 'DB', 'link': '/webapp/db/',
@@ -110,7 +112,7 @@ MENUS = (
             {'title': 'PDF Rename', 'link': '/webapp/pdf/pdf_rename/'},
         )
     },
-    {'title': 'HTML & SHP & KML Tools', 'link': 'http://192.168.152.135:8381/publictransport-maintenance/', 'target': '_blank'},
+    {'title': 'HTML & SHP & KML', 'link': '/webapp/html_shp_kml/'},
     {'title': 'Street Search', 'link': 'javascript: street_search_toggle();', 'align': 'right'},
 )
 

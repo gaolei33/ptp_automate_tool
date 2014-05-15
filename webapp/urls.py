@@ -78,3 +78,8 @@ urlpatterns += patterns(
     'webapp.view.street_view',
     url(r'^street/street_search/$', 'street_search'),
 )
+
+urlpatterns += patterns(
+    'webapp.view.html_shp_kml_view',
+    url(r'^html_shp_kml/$', 'html_shp_kml_home', {'description': 'HTML & SHP & KML'}),
+)

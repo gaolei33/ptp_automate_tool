@@ -143,3 +143,10 @@ a:hover {
     padding: 0 10px;
     color: #F00;
 }
+
+/* iFrame for HTML & SHP & KML module */
+#html-shp-kml-container {
+    border: none;
+    width: 100%;
+    height: 550px;
+}
