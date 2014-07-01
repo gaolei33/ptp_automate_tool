@@ -1,5 +1,5 @@
 import logging
-from mysql import connector
+import MySQLdb
 from webapp import config
 from webapp.exceptions import PTPDatabaseError
 
@@ -19,7 +19,7 @@ def exec_cmds(sql):
 
 
 def _exec_sql(exec_content, exec_type):
-    conn = connector.connect(**config.DB)
+    conn = MySQLdb.connect(**config.DATABASE)
     try:
         cur = conn.cursor()
         if exec_type == 'QUERY':

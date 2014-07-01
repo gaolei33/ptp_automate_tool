@@ -8,21 +8,23 @@ ENV = 'server'
 CONFIG = {
     'server': {
         'debug': False,
-        'db': {
+        'database': {
             'host': '127.0.0.1',
+            'port': 3306,
             'user': 'developer',
-            'password': 'password',
-            'database': 'ptp2',
+            'passwd': 'password',
+            'db': 'ptp2',
         },
         'root': '/media/ext/Public/share/ptp_automate_tool',
     },
     'local': {
         'debug': True,
-        'db': {
+        'database': {
             'host': '127.0.0.1',
+            'port': 3306,
             'user': 'root',
-            'password': '880428',
-            'database': 'ptp2',
+            'passwd': '880428',
+            'db': 'ptp2',
         },
         'root': '/home/jonathan/Desktop/ptp_automate_tool',
     },
@@ -30,7 +32,7 @@ CONFIG = {
 
 DEBUG = CONFIG[ENV]['debug']
 
-DB = CONFIG[ENV]['db']
+DATABASE = CONFIG[ENV]['database']
 
 ROOT = CONFIG[ENV]['root']
 
