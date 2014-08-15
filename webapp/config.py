@@ -56,7 +56,7 @@ PDF_RENAME_PATTERN = r'_\d_Index'
 
 PDF_ROOT = 'pdf/roadIndex/'
 
-HTML_SHP_KML_REAL_URL = 'http://10.0.0.134:8381/publictransport-maintenance/'
+HTML_SHP_KML_REAL_URL = 'http://192.168.1.200:8381/publictransport-maintenance/'
 
 MENUS = (
     {
