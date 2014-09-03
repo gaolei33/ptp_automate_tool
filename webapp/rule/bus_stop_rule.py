@@ -29,7 +29,7 @@ class BusStopRule(CsvRule):
         origin_words = origin_short_name.split(' ')
         for origin_word in origin_words:
             origin_word_lower = origin_word.lower()
-            target_word = config.BUS_STOP_SHORT_NAME_LONG_NAME_MAP[origin_word_lower] if origin_word_lower in config.BUS_STOP_SHORT_NAME_LONG_NAME_MAP else origin_word
+            target_word = config.ABBREVIATIONS[origin_word_lower] if origin_word_lower in config.ABBREVIATIONS else origin_word
             target_words.append(target_word)
         target_long_name = ' '.join(target_words)
         return target_long_name

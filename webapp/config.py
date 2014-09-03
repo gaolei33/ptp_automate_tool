@@ -118,13 +118,15 @@ MENUS = (
     {'title': 'Street Search', 'link': 'javascript: street_search_toggle();', 'align': 'right'},
 )
 
-BUS_STOP_SHORT_NAME_LONG_NAME_MAP = {
+ABBREVIATIONS = {
     'admin': 'Administration',
+    'aft': 'After',
     'amk': 'Ang Mo Kio',
     'apt': 'Apartment',
     'assn': 'Association',
     'ave': 'Avenue',
     'aye': 'Ayer Rajah Expressway',
+    'bef': 'Before',
     'bke': 'Bukit Timah Expressway',
     'bldg': 'Building',
     'blk': 'Block',
