@@ -63,6 +63,12 @@ class BusStopRule(CsvRule):
             target_short_name = origin_bus_stop[2]
             target_bus_stop.append(target_short_name)
 
+            target_layout_num = origin_bus_stop[3]
+            target_bus_stop.append(target_layout_num)
+
+            target_max_pages = origin_bus_stop[4]
+            target_bus_stop.append(target_max_pages)
+
             target_location_code = ''
             target_bus_stop.append(target_location_code)
 

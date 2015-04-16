@@ -26,40 +26,48 @@
                 <input class="form-textbox" type="text" name="short_name_{{ forloop.counter0 }}" value="{{ bus_stop.3 }}" />
             </div>
             <div class="form-row">
+                <label class="form-label">Layout Num</label>
+                <input class="form-textbox" type="text" name="layout_num_{{ forloop.counter0 }}" value="{{ bus_stop.4 }}" />
+            </div>
+            <div class="form-row">
+                <label class="form-label">Max Pages</label>
+                <input class="form-textbox" type="text" name="max_pages_{{ forloop.counter0 }}" value="{{ bus_stop.5 }}" />
+            </div>
+            <div class="form-row">
                 <label class="form-label">Location Code</label>
-                <input class="form-textbox" type="text" name="location_code_{{ forloop.counter0 }}" value="{{ bus_stop.4 }}" />
+                <input class="form-textbox" type="text" name="location_code_{{ forloop.counter0 }}" value="{{ bus_stop.6 }}" />
                 {% if method == 'BUS_STOP_ADD' %}<span class="form-green">*</span>{% endif %}
             </div>
             <div class="form-row">
                 <label class="form-label">WAB Accessible</label>
                 <select name="wab_accessible_{{ forloop.counter0 }}">
-                    <option value="0"{% if bus_stop.5 == '0' %} selected="selected"{% endif %}>0</option>
-                    <option value="1"{% if bus_stop.5 == '1' %} selected="selected"{% endif %}>1</option>
+                    <option value="0"{% if bus_stop.7 == '0' %} selected="selected"{% endif %}>0</option>
+                    <option value="1"{% if bus_stop.7 == '1' %} selected="selected"{% endif %}>1</option>
                 </select>
             </div>
             <div class="form-row">
                 <label class="form-label">Non Bus Stop</label>
                 <select name="non_bus_stop_{{ forloop.counter0 }}">
-                    <option value="0"{% if bus_stop.6 == '0' %} selected="selected"{% endif %}>0</option>
-                    <option value="1"{% if bus_stop.6 == '1' %} selected="selected"{% endif %}>1</option>
+                    <option value="0"{% if bus_stop.8 == '0' %} selected="selected"{% endif %}>0</option>
+                    <option value="1"{% if bus_stop.8 == '1' %} selected="selected"{% endif %}>1</option>
                 </select>
             </div>
             <div class="form-row">
                 <label class="form-label">Interchange</label>
                 <select name="interchange_{{ forloop.counter0 }}">
-                    <option value="0"{% if bus_stop.7 == '0' %} selected="selected"{% endif %}>0</option>
-                    <option value="1"{% if bus_stop.7 == '1' %} selected="selected"{% endif %}>1</option>
+                    <option value="0"{% if bus_stop.9 == '0' %} selected="selected"{% endif %}>0</option>
+                    <option value="1"{% if bus_stop.9 == '1' %} selected="selected"{% endif %}>1</option>
                 </select>
                 {% if method == 'BUS_STOP_ADD' %}<span class="form-green">*</span>{% endif %}
             </div>
             <div class="form-row">
                 <label class="form-label">Longitude</label>
-                <input class="form-textbox" type="text" name="longitude_{{ forloop.counter0 }}" value="{{ bus_stop.8 }}" />
+                <input class="form-textbox" type="text" name="longitude_{{ forloop.counter0 }}" value="{{ bus_stop.10 }}" />
                 {% if method == 'BUS_STOP_ADD' %}<span class="form-green">*</span>{% endif %}
             </div>
             <div class="form-row">
                 <label class="form-label">Latitude</label>
-                <input class="form-textbox" type="text" name="latitude_{{ forloop.counter0 }}" value="{{ bus_stop.9 }}" />
+                <input class="form-textbox" type="text" name="latitude_{{ forloop.counter0 }}" value="{{ bus_stop.11 }}" />
                 {% if method == 'BUS_STOP_ADD' %}<span class="form-green">*</span>{% endif %}
             </div>
             {% if forloop.counter0 < bus_stops|length|add:-1 %}

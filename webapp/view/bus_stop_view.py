@@ -56,6 +56,8 @@ def bus_stop_handler(request):
         street_id = request.POST['street_id_%d' % i].strip()
         long_name = request.POST['long_name_%d' % i].strip()
         short_name = request.POST['short_name_%d' % i].strip()
+        layout_num = request.POST['layout_num_%d' % i].strip()
+        max_pages = request.POST['max_pages_%d' % i].strip()
         location_code = request.POST['location_code_%d' % i].strip() or 'NULL'
         wab_accessible = request.POST['wab_accessible_%d' % i].strip()
         non_bus_stop = request.POST['non_bus_stop_%d' % i].strip()
@@ -63,7 +65,7 @@ def bus_stop_handler(request):
         longitude = request.POST['longitude_%d' % i].strip()
         latitude = request.POST['latitude_%d' % i].strip()
 
-        bus_stop = [bus_stop_id, street_id, long_name, short_name, location_code, wab_accessible, non_bus_stop, interchange, longitude, latitude]
+        bus_stop = [bus_stop_id, street_id, long_name, short_name, layout_num, max_pages, location_code, wab_accessible, non_bus_stop, interchange, longitude, latitude]
 
         bus_stops.append(bus_stop)
 

@@ -5,7 +5,7 @@ __author__ = 'Gao Lei'
 
 def get_bus_stops_by_ids(bus_stop_ids):
     bus_stop_ids_string_wrap_quotes = ', '.join({"'%s'" % bus_stop_id for bus_stop_id in bus_stop_ids})
-    sql = "SELECT CONCAT(id), CONCAT(street_id), CONCAT(long_name), CONCAT(short_name), IF(location_code IS NULL, '', CONCAT(location_code)), CONCAT(is_wab_accessible), CONCAT(is_non_bus_stop), CONCAT(is_interchange), CONCAT(longitude), CONCAT(latitude) FROM bus_stops WHERE id IN (%s);" % bus_stop_ids_string_wrap_quotes
+    sql = "SELECT CONCAT(id), CONCAT(street_id), CONCAT(long_name), CONCAT(short_name), CONCAT(layout_num), CONCAT(max_pages), IF(location_code IS NULL, '', CONCAT(location_code)), CONCAT(is_wab_accessible), CONCAT(is_non_bus_stop), CONCAT(is_interchange), CONCAT(longitude), CONCAT(latitude) FROM bus_stops WHERE id IN (%s);" % bus_stop_ids_string_wrap_quotes
 
     result = db_util.exec_query(sql)
 

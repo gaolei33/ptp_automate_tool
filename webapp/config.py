@@ -22,11 +22,11 @@ CONFIG = {
         'database': {
             'host': '127.0.0.1',
             'port': 3306,
-            'user': 'root',
-            'passwd': '880428',
+            'user': 'developer',
+            'passwd': 'password',
             'db': 'ptp2',
         },
-        'root': '/home/jonathan/Desktop/ptp_automate_tool',
+        'root': 'C:/Users/jonathan/Desktop/ptp_automate_tool',
     },
 }
 

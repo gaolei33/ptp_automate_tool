@@ -67,8 +67,8 @@ def generate_sql(bus_stops, method):
     sql = ''
     if method == 'BUS_STOP_ADD':
         for bus_stop in bus_stops:
-            sql += "INSERT INTO bus_stops (id, linked_bus_stop_id, street_id, nearby_station_id, long_name, short_name, location_code, is_wab_accessible, is_non_bus_stop, is_interchange, is_pickup_point, has_arrival_info, has_arrival_panel, allows_boarding, allows_alighting, longitude, latitude) VALUES (%s, NULL, %s, NULL, %s, %s, %s, %s, %s, %s, '0', '0', '0', '1', '1', %s, %s);\n" % (bus_stop[0], bus_stop[1], bus_stop[2], bus_stop[3], bus_stop[4], bus_stop[5], bus_stop[6], bus_stop[7], bus_stop[8], bus_stop[9])
+            sql += "INSERT INTO bus_stops (id, linked_bus_stop_id, street_id, nearby_station_id, long_name, short_name, layout_num, max_pages, location_code, is_wab_accessible, is_non_bus_stop, is_interchange, is_pickup_point, has_arrival_info, has_arrival_panel, allows_boarding, allows_alighting, longitude, latitude) VALUES (%s, NULL, %s, NULL, %s, %s, %s, %s, %s, %s, %s, %s, '0', '0', '0', '1', '1', %s, %s);\n" % (bus_stop[0], bus_stop[1], bus_stop[2], bus_stop[3], bus_stop[4], bus_stop[5], bus_stop[6], bus_stop[7], bus_stop[8], bus_stop[9], bus_stop[10], bus_stop[11])
     else:
         for bus_stop in bus_stops:
-            sql += "UPDATE bus_stops SET street_id = %s, long_name = %s, short_name = %s, location_code = %s, is_wab_accessible = %s, is_non_bus_stop = %s, is_interchange = %s, longitude= %s, latitude = %s WHERE id = %s;\n" % (bus_stop[1], bus_stop[2], bus_stop[3], bus_stop[4], bus_stop[5], bus_stop[6], bus_stop[7], bus_stop[8], bus_stop[9], bus_stop[0])
+            sql += "UPDATE bus_stops SET street_id = %s, long_name = %s, short_name = %s, layout_num = %s, max_pages = %s, location_code = %s, is_wab_accessible = %s, is_non_bus_stop = %s, is_interchange = %s, longitude= %s, latitude = %s WHERE id = %s;\n" % (bus_stop[1], bus_stop[2], bus_stop[3], bus_stop[4], bus_stop[5], bus_stop[6], bus_stop[7], bus_stop[8], bus_stop[9], bus_stop[10], bus_stop[11], bus_stop[0])
     return sql
