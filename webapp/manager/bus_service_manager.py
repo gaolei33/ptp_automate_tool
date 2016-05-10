@@ -66,7 +66,7 @@ def bus_service_enable_or_disable(bus_service_ids, enable_or_disable, sr_number)
 
 def get_operator_from_csv_name(csv_name):
     operator = ''
-    OPERATOR_STRINGS = {'SMRT', 'SBST'}
+    OPERATOR_STRINGS = {'SMRT', 'SBST', 'TTS'}
     for operator_string in OPERATOR_STRINGS:
         if operator_string in csv_name.upper():
             operator = operator_string
