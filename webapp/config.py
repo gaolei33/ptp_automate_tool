@@ -26,7 +26,7 @@ CONFIG = {
             'passwd': 'password',
             'db': 'ptp2',
         },
-        'root': 'C:/Users/jonathan/Desktop/ptp_automate_tool',
+        'root': 'C:\\Users\\jonathan\\Desktop\\ptp_automate_tool',
     },
 }
 
