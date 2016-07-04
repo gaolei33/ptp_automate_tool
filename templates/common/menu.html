@@ -1,5 +1,6 @@
+{% load static %}
 {% if menus %}
-    <script type="text/javascript" src="/static/js/menu.js"></script>
+    <script type="text/javascript" src="{% static 'js/menu.js' %}"></script>
     <ul id="menu">
     {% for menu in menus %}
         <li class="menu-item"{% if menu.align %} style="float: {{ menu.align }};" {% endif %}>
