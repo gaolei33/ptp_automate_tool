@@ -32,6 +32,8 @@ CONFIG = {
 
 DEBUG = CONFIG[ENV]['debug']
 
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.1.200']
+
 DATABASE = CONFIG[ENV]['database']
 
 ROOT = CONFIG[ENV]['root']

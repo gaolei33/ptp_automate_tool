@@ -26,7 +26,7 @@ SECRET_KEY = 'x=m#vne%cbnru-35!o-2(&n(!!($yz#8lrpc98_+t@#9)7if@-'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config.DEBUG
 
-ALLOWED_HOSTS = ['192.168.1.200']
+ALLOWED_HOSTS = config.ALLOWED_HOSTS
 
 
 # Application definition
