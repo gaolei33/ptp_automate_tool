@@ -59,6 +59,8 @@ PDF_RENAME_PATTERN = r'_\d_Index'
 PDF_ROOT = 'pdf/roadIndex/'
 
 HTML_SHP_KML_REAL_URL = '/publictransport-maintenance/'
+DVW_CYCLING_REAL_URL = '/dvw/map_cycling_draw_list.jsp'
+DVW_ROUTE_REAL_URL = '/dvw/map_route_draw_list.jsp'
 
 MENUS = (
     {
@@ -117,6 +119,13 @@ MENUS = (
         )
     },
     {'title': 'HTML & SHP & KML', 'link': '/webapp/html_shp_kml/'},
+    {
+        'title': 'DVW', 'link': '/webapp/dvw/',
+        'submenus': (
+            {'title': 'DVW Cycling', 'link': '/webapp/dvw/dvw_cycling/'},
+            {'title': 'DVW Route', 'link': '/webapp/dvw/dvw_route/'},
+        )
+    },
     {'title': 'Street Search', 'link': 'javascript: street_search_toggle();', 'align': 'right'},
 )
 

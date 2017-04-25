@@ -1,7 +1,8 @@
 from django.views.generic.base import RedirectView
 from django.conf.urls import url
 
-from webapp.view import db_view
+from webapp import config
+from webapp.view import db_view, iframe_view
 from webapp.view import csv_view
 from webapp.view import bus_stop_view
 from webapp.view import bus_service_view
@@ -10,7 +11,6 @@ from webapp.view import address_view
 from webapp.view import pdf_view
 from webapp.view import sql_view
 from webapp.view import street_view
-from webapp.view import html_shp_kml_view
 
 __author__ = 'Gao Lei'
 
@@ -81,5 +81,11 @@ urlpatterns += [
 ]
 
 urlpatterns += [
-    url(r'^html_shp_kml/$', html_shp_kml_view.html_shp_kml_home, {'description': 'HTML & SHP & KML'}),
+    url(r'^html_shp_kml/$', iframe_view.iframe_home, {'real_url': config.HTML_SHP_KML_REAL_URL, 'description': 'HTML & SHP & KML'}),
+]
+
+urlpatterns += [
+    url(r'^dvw/$', RedirectView.as_view(url='/webapp/dvw/dvw_cycling/')),
+    url(r'^dvw/dvw_cycling/$', iframe_view.iframe_home, {'real_url': config.DVW_CYCLING_REAL_URL, 'description': 'DVW Cycling'}),
+    url(r'^dvw/dvw_route/$', iframe_view.iframe_home, {'real_url': config.DVW_ROUTE_REAL_URL, 'description': 'DVW Route'}),
 ]
